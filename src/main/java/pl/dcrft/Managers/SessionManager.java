@@ -1,0 +1,78 @@
+package pl.dcrft.Managers;
+
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import pl.dcrft.DragonCraftCore;
+
+public class SessionManager {
+    private final Player p;
+
+    private Location lastLoc;
+
+    private int afkMinutes;
+
+    public SessionManager(Player p) {
+        this.p = p;
+        this.lastLoc = p.getLocation();
+        this.afkMinutes = 0;
+    }
+
+    public void resetMinute() {
+        if (this.p != null && this.p.isOnline())
+            if (!this.p.hasPermission("afkkick.ignore")) {
+                this.afkMinutes = 0;
+                this.lastLoc = this.p.getLocation();
+            }
+    }
+
+    public void increaseMinute() {
+        int kick_warn_delay = DragonCraftCore.getInstance().getConfig().getInt("afk.kick_warn_delay");
+        int kick_delay = DragonCraftCore.getInstance().getConfig().getInt("afk.kick_delay");
+        if (this.p != null && this.p.isOnline())
+            if (!this.p.hasPermission("afkkick.ignore"))
+                if (this.lastLoc.getWorld() != this.p.getLocation().getWorld()) {
+                    return;
+                }
+        if (this.lastLoc.distanceSquared(this.p.getLocation()) < 4.0D) {
+            this.afkMinutes++;
+            this.lastLoc = this.p.getLocation();
+            if (this.afkMinutes == kick_warn_delay) {
+                Boolean sound_on_get_warn = Boolean.valueOf(DragonCraftCore.getInstance().getConfig().getString("afk.sound_on_get_warn"));
+
+                if (sound_on_get_warn == true) {
+                    this.p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10,3);
+                } else {
+
+                }
+                this.p.sendMessage("" + DragonCraftCore.getInstance().getConfig().getString("afk.prefix") + " " + DragonCraftCore.getInstance().getConfig().getString("afk.kick_warn_msg"));
+                TextComponent tc = new TextComponent();
+                tc.setText("" + DragonCraftCore.getInstance().getConfig().getString("afk.kick_warn_msg_afk"));
+                tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/nieafk"));
+                p.spigot().sendMessage(tc);
+            } else if(this.afkMinutes >= kick_delay) {
+                kickPlayer();
+            }
+        } else {
+            this.afkMinutes = 0;
+            this.lastLoc = this.p.getLocation();
+        }
+    }
+
+    private void kickPlayer() {
+        if (!this.p.hasPermission("afkkick.ignore"))
+            Bukkit.getScheduler().scheduleSyncDelayedTask(DragonCraftCore.getInstance(), new Runnable() {
+                public void run() {
+                    SessionManager.this.p.kickPlayer("" + DragonCraftCore.getInstance().getConfig().getString("afk.prefix") + " " + DragonCraftCore.getInstance().getConfig().getString("afk.kick_msg"));
+                }
+            },  20L);
+    }
+
+
+    public Player getPlayer() {
+        return this.p;
+    }
+}
