@@ -23,8 +23,8 @@ jobs:
         distribution: 'adopt'
     - name: Build DragonCraftCore
       run: mvn clean package
-    - name: Upload DragonCraftCore.jar
+    - name: Upload DragonCraftCore
       uses: actions/upload-artifact@v2
       with:
-        name: DragonCraftCore.jar
+        name: DragonCraftCore
         path: target
