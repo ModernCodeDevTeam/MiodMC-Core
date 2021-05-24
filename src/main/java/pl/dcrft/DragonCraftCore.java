@@ -38,7 +38,7 @@ import static pl.dcrft.Utils.RoundUtil.round;
 public class DragonCraftCore extends JavaPlugin implements Listener, CommandExecutor {
     public static DragonCraftCore instance;
 
-    public static String prefix = getDataFile().getString("prefix");
+    public static String prefix = getMessagesFile().getString("prefix");
 
     public static DragonCraftCore getInstance() {
         return instance;
