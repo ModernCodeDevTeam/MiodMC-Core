@@ -1,7 +1,7 @@
 # DragonCraftCore
-DragonCraftCore is a <i>core</i> plugin. It provides common features for a survival Minecraft server.
-Intended to use <b>only</b> with DragonCraft (DCRFT.PL) Minecraft server. Probably useless on other servers. We're trying to make it easy-to-use for every server, but our focus is DragonCraft.
-It's still work-in-progress, not usable at the monent and not fully translated. Many variables are still in Polish.
+DragonCraftCore is a <i>core</i> plugin. It provides common features for a survival Minecraft server.\
+Intended to use <b>only</b> with DragonCraft (DCRFT.PL) Minecraft server. Probably useless on other servers. We're trying to make it easy-to-use for every server, but our focus is DragonCraft.\
+It's still work-in-progress, not usable at the monent and not fully translated. Many variables are still in Polish.\
 Tested Minecraft version: 1.16
 
 Main features:\
