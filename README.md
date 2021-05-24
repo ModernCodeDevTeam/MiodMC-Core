@@ -27,4 +27,4 @@ Main features:\
 • AdvancedBan integration - chechkwarn command an warn comand as an alias for tempwarn\
 • vip/svip/mvip/evip commands which teleports to vip area or, if a player doesn't have specified group, shows some information about the rank\
 • error handling\
-• fully customizable messages (WIP)\
+• fully customizable messages (WIP)
