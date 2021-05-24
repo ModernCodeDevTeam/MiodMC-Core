@@ -7,7 +7,7 @@ import pl.dcrft.DragonCraftCore;
 import java.util.Random;
 
 public class BroadcasterManager {
-    public static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
     public static void startBroadcast(){
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override

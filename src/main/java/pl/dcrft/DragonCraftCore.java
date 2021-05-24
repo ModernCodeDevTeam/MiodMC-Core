@@ -19,6 +19,7 @@ import pl.dcrft.Listeners.*;
 import pl.dcrft.Managers.CommandManager;
 import pl.dcrft.Managers.Panel.PanelType;
 import pl.dcrft.Managers.SessionManager;
+import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -32,13 +33,15 @@ import static pl.dcrft.Managers.ConnectionManager.*;
 import static pl.dcrft.Managers.DataManager.saveData;
 import static pl.dcrft.Managers.Panel.PanelManager.showPanel;
 import static pl.dcrft.Utils.ConfigUtil.initializeFiles;
+import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 import static pl.dcrft.Utils.RoundUtil.round;
 
 public class DragonCraftCore extends JavaPlugin implements Listener, CommandExecutor {
-    public static DragonCraftCore instance;
+    private static DragonCraftCore instance;
 
-    public static String prefix = getMessagesFile().getString("prefix");
+    public static String prefix = "test";
+    //public static String prefix = getMessagesFile().getString("prefix");
 
     public static DragonCraftCore getInstance() {
         return instance;
@@ -51,8 +54,9 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
     //
 
     public void onEnable() {
-        initializeFiles();
+        instance = this;
 
+        initializeFiles();
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new AdvancedBanWarnListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
@@ -87,11 +91,16 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
     }
 
     public void onDisable() {
+        try {
+            if(connection != null){ connection.close(); };
+        } catch (SQLException e) {
+            e.printStackTrace();
+            logError(ErrorReason.DATABASE);
+        }
         getLogger().info("§e--------------------------------------------");
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");
         getLogger().info("§cWyłączono wersję §2" + this.getDescription().getVersion());
         getLogger().info("§e--------------------------------------------");
-        closeConnection();
 
     }
 

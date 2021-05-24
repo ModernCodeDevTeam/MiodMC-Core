@@ -19,7 +19,7 @@ import static pl.dcrft.Managers.DataManager.saveData;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 
 public class PlayerChatListener implements Listener {
-    public static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler
     public void onPlayerChat(final AsyncPlayerChatEvent e) {

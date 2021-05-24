@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.ResultSet;
@@ -26,6 +27,7 @@ import static pl.dcrft.Managers.ConnectionManager.closeConnection;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 
 public class StatisticManager {
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();
     public static void showStatistics(Player p, String[] args){
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {

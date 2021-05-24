@@ -11,7 +11,7 @@ import static pl.dcrft.Managers.ConfigManger.dataFileFile;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 
 public class DataManager {
-    private static DragonCraftCore plugin;
+    private static DragonCraftCore plugin = DragonCraftCore.getInstance();;
     public static void saveData() {
         try {
             dataFile.save(dataFileFile);

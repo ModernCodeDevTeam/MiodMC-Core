@@ -3,7 +3,7 @@ package pl.dcrft.Utils.Error;
 import pl.dcrft.DragonCraftCore;
 
 public class ErrorUtil {
-    public static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();
     public static void logError(ErrorReason type){
         if(type.equals(ErrorReason.DATABASE)) {
             plugin.getLogger().info("§e--------------------------------------------");

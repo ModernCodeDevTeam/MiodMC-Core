@@ -10,7 +10,7 @@ import pl.dcrft.Managers.SessionManager;
 import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerDisconnectListener implements Listener {
-    public static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
 
     @EventHandler
     public void onPlayerDisconnect(PlayerQuitEvent e) {

@@ -16,7 +16,7 @@ import static pl.dcrft.Managers.DataManager.saveData;
 import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerUseListener implements Listener {
-    public static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
 
     @EventHandler(priority= EventPriority.HIGH)
     public void onPlayerUse(PlayerInteractEvent e){

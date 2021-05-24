@@ -13,7 +13,7 @@ import java.io.IOException;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 
 public class ConfigManger {
-    private static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
 
     public static File customConfigFile;
     public static FileConfiguration customConfig;

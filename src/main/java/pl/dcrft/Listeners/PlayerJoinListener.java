@@ -21,7 +21,7 @@ import static pl.dcrft.Utils.RoundUtil.round;
 import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerJoinListener implements Listener {
-    public static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) throws SQLException {
         SessionManager newSession = new SessionManager(event.getPlayer());

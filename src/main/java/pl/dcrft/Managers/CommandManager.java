@@ -47,7 +47,7 @@ import static pl.dcrft.Utils.RoundUtil.round;
 
 
 public class CommandManager implements CommandExecutor {
-    private static DragonCraftCore plugin;
+    private static DragonCraftCore plugin = DragonCraftCore.getInstance();;
 
     public ArrayList<SessionManager> list = new ArrayList<>();
 

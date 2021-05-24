@@ -12,7 +12,7 @@ import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 import static pl.dcrft.Managers.ConfigManger.getCustomConfig;
 
 public class ConnectionManager {
-    public static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
 
     public static Connection connection;
     public static String host = getCustomConfig().getString("host");
@@ -53,8 +53,8 @@ public class ConnectionManager {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    logError(ErrorReason.DATABASE);
                     e.printStackTrace();
+                    logError(ErrorReason.DATABASE);
                 }
 
             }

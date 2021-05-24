@@ -7,7 +7,7 @@ import pl.dcrft.DragonCraftCore;
 import static pl.dcrft.DragonCraftCore.prefix;
 
 public class MaintenanceManager {
-    public static DragonCraftCore plugin;
+    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
     public static void stopServer(){
         Bukkit.getServer().broadcastMessage(prefix + " §cZa 1 minutę serwer zostanie zatrzymany.");
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
