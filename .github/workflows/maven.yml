@@ -26,5 +26,5 @@ jobs:
     - name: Upload DragonCraftCore.jar
       uses: actions/upload-artifact@v2
       with:
-        name: DragonCraftCore*.jar
+        name: DragonCraftCore.jar
         path: target
