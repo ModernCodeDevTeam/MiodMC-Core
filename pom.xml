@@ -72,7 +72,7 @@
             <artifactId>DragonBot</artifactId>
             <version>4.0.9</version>
             <scope>system</scope>
-            <systemPath>/home/nick/Pobrane/Javacord-Spigot-Example-master/target/DragonBot4-srv50666-4.0.9-fat.jar</systemPath>
+            <systemPath>${project.basedir}/libs/DragonBot.jar</systemPath>
         </dependency>
 
     </dependencies>
