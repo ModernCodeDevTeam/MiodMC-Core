@@ -83,7 +83,7 @@
         <url>http://127.0.0.1/dummy</url>
     </scm>
     <build>
-        <finalName>${project.artifactId}-${project.version}.${buildNumber}</finalName>
+        <finalName>${project.artifactId}-${project.version}-b${buildNumber}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

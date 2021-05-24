@@ -6,13 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
-import pl.dcbot.main.Bot;
 import pl.dcrft.DragonCraftCore;
 
-import java.awt.*;
-
-import static pl.dcrft.DragonCraftCore.prefix;
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
+import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
 import static pl.dcrft.Utils.RoundUtil.round;
 
 
@@ -23,10 +20,10 @@ public class PanelManager {
 
     public static void showPanel(Player p, PanelType type){
         if(type == PanelType.MOD){
-            title = prefix + "§a§lMod§2§lPanel";
+            title = getMessage("prefix") + "§a§lMod§2§lPanel";
         }
         else {
-            title = prefix + "§c§lAdmin§4§lPanel";
+            title = getMessage("prefix") + "§c§lAdmin§4§lPanel";
         }
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
@@ -176,10 +173,10 @@ public class PanelManager {
     }
     public static void updatePanel(Player p, PanelType type){
         if(type == PanelType.MOD){
-            title = prefix + "§a§lMod§2§lPanel";
+            title = getMessage("prefix") + "§a§lMod§2§lPanel";
         }
         else {
-            title = prefix + "§c§lAdmin§4§lPanel";
+            title = getMessage("prefix") + "§c§lAdmin§4§lPanel";
         }
                 ScoreboardManager manager = Bukkit.getScoreboardManager();
                 Scoreboard admpanel = manager.getNewScoreboard();

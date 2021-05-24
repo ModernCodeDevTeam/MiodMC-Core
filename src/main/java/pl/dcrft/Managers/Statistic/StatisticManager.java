@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.MessageManager;
 import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.ResultSet;
@@ -21,9 +22,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static pl.dcrft.DragonCraftCore.prefix;
 import static pl.dcrft.Managers.ConnectionManager.*;
 import static pl.dcrft.Managers.ConnectionManager.closeConnection;
+import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 
 public class StatisticManager {
@@ -36,7 +37,7 @@ public class StatisticManager {
                 ResultSet ogol = statement.executeQuery("SELECT * FROM `staty_ogolem` WHERE nick = '" + args[0] + "'");
                 boolean val = ogol.next();
                 if (!val) {
-                    p.sendMessage(prefix + " §cPodaj poprawny nick gracza.");
+                    sendPrefixedMessage(p, "wrong_player_nickname");
                     return;
                 }
 
@@ -66,7 +67,7 @@ public class StatisticManager {
                     }
                     ResultSet serwer = statement.executeQuery("SELECT * FROM `" + tabela + "` WHERE nick = '" + args[0] + "'");
                     if (!serwer.next()) {
-                        p.sendMessage(prefix + " §cPodaj poprawny nick gracza.");
+                        sendPrefixedMessage(p, "wrong_player_nickname");
                         return;
                     }
                     String kille = serwer.getString("kille");

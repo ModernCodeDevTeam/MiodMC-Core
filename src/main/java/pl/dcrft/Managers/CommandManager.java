@@ -1,58 +1,44 @@
 package pl.dcrft.Managers;
 
-import com.fasterxml.jackson.databind.ext.Java7Support;
-import de.myzelyam.api.vanish.VanishAPI;
-import me.clip.placeholderapi.PlaceholderAPI;
+import com.sun.corba.se.impl.naming.cosnaming.BindingIteratorImpl;
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.utils.Punishment;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.*;
-import pl.dcbot.main.Bot;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.Panel.PanelType;
-import pl.dcrft.Utils.Error.ErrorReason;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
+import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import static pl.dcrft.DragonCraftCore.*;
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
+import static pl.dcrft.Managers.ConfigManger.getMessagesFile;
 import static pl.dcrft.Managers.ConnectionManager.*;
 import static pl.dcrft.Managers.DataManager.saveData;
+import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
+import static pl.dcrft.Managers.Language.LanguageManager.load;
 import static pl.dcrft.Managers.MaintenanceManager.*;
-import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
+import static pl.dcrft.Managers.MessageManager.*;
 import static pl.dcrft.Managers.Panel.PanelManager.hidePanel;
 import static pl.dcrft.Managers.Panel.PanelManager.updatePanel;
 import static pl.dcrft.Managers.Statistic.StatisticManager.showStatistics;
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
+import static pl.dcrft.Utils.ConfigUtil.initializeFiles;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
-import static pl.dcrft.Utils.RoundUtil.round;
 
 
 public class CommandManager implements CommandExecutor {
     private static DragonCraftCore plugin = DragonCraftCore.getInstance();;
 
     public ArrayList<SessionManager> list = new ArrayList<>();
-
-    private final String prefix = getDataFile().getString("prefix");
-
+    String prefix = "prefiks tutaj ";
     @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (cmd.getName().equalsIgnoreCase("nieafk")) {
@@ -74,28 +60,30 @@ public class CommandManager implements CommandExecutor {
             return true;
         }
         if (cmd.getName().equalsIgnoreCase("z") || cmd.getName().equalsIgnoreCase("znajomi") || cmd.getName().equalsIgnoreCase("f")) {
+            if(!(sender instanceof Player)){
+                sender.sendMessage("Tej komendy nie można wywołać z konsoli.");
+                return false;
+            }
+            Player p = (Player) sender;
             if (args.length == 0) {
-                sender.sendMessage(prefix + " §6Znajomi");
-                sender.sendMessage("§e» §6/znajomi lista §e» §3lista znajomych");
-                sender.sendMessage("§e» §6/znajomi dodaj §enick » §3dodaj gracza do znajomych");
-                sender.sendMessage("§e» §6/znajomi usun §enick » §3usuń gracza ze znajomych");
-                sender.sendMessage("§e» §6/znajomi akceptuj §enick » §3zaakceptuj zaproszenie do znajomych od gracza");
-                sender.sendMessage("§e» §6/znajomi odrzuc §enick » §3odrzuć zaproszenie do znajomych od gracza");
+                sendPrefixedMessage(p, "friends.help.title");
+                    sendMessageList(p, "friends.help.contents");
                 return false;
             }
             if (args[0].equalsIgnoreCase("lista") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l") || args[0].equalsIgnoreCase("info")) {
-                sender.sendMessage(prefix + " §6Lista znajomych");
-                List<String> znajomi = getDataFile().getStringList(sender.getName() + ".znajomi");
+                sendPrefixedMessage(p, "friends.list.title");
+                List<String> znajomi = getDataFile().getStringList(p.getName() + ".znajomi");
                 if (znajomi.size() == 0) {
-                    sender.sendMessage("§e» §cbrak");
+                    sendMessage(p, "friends.list.none");
                     return false;
                 } else {
                     for (String s : znajomi) {
                         String online = getDataFile().getString(s + ".online");
                         if (online == null) {
-                            online = "§aonline";
+                            sendMessage(p, "friends.list.online");
                         }
-                        sender.sendMessage("§e» §3" + s + " §e» §c" + online);
+                        String msg = MessageFormat.format(getMessage("friends.list.player_format"), s, online);
+                        p.sendMessage(msg);
                     }
                     return false;
                 }
@@ -470,12 +458,14 @@ public class CommandManager implements CommandExecutor {
                 return true;
             } else {
                 if (!sender.hasPermission("dcc.adm")) {
-                    sender.sendMessage(prefix + " §cNie ma takiej komendy. U\u017cyj §e/info§c, aby dowiedzie\u0107 si\u0119 wi\u0119cej o dost\u0119pnych komendach.");
+                    sendPrefixedMessage((Player) sender, "notfound");
                     return false;
                 }
                 final String sub = args[0];
                 if (sub.equalsIgnoreCase("przeladuj")) {
-                    plugin.reloadConfig();
+                    saveData();
+                    initializeFiles();
+
                     sender.sendMessage(prefix + " §aPrze\u0142adowano plik konfiguracyjny §e§lDragon§6§lCraft§a§lCore§a.");
                     plugin.filtry = plugin.getConfig().getConfigurationSection("filtry").getValues(true);
                     return true;

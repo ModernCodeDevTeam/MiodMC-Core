@@ -7,15 +7,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.Language.LanguageManager;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.bukkit.Bukkit.getServer;
-import static pl.dcrft.DragonCraftCore.prefix;
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
 import static pl.dcrft.Managers.DataManager.saveData;
+import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
+import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 
 public class PlayerChatListener implements Listener {
@@ -23,12 +26,12 @@ public class PlayerChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(final AsyncPlayerChatEvent e) {
+        Player p = e.getPlayer();
         if(!getDataFile().getBoolean("czat") && !e.getPlayer().hasPermission("panel.mod")){
             e.setCancelled(true);
-            e.getPlayer().sendMessage(prefix + "§cCzat jest wyciszony.");
+            sendPrefixedMessage(p, "chat_muted");
             return;
         }
-        final Player p = e.getPlayer();
 
         List<String> red = plugin.getConfig().getStringList("czerwonyczat");
         List<String> green = plugin.getConfig().getStringList("zielonyczat");
@@ -53,11 +56,12 @@ public class PlayerChatListener implements Listener {
 
             String finalMessage = message;
             if (!Stream.of(words).anyMatch(word -> finalMessage.contains(word.toLowerCase()))) {
-                getServer().getLogger().info(prefix + "§e" + e.getPlayer().getName() + " §cużył niedozwolonego słowa §e» §e" + niezmieniona);
+                getServer().getLogger().info("§e" + e.getPlayer().getName() + " §cużył niedozwolonego słowa §e» §e" + niezmieniona);
 
                 for(Player o : Bukkit.getOnlinePlayers()){
                     if(o.hasPermission("panel.mod") && getDataFile().getBoolean(o.getName() + ".stream") == false) {
-                        o.sendMessage(prefix + "§e" + e.getPlayer().getName() + " §cużył niedozwolonego słowa §e» §e" + niezmieniona);
+                        String msg = MessageFormat.format(getMessage("censored_notification"), p.getName(), niezmieniona);
+                        o.sendMessage(getMessage("prefix") + msg);
                     }
                 }
             }
@@ -70,7 +74,7 @@ public class PlayerChatListener implements Listener {
         if (getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat")) {
             if (getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat") == true) {
                 if (getDataFile().getBoolean(e.getPlayer().getName() + ".stream") == true) {
-                    e.getPlayer().sendMessage(prefix + "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie. Wyłączono czat automatycznie.");
+                    sendPrefixedMessage(p, "stream.cant_write_turned_off");
                     getDataFile().set(e.getPlayer().getName() + ".adminchat", false);
                     e.setCancelled(true);
                     saveData();
@@ -96,7 +100,7 @@ public class PlayerChatListener implements Listener {
         if (getDataFile().getBoolean(e.getPlayer().getName() + ".modchat")) {
             if (getDataFile().getBoolean(e.getPlayer().getName() + ".modchat") == true) {
                 if (getDataFile().getBoolean(e.getPlayer().getName() + ".stream") == true) {
-                    e.getPlayer().sendMessage(prefix + "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie. Wyłączono czat automatycznie.");
+                    sendPrefixedMessage(p, "stream.cant_write_turned_off");
                     getDataFile().set(e.getPlayer().getName() + ".modchat", false);
                     e.setCancelled(true);
                     saveData();

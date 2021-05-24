@@ -6,17 +6,19 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import static pl.dcrft.DragonCraftCore.prefix;
+import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
+
 
 //this is such a garbage, dont look here >;c
 public class AdvancedBanWarnListener implements Listener {
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
         if (e.getMessage().startsWith("/warn")) {
             e.setCancelled(true);
             String[] args = e.getMessage().split(" ");
             if(!e.getPlayer().hasPermission("ab.warn.temp")) {
-                e.getPlayer().sendMessage(prefix + "§cNie ma takiej komendy. U\u017cyj §e/info§c, aby dowiedzie\u0107 si\u0119 wi\u0119cej o dost\u0119pnych komendach.");
+                sendPrefixedMessage(e.getPlayer(), "notfound");
                 return;
             }
             else if (args.length < 3) {

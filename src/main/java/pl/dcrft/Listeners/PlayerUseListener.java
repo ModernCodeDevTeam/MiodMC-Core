@@ -9,10 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.dcrft.DragonCraftCore;
 
-import static pl.dcrft.DragonCraftCore.prefix;
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
 import static pl.dcrft.Managers.DataManager.saveData;
 
+import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerUseListener implements Listener {
@@ -30,7 +30,7 @@ public class PlayerUseListener implements Listener {
         if(e.getClickedBlock() != null && e.getClickedBlock().getType() != null && e.getClickedBlock().getType().isBlock() && e.getClickedBlock().getType() == Material.LEVER) {
             if(Integer.parseInt(plugin.getConfig().getString("cooldown_lever")) > 0){
                 e.setCancelled(true);
-                p.sendMessage(prefix + "§cPoczekaj sekundę przed użyciem tej dźwigni.");
+                sendPrefixedMessage(p, "lever_cooldown");
                 return;
             }
             else {

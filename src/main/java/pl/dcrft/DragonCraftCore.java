@@ -40,9 +40,6 @@ import static pl.dcrft.Utils.RoundUtil.round;
 public class DragonCraftCore extends JavaPlugin implements Listener, CommandExecutor {
     private static DragonCraftCore instance;
 
-    public static String prefix = "test";
-    //public static String prefix = getMessagesFile().getString("prefix");
-
     public static DragonCraftCore getInstance() {
         return instance;
     }
@@ -51,7 +48,6 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
     public DragonCraftCore() {
         this.filtry = new HashMap<>();
     }
-    //
 
     public void onEnable() {
         instance = this;
@@ -72,7 +68,8 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         this.getLogger().info("§e--------------------------------------------");
 
         openConnection();
-        //getRunnable().runTaskTimer(this, 0L, 1200L);
+
+
         this.filtry = this.getConfig().getConfigurationSection("filtry").getValues(true);
 
         List<Command> commands = PluginCommandYamlParser.parse(this);
@@ -83,6 +80,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         for(Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission("panel.adm")) {
                 showPanel(p, PanelType.ADMIN);
+                getLogger().info("aaa");
             }
             else if (p.hasPermission("panel.mod")) {
                 showPanel(p, PanelType.MOD);

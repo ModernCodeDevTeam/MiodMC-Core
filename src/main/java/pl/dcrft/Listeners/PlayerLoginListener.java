@@ -6,7 +6,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
-import static pl.dcrft.DragonCraftCore.prefix;
+import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
+
 
 public class PlayerLoginListener implements Listener {
 
@@ -21,7 +22,7 @@ public class PlayerLoginListener implements Listener {
                 event.allow();
                 return;
             } else {
-                event.setKickMessage(prefix + "§cSerwer jest pełen graczy!\n§cZakup rangę §b§lVIP§c, aby dołączyć na serwer, gdy jest pełen!");
+                event.setKickMessage(getMessage("prefix") + getMessage("server_full"));
             }
         }
 

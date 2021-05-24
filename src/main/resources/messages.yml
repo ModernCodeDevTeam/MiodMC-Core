@@ -1,2 +1,24 @@
 prefix: "§6§lDragon§e§lCraft §e» "
+server_full: "§cSerwer jest pełen graczy!\n§cZakup rangę §b§lVIP§c, aby dołączyć na serwer, gdy jest pełen!"
 notfound: "§cNie ma takiej komendy. Użyj §e/info§c, aby dowiedzieć się więcej o dostępnych komendach."
+version_warning: "§cJeśli masz wersję inną niż §e1.16-1.16.5§c, mogą wystąpić pewne błędy w rozgrywce. Prosimy ich nie zgłaszać. Serwer przystosowany jest do działania na wersjach §e1.16-1.16.5§c. Używanie innych wersji może skutkować błędami, w razie ich wystąpienia zmień wersję na §e1.16-1.16.5§c."
+lever_cooldown: "§cPoczekaj sekundę przed użyciem tej dźwigni."
+wrong_player_nickname: "§cPodaj poprawny nick gracza."
+chat_muted: "§cCzat jest wyciszony."
+censored_notification: "§e {0} §cużył niedozwolonego słowa §e» §e {1}"
+friends:
+  help:
+    title: "§6Znajomi"
+    contents:
+    - "§e» §6/znajomi lista §e» §3lista znajomych"
+    - "§e» §6/znajomi dodaj §enick » §3dodaj gracza do znajomych"
+    - "§e» §6/znajomi usun §enick » §3usuń gracza ze znajomych"
+    - "§e» §6/znajomi akceptuj §enick » §3zaakceptuj zaproszenie do znajomych od gracza"
+    - "§e» §6/znajomi odrzuc §enick » §3odrzuć zaproszenie do znajomych od gracza"
+  list:
+    title: "§6Lista znajomych"
+    none: "§e» §cbrak"
+    online: "§aonline"
+    player_format: "§e» §3{0}§e» §c{1}"
+stream:
+  cant_write_turned_off: "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie. Wyłączono czat automatycznie."
