@@ -48,7 +48,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
     public DragonCraftCore() {
         this.filtry = new HashMap<>();
     }
-
+    //
 
     public void onEnable() {
         initializeFiles();
