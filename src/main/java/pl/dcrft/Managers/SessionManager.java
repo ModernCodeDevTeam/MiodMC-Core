@@ -8,7 +8,11 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import pl.dcrft.DragonCraftCore;
 
+import java.util.ArrayList;
+
 public class SessionManager {
+
+    public static ArrayList<SessionManager> list = new ArrayList<>();
     private final Player p;
 
     private Location lastLoc;

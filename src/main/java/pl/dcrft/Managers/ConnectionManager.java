@@ -22,7 +22,7 @@ public class ConnectionManager {
     public static int port = getCustomConfig().getInt("port");
     public static String tabela = getCustomConfig().getString("tabela");
 
-    public static void openConnection() throws SQLException, ClassNotFoundException {
+    public static void openConnection() {
         BukkitRunnable runnable = new BukkitRunnable() {
             public void run() {
                 try {

@@ -36,6 +36,7 @@ import static pl.dcrft.Managers.ConfigManger.getDataFile;
 import static pl.dcrft.Managers.ConnectionManager.*;
 import static pl.dcrft.Managers.DataManager.saveData;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
+import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 import static pl.dcrft.Utils.RoundUtil.round;
 
 
@@ -288,24 +289,17 @@ public class CommandManager implements CommandExecutor {
                     getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
                     getDataFile().set(p.getName() + ".slubprosba", null);
                     saveData();
-                    BukkitRunnable runnable = new BukkitRunnable() {
-                        public void run() {
-                            try {
-                                openConnection();
-                                Statement statement = connection.createStatement();
-                                String updatep = "UPDATE `" + tabela + "` SET slub = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "' WHERE nick = '" + p.getName() + "'";
-                                String updateo = "UPDATE `" + tabela + "` SET slub = '" + p.getName() + "' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
-                                statement.executeUpdate(updatep);
-                                statement.executeUpdate(updateo);
-                                statement.close();
-                            } catch (SQLException | ClassNotFoundException var5) {
-                                logError(ErrorReason.DATABASE);
-                                var5.printStackTrace();
-                            }
-
-                        }
-                    };
-                    runnable.runTaskAsynchronously(plugin);
+                    openConnection();
+                    try {
+                        Statement statement = connection.createStatement();
+                        String updatep = "UPDATE `" + tabela + "` SET slub = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "' WHERE nick = '" + p.getName() + "'";
+                        String updateo = "UPDATE `" + tabela + "` SET slub = '" + p.getName() + "' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
+                        statement.executeUpdate(updatep);
+                        statement.executeUpdate(updateo);
+                        statement.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                     plugin.getServer().broadcastMessage(prefix + " §e" + p.getName() + " §bi §e" + Bukkit.getOfflinePlayer(args[0]).getName() + " §bwłaśnie zawarli ślub!");
                     return false;
                 }
@@ -335,24 +329,17 @@ public class CommandManager implements CommandExecutor {
                 getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
                 getDataFile().set(p.getName() + ".slubprosba", null);
                 saveData();
-                BukkitRunnable runnable = new BukkitRunnable() {
-                    public void run() {
-                        try {
-                            openConnection();
-                            Statement statement = connection.createStatement();
-                            String updatep = "UPDATE `" + tabela + "` SET slub = 'NULL' WHERE nick = '" + p.getName() + "'";
-                            String updateo = "UPDATE `" + tabela + "` SET slub = 'NULL' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
-                            statement.executeUpdate(updatep);
-                            statement.executeUpdate(updateo);
-                            statement.close();
-                        } catch (SQLException | ClassNotFoundException var5) {
-                            logError(ErrorReason.DATABASE);
-                            var5.printStackTrace();
-                        }
-
-                    }
-                };
-                runnable.runTaskAsynchronously(plugin);
+                openConnection();
+                try {
+                    Statement statement = connection.createStatement();
+                    String updatep = "UPDATE `" + tabela + "` SET slub = 'NULL' WHERE nick = '" + p.getName() + "'";
+                    String updateo = "UPDATE `" + tabela + "` SET slub = 'NULL' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
+                    statement.executeUpdate(updatep);
+                    statement.executeUpdate(updateo);
+                    statement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 return true;
             }
         }
@@ -2004,7 +1991,7 @@ public class CommandManager implements CommandExecutor {
                                 statement.close();
                                 closeConnection();
                             }
-                        } catch (ClassNotFoundException | SQLException var35 ) {
+                        } catch (SQLException var35 ) {
                             logError(ErrorReason.DATABASE);
                             var35.printStackTrace();
                         }
