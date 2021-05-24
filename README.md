@@ -16,7 +16,6 @@ Main features:\
 • broadcast message on purchase from item shop/donate\
 • message broadcast every x seconds\
 • broadcast custom message command\
-• report command with Discord integratiion\
 • player statistics with GUI - MySQL integration\
 • wedding system\
 • friends manager\
