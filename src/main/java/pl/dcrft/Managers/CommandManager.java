@@ -20,6 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 import pl.dcbot.main.Bot;
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.Panel.PanelType;
 import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.ResultSet;
@@ -35,6 +36,8 @@ import static pl.dcrft.DragonCraftCore.*;
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
 import static pl.dcrft.Managers.ConnectionManager.*;
 import static pl.dcrft.Managers.DataManager.saveData;
+import static pl.dcrft.Managers.Panel.PanelManager.hidePanel;
+import static pl.dcrft.Managers.Panel.PanelManager.updatePanel;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 import static pl.dcrft.Utils.RoundUtil.round;
@@ -45,7 +48,7 @@ public class CommandManager implements CommandExecutor {
 
     public ArrayList<SessionManager> list = new ArrayList<>();
 
-    private String prefix = getDataFile().getString("prefix");
+    private final String prefix = getDataFile().getString("prefix");
 
     @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
@@ -57,9 +60,9 @@ public class CommandManager implements CommandExecutor {
             } else {
 
             }
-            for (int i = 0; i < list.size(); i++) {
-                if (p.getUniqueId() == list.get(i).getPlayer().getUniqueId()) {
-                    list.get(i).resetMinute();
+            for (SessionManager sessionManager : list) {
+                if (p.getUniqueId() == sessionManager.getPlayer().getUniqueId()) {
+                    sessionManager.resetMinute();
                     break;
                 }
             }
@@ -84,12 +87,12 @@ public class CommandManager implements CommandExecutor {
                     sender.sendMessage("§e» §cbrak");
                     return false;
                 } else {
-                    for (int i = 0; i < znajomi.size(); i++) {
-                        String online = getDataFile().getString(znajomi.get(i) + ".online");
+                    for (String s : znajomi) {
+                        String online = getDataFile().getString(s + ".online");
                         if (online == null) {
                             online = "§aonline";
                         }
-                        sender.sendMessage("§e» §3" + znajomi.get(i) + " §e» §c" + online);
+                        sender.sendMessage("§e» §3" + s + " §e» §c" + online);
                     }
                     return false;
                 }
@@ -427,8 +430,8 @@ public class CommandManager implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("dcccast") && args.length != 0) {
             if (sender.hasPermission("dcc.adm")) {
                 final StringBuilder sb = new StringBuilder();
-                for (int j = 0; j < args.length; ++j) {
-                    sb.append(args[j]).append(" ");
+                for (String arg : args) {
+                    sb.append(arg).append(" ");
                 }
                 final String allArgs = sb.toString().trim();
                 Bukkit.getServer().broadcastMessage(prefix + " " + ChatColor.translateAlternateColorCodes('&', allArgs));
@@ -1010,147 +1013,19 @@ public class CommandManager implements CommandExecutor {
                 sender.sendMessage(prefix + " §cNie ma takiej komendy. Użyj §e/info§c, aby dowiedzieć się więcej o dostępnych komendach.");
                 return false;
             } else {
+                Player p = (Player) sender;
                 if (!getDataFile().contains(sender.getName())) {
-                    Player p = (Player) sender;
                     getDataFile().set(sender.getName() + ":", null);
                     getDataFile().set(sender.getName() + ".adminchat", true);
                     getDataFile().set(sender.getName() + ".modchat", false);
                     sender.sendMessage("§c§lAdmin§4§lChat §e» §aWłączono czat.");
 
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard admpanel = manager.getNewScoreboard();
-                    Objective objective = admpanel.registerNewObjective("test", "dummy", "cokolwiek");
-
-                    Scoreboard emptyBoard = manager.getNewScoreboard();
-                    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    if (!p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §a§lMod§2§lPanel");
+                    if(p.hasPermission("panel.adm")){
+                        updatePanel(p, PanelType.ADMIN);
                     }
-                    if (p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §c§lAdmin§4§lPanel");
+                    else if(p.hasPermission("panel.mod")){
+                        updatePanel(p, PanelType.MOD);
                     }
-                    p.setScoreboard(emptyBoard);
-                    Score nick = objective.getScore("§e» §6" + p.getName());
-                    nick.setScore(16);
-                    Score czat;
-                    if (getDataFile().getString(p.getName() + ".adminchat") == "true") {
-                        if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lA§4§lC §ei §a§lM§2§lC");
-                        } else {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lAdmin§4§lChat");
-                        }
-                    } else if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§a§lMod§2§lChat");
-                    } else {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§ePubliczny");
-                    }
-                    czat.setScore(15);
-                    Score gracze = objective.getScore("§e» §6Gracze §e» " + (Bukkit.getServer().getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()) + " §7[§f+" + VanishAPI.getInvisiblePlayers().size() + "§7]");
-                    gracze.setScore(14);
-                    Score ping = objective.getScore("§e» §6Ping §e» " + p.spigot().getPing() + "ms");
-                    ping.setScore(13);
-                    double itps;
-                    itps = Math.round(Bukkit.getTPS()[0] * 100.0) / 100.0;
-                    String wyd;
-                    if (itps <= 8) {
-                        wyd = "§4uhh";
-                    } else if (itps >= 8) {
-                        wyd = "§4uhh";
-                        if (itps >= 10) {
-                            wyd = "§4tragiczna";
-                            if (itps >= 14) {
-                                wyd = "§4zła";
-                                if (itps >= 16) {
-                                    wyd = "§ckiepska";
-                                    if (itps >= 18) {
-                                        wyd = "§aok";
-                                        if (itps >= 19) {
-                                            wyd = "§2dobra";
-                                            if (itps >= 20) {
-                                                wyd = "§2super";
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        wyd = "?";
-                    }
-                    Score wydajnosc = objective.getScore("§e» §6Wydajność §e» " + wyd);
-                    wydajnosc.setScore(12);
-                    Score tps = objective.getScore("§e» §6TPS §e» " + itps);
-                    tps.setScore(11);
-                    String kolor2 = "§2";
-                    float ms = (float) Bukkit.getAverageTickTime();
-                    if (ms <= 45) {
-                        kolor2 = "§2";
-                    }
-                    if (ms >= 45) {
-                        kolor2 = "§a";
-                    }
-                    if (ms >= 50) {
-                        kolor2 = "§e";
-                    }
-                    if (ms >= 55) {
-                        kolor2 = "§6";
-                    }
-                    if (ms >= 60) {
-                        kolor2 = "§c";
-                    }
-                    if (ms >= 70) {
-                        kolor2 = "§4";
-                    }
-                    Score mss = objective.getScore("§e» §6Średni MSPT §e» " + kolor2 + round(ms, 2) + "§ems");
-                    mss.setScore(10);
-
-                    Runtime r = Runtime.getRuntime();
-                    long memUsed = ((r.totalMemory() / 1048576) - (r.freeMemory() / 1048576));
-                    long memCala = (r.totalMemory() / 1048576);
-                    long memFree = (r.freeMemory() / 1048576);
-
-                    String kolor = "§a";
-                    String powiadom = "";
-                    if (memFree < 1000) {
-                        kolor = "§a";
-                        powiadom = "";
-                    }
-                    if (memFree < 800) {
-                        kolor = "§e";
-                        powiadom = "";
-                    }
-                    if (memFree < 600) {
-                        kolor = "§6";
-                        powiadom = "";
-                    }
-                    if (memFree < 400) {
-                        kolor = "§c";
-                        powiadom = "";
-                    }
-                    if (memFree < 200) {
-                        kolor = "§4";
-                        powiadom = "";
-                    }
-                    if (memFree < 100) {
-                        kolor = "§4";
-                        powiadom = "§c!";
-                    } else if (memFree >= 1000) {
-                        kolor = "§2";
-                        powiadom = "";
-                    }
-                    Score ram = objective.getScore("§e» " + kolor + "§lRAM §e» §6" + memUsed + "§e/§6" + memCala + " " + powiadom);
-                    ram.setScore(9);
-                    Score uptime = objective.getScore("§e» §6Aktywny od §e» " + PlaceholderAPI.setPlaceholders(p, "%server_uptime%"));
-                    uptime.setScore(8);
-                    Score newest_t = objective.getScore("§e» §6Najnowszy gracz§e:");
-                    newest_t.setScore(7);
-                    Score newest = objective.getScore("§e» " + getDataFile().getString("najnowszy"));
-                    newest.setScore(6);
-                    Score zgl = objective.getScore("§e» §6Zgłoszenie §e» " + Bot.getInstance().getConfig().getString("numer"));
-                    zgl.setScore(5);
-                    Score zgl_dsc = objective.getScore("§e» §6Zgłoszenie (DSC) §e» " + Bot.getInstance().getConfig().getString("numerek_dsc"));
-                    zgl_dsc.setScore(4);
-                    p.setScoreboard(admpanel);
 
                     saveData();
                     return true;
@@ -1163,283 +1038,25 @@ public class CommandManager implements CommandExecutor {
                     getDataFile().set(sender.getName() + ".adminchat", false);
                     sender.sendMessage("§c§lAdmin§4§lChat §e» §cWyłączono czat.");
 
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard admpanel = manager.getNewScoreboard();
-                    Objective objective = admpanel.registerNewObjective("test", "dummy", "cokolwiek");
 
-                    Scoreboard emptyBoard = manager.getNewScoreboard();
-                    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    Player p = (Player) sender;
-                    if (!p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §a§lMod§2§lPanel");
+                    if(p.hasPermission("panel.adm")){
+                        updatePanel(p, PanelType.ADMIN);
                     }
-                    if (p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §c§lAdmin§4§lPanel");
+                    else if(p.hasPermission("panel.mod")){
+                        updatePanel(p, PanelType.MOD);
                     }
-                    p.setScoreboard(emptyBoard);
-                    Score nick = objective.getScore("§e» §6" + p.getName());
-                    nick.setScore(16);
-                    Score czat;
-                    if (getDataFile().getString(p.getName() + ".adminchat") == "true") {
-                        if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lA§4§lC §ei §a§lM§2§lC");
-                        } else {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lAdmin§4§lChat");
-                        }
-                    } else if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§a§lMod§2§lChat");
-                    } else {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§ePubliczny");
-                    }
-                    czat.setScore(15);
-                    Score gracze = objective.getScore("§e» §6Gracze §e» " + (Bukkit.getServer().getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()) + " §7[§f+" + VanishAPI.getInvisiblePlayers().size() + "§7]");
-                    gracze.setScore(14);
-                    Score ping = objective.getScore("§e» §6Ping §e» " + p.spigot().getPing() + "ms");
-                    ping.setScore(13);
-                    double itps;
-                    itps = Math.round(Bukkit.getTPS()[0] * 100.0) / 100.0;
-                    String wyd;
-                    if (itps <= 8) {
-                        wyd = "§4uhh";
-                    } else if (itps >= 8) {
-                        wyd = "§4uhh";
-                        if (itps >= 10) {
-                            wyd = "§4tragiczna";
-                            if (itps >= 14) {
-                                wyd = "§4zła";
-                                if (itps >= 16) {
-                                    wyd = "§ckiepska";
-                                    if (itps >= 18) {
-                                        wyd = "§aok";
-                                        if (itps >= 19) {
-                                            wyd = "§2dobra";
-                                            if (itps >= 20) {
-                                                wyd = "§2super";
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        wyd = "?";
-                    }
-                    Score wydajnosc = objective.getScore("§e» §6Wydajność §e» " + wyd);
-                    wydajnosc.setScore(12);
-                    Score tps = objective.getScore("§e» §6TPS §e» " + itps);
-                    tps.setScore(11);
-                    String kolor2 = "§2";
-                    float ms = (float) Bukkit.getAverageTickTime();
-                    if (ms <= 45) {
-                        kolor2 = "§2";
-                    }
-                    if (ms >= 45) {
-                        kolor2 = "§a";
-                    }
-                    if (ms >= 50) {
-                        kolor2 = "§e";
-                    }
-                    if (ms >= 55) {
-                        kolor2 = "§6";
-                    }
-                    if (ms >= 60) {
-                        kolor2 = "§c";
-                    }
-                    if (ms >= 70) {
-                        kolor2 = "§4";
-                    }
-                    Score mss = objective.getScore("§e» §6Średni MSPT §e» " + kolor2 + round(ms, 2) + "§ems");
-                    mss.setScore(10);
-
-                    Runtime r = Runtime.getRuntime();
-                    long memUsed = ((r.totalMemory() / 1048576) - (r.freeMemory() / 1048576));
-                    long memCala = (r.totalMemory() / 1048576);
-                    long memFree = (r.freeMemory() / 1048576);
-
-                    String kolor = "§a";
-                    String powiadom = "";
-                    if (memFree < 1000) {
-                        kolor = "§a";
-                        powiadom = "";
-                    }
-                    if (memFree < 800) {
-                        kolor = "§e";
-                        powiadom = "";
-                    }
-                    if (memFree < 600) {
-                        kolor = "§6";
-                        powiadom = "";
-                    }
-                    if (memFree < 400) {
-                        kolor = "§c";
-                        powiadom = "";
-                    }
-                    if (memFree < 200) {
-                        kolor = "§4";
-                        powiadom = "";
-                    }
-                    if (memFree < 100) {
-                        kolor = "§4";
-                        powiadom = "§c!";
-                    } else if (memFree >= 1000) {
-                        kolor = "§2";
-                        powiadom = "";
-                    }
-                    Score ram = objective.getScore("§e» " + kolor + "§lRAM §e» §6" + memUsed + "§e/§6" + memCala + " " + powiadom);
-                    ram.setScore(9);
-                    Score uptime = objective.getScore("§e» §6Aktywny od §e» " + PlaceholderAPI.setPlaceholders(p, "%server_uptime%"));
-                    uptime.setScore(8);
-                    Score newest_t = objective.getScore("§e» §6Najnowszy gracz§e:");
-                    newest_t.setScore(7);
-                    Score newest = objective.getScore("§e» " + getDataFile().getString("najnowszy"));
-                    newest.setScore(6);
-                    Score zgl = objective.getScore("§e» §6Zgłoszenie §e» " + Bot.getInstance().getConfig().getString("numer"));
-                    zgl.setScore(5);
-                    Score zgl_dsc = objective.getScore("§e» §6Zgłoszenie (DSC) §e» " + Bot.getInstance().getConfig().getString("numerek_dsc"));
-                    zgl_dsc.setScore(4);
-                    p.setScoreboard(admpanel);
 
                     saveData();
                     return true;
                 } else if (getDataFile().getBoolean(sender.getName() + ".adminchat") == false) {
-                    Player p = (Player) sender;
                     getDataFile().set(sender.getName() + ".adminchat", true);
                     sender.sendMessage("§c§lAdmin§4§lChat §e» §aWłączono czat.");
-
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard admpanel = manager.getNewScoreboard();
-                    Objective objective = admpanel.registerNewObjective("test", "dummy", "cokolwiek");
-
-                    Scoreboard emptyBoard = manager.getNewScoreboard();
-                    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    if (!p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §a§lMod§2§lPanel");
+                    if(p.hasPermission("panel.adm")){
+                        updatePanel(p, PanelType.ADMIN);
                     }
-                    if (p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §c§lAdmin§4§lPanel");
+                    else if(p.hasPermission("panel.mod")){
+                        updatePanel(p, PanelType.MOD);
                     }
-                    p.setScoreboard(emptyBoard);
-                    Score nick = objective.getScore("§e» §6" + p.getName());
-                    nick.setScore(16);
-                    Score czat;
-                    if (getDataFile().getString(p.getName() + ".adminchat") == "true") {
-                        if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lA§4§lC §ei §a§lM§2§lC");
-                        } else {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lAdmin§4§lChat");
-                        }
-                    } else if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§a§lMod§2§lChat");
-                    } else {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§ePubliczny");
-                    }
-                    czat.setScore(15);
-                    Score gracze = objective.getScore("§e» §6Gracze §e» " + (Bukkit.getServer().getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()) + " §7[§f+" + VanishAPI.getInvisiblePlayers().size() + "§7]");
-                    gracze.setScore(14);
-                    Score ping = objective.getScore("§e» §6Ping §e» " + p.spigot().getPing() + "ms");
-                    ping.setScore(13);
-                    double itps;
-                    itps = Math.round(Bukkit.getTPS()[0] * 100.0) / 100.0;
-                    String wyd;
-                    if (itps <= 8) {
-                        wyd = "§4uhh";
-                    } else if (itps >= 8) {
-                        wyd = "§4uhh";
-                        if (itps >= 10) {
-                            wyd = "§4tragiczna";
-                            if (itps >= 14) {
-                                wyd = "§4zła";
-                                if (itps >= 16) {
-                                    wyd = "§ckiepska";
-                                    if (itps >= 18) {
-                                        wyd = "§aok";
-                                        if (itps >= 19) {
-                                            wyd = "§2dobra";
-                                            if (itps >= 20) {
-                                                wyd = "§2super";
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        wyd = "?";
-                    }
-                    Score wydajnosc = objective.getScore("§e» §6Wydajność §e» " + wyd);
-                    wydajnosc.setScore(12);
-                    Score tps = objective.getScore("§e» §6TPS §e» " + itps);
-                    tps.setScore(11);
-                    String kolor2 = "§2";
-                    float ms = (float) Bukkit.getAverageTickTime();
-                    if (ms <= 45) {
-                        kolor2 = "§2";
-                    }
-                    if (ms >= 45) {
-                        kolor2 = "§a";
-                    }
-                    if (ms >= 50) {
-                        kolor2 = "§e";
-                    }
-                    if (ms >= 55) {
-                        kolor2 = "§6";
-                    }
-                    if (ms >= 60) {
-                        kolor2 = "§c";
-                    }
-                    if (ms >= 70) {
-                        kolor2 = "§4";
-                    }
-                    Score mss = objective.getScore("§e» §6Średni MSPT §e» " + kolor2 + round(ms, 2) + "§ems");
-                    mss.setScore(10);
-                    Runtime r = Runtime.getRuntime();
-                    long memUsed = ((r.totalMemory() / 1048576) - (r.freeMemory() / 1048576));
-                    long memCala = (r.totalMemory() / 1048576);
-                    long memFree = (r.freeMemory() / 1048576);
-
-                    String kolor = "§a";
-                    String powiadom = "";
-                    if (memFree < 1000) {
-                        kolor = "§a";
-                        powiadom = "";
-                    }
-                    if (memFree < 800) {
-                        kolor = "§e";
-                        powiadom = "";
-                    }
-                    if (memFree < 600) {
-                        kolor = "§6";
-                        powiadom = "";
-                    }
-                    if (memFree < 400) {
-                        kolor = "§c";
-                        powiadom = "";
-                    }
-                    if (memFree < 200) {
-                        kolor = "§4";
-                        powiadom = "";
-                    }
-                    if (memFree < 100) {
-                        kolor = "§4";
-                        powiadom = "§c!";
-                    } else if (memFree >= 1000) {
-                        kolor = "§2";
-                        powiadom = "";
-                    }
-                    Score ram = objective.getScore("§e» " + kolor + "§lRAM §e» §6" + memUsed + "§e/§6" + memCala + " " + powiadom);
-                    ram.setScore(9);
-                    Score uptime = objective.getScore("§e» §6Aktywny od §e» " + PlaceholderAPI.setPlaceholders(p, "%server_uptime%"));
-                    uptime.setScore(8);
-                    Score newest_t = objective.getScore("§e» §6Najnowszy gracz§e:");
-                    newest_t.setScore(7);
-                    Score newest = objective.getScore("§e» " + getDataFile().getString("najnowszy"));
-                    newest.setScore(6);
-                    Score zgl = objective.getScore("§e» §6Zgłoszenie §e» " + Bot.getInstance().getConfig().getString("numer"));
-                    zgl.setScore(5);
-                    Score zgl_dsc = objective.getScore("§e» §6Zgłoszenie (DSC) §e» " + Bot.getInstance().getConfig().getString("numerek_dsc"));
-                    zgl_dsc.setScore(4);
-                    p.setScoreboard(admpanel);
-
                     saveData();
                     return true;
                 }
@@ -1451,6 +1068,12 @@ public class CommandManager implements CommandExecutor {
                 sender.sendMessage(prefix + " §cNie ma takiej komendy. Użyj §e/info§c, aby dowiedzieć się więcej o dostępnych komendach.");
                 return false;
             } else {
+                if(p.hasPermission("panel.adm")){
+                    updatePanel(p, PanelType.ADMIN);
+                }
+                else if(p.hasPermission("panel.mod")){
+                    updatePanel(p, PanelType.MOD);
+                }
                 if (!getDataFile().contains(sender.getName())) {
                     getDataFile().set(sender.getName() + ":", null);
                     getDataFile().set(sender.getName() + ".modchat", true);
@@ -1472,142 +1095,6 @@ public class CommandManager implements CommandExecutor {
                     getDataFile().set(sender.getName() + ".modchat", true);
                     sender.sendMessage("§a§lMod§2§lChat §e» §aWłączono czat.");
 
-
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard admpanel = manager.getNewScoreboard();
-                    Objective objective = admpanel.registerNewObjective("test", "dummy", "cokolwiek");
-
-                    Scoreboard emptyBoard = manager.getNewScoreboard();
-                    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    if (!p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §a§lMod§2§lPanel");
-                    }
-                    if (p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §c§lAdmin§4§lPanel");
-                    }
-                    p.setScoreboard(emptyBoard);
-                    Score nick = objective.getScore("§e» §6" + p.getName());
-                    nick.setScore(16);
-                    Score czat;
-                    if (getDataFile().getString(p.getName() + ".adminchat") == "true") {
-                        if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lA§4§lC §ei §a§lM§2§lC");
-                        } else {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lAdmin§4§lChat");
-                        }
-                    } else if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§a§lMod§2§lChat");
-                    } else {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§ePubliczny");
-                    }
-                    czat.setScore(15);
-                    Score gracze = objective.getScore("§e» §6Gracze §e» " + (Bukkit.getServer().getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()) + " §7[§f+" + VanishAPI.getInvisiblePlayers().size() + "§7]");
-                    gracze.setScore(14);
-                    Score ping = objective.getScore("§e» §6Ping §e» " + p.spigot().getPing() + "ms");
-                    ping.setScore(13);
-                    double itps;
-                    itps = Math.round(Bukkit.getTPS()[0] * 100.0) / 100.0;
-                    String wyd;
-                    if (itps <= 8) {
-                        wyd = "§4uhh";
-                    } else if (itps >= 8) {
-                        wyd = "§4uhh";
-                        if (itps >= 10) {
-                            wyd = "§4tragiczna";
-                            if (itps >= 14) {
-                                wyd = "§4zła";
-                                if (itps >= 16) {
-                                    wyd = "§ckiepska";
-                                    if (itps >= 18) {
-                                        wyd = "§aok";
-                                        if (itps >= 19) {
-                                            wyd = "§2dobra";
-                                            if (itps >= 20) {
-                                                wyd = "§2super";
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        wyd = "?";
-                    }
-                    Score wydajnosc = objective.getScore("§e» §6Wydajność §e» " + wyd);
-                    wydajnosc.setScore(12);
-                    Score tps = objective.getScore("§e» §6TPS §e» " + itps);
-                    tps.setScore(11);
-                    String kolor2 = "§2";
-                    float ms = (float) Bukkit.getAverageTickTime();
-                    if (ms <= 45) {
-                        kolor2 = "§2";
-                    }
-                    if (ms >= 45) {
-                        kolor2 = "§a";
-                    }
-                    if (ms >= 50) {
-                        kolor2 = "§e";
-                    }
-                    if (ms >= 55) {
-                        kolor2 = "§6";
-                    }
-                    if (ms >= 60) {
-                        kolor2 = "§c";
-                    }
-                    if (ms >= 70) {
-                        kolor2 = "§4";
-                    }
-                    Score mss = objective.getScore("§e» §6Średni MSPT §e» " + kolor2 + round(ms, 2) + "§ems");
-                    mss.setScore(10);
-
-                    Runtime r = Runtime.getRuntime();
-                    long memUsed = ((r.totalMemory() / 1048576) - (r.freeMemory() / 1048576));
-                    long memCala = (r.totalMemory() / 1048576);
-                    long memFree = (r.freeMemory() / 1048576);
-
-                    String kolor = "§a";
-                    String powiadom = "";
-                    if (memFree < 1000) {
-                        kolor = "§a";
-                        powiadom = "";
-                    }
-                    if (memFree < 800) {
-                        kolor = "§e";
-                        powiadom = "";
-                    }
-                    if (memFree < 600) {
-                        kolor = "§6";
-                        powiadom = "";
-                    }
-                    if (memFree < 400) {
-                        kolor = "§c";
-                        powiadom = "";
-                    }
-                    if (memFree < 200) {
-                        kolor = "§4";
-                        powiadom = "";
-                    }
-                    if (memFree < 100) {
-                        kolor = "§4";
-                        powiadom = "§c!";
-                    } else if (memFree >= 1000) {
-                        kolor = "§2";
-                        powiadom = "";
-                    }
-                    Score ram = objective.getScore("§e» " + kolor + "§lRAM §e» §6" + memUsed + "§e/§6" + memCala + " " + powiadom);
-                    ram.setScore(9);
-                    Score uptime = objective.getScore("§e» §6Aktywny od §e» " + PlaceholderAPI.setPlaceholders(p, "%server_uptime%"));
-                    uptime.setScore(8);
-                    Score newest_t = objective.getScore("§e» §6Najnowszy gracz§e:");
-                    newest_t.setScore(7);
-                    Score newest = objective.getScore("§e» " + getDataFile().getString("najnowszy"));
-                    newest.setScore(6);
-                    Score zgl = objective.getScore("§e» §6Zgłoszenie §e» " + Bot.getInstance().getConfig().getString("numer"));
-                    zgl.setScore(5);
-                    Score zgl_dsc = objective.getScore("§e» §6Zgłoszenie (DSC) §e» " + Bot.getInstance().getConfig().getString("numerek_dsc"));
-                    zgl_dsc.setScore(4);
-                    p.setScoreboard(admpanel);
-
                     saveData();
                     return true;
                 }
@@ -1625,9 +1112,7 @@ public class CommandManager implements CommandExecutor {
                     getDataFile().set(sender.getName() + ".adminchat", false);
                     getDataFile().set(sender.getName() + ".stream", true);
                     sender.sendMessage(prefix + " §aWłączono tryb streamu.");
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard emptyBoard = manager.getNewScoreboard();
-                    p.setScoreboard(emptyBoard);
+                    hidePanel(p);
                     saveData();
                     return true;
                 }
@@ -1635,150 +1120,19 @@ public class CommandManager implements CommandExecutor {
                     getDataFile().set(sender.getName() + ".stream", false);
                     sender.sendMessage(prefix + " §cWyłączono tryb streamu.");
 
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard admpanel = manager.getNewScoreboard();
-                    Objective objective = admpanel.registerNewObjective("test", "dummy", "cokolwiek");
-
-                    Scoreboard emptyBoard = manager.getNewScoreboard();
-                    objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                    if (!p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §a§lMod§2§lPanel");
+                    if(p.hasPermission("panel.adm")){
+                        updatePanel(p, PanelType.ADMIN);
                     }
-                    if (p.hasPermission("panel.adm")) {
-                        objective.setDisplayName(prefix + " §c§lAdmin§4§lPanel");
+                    else if(p.hasPermission("panel.mod")){
+                        updatePanel(p, PanelType.MOD);
                     }
-                    p.setScoreboard(emptyBoard);
-                    Score nick = objective.getScore("§e» §6" + p.getName());
-                    nick.setScore(16);
-                    Score czat;
-                    if (getDataFile().getString(p.getName() + ".adminchat") == "true") {
-                        if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lA§4§lC §ei §a§lM§2§lC");
-                        } else {
-                            czat = objective.getScore("§e» §6Czat §e» " + "§c§lAdmin§4§lChat");
-                        }
-                    } else if (getDataFile().getString(p.getName() + ".modchat") == "true") {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§a§lMod§2§lChat");
-                    } else {
-                        czat = objective.getScore("§e» §6Czat §e» " + "§ePubliczny");
-                    }
-                    czat.setScore(15);
-                    Score gracze = objective.getScore("§e» §6Gracze §e» " + (Bukkit.getServer().getOnlinePlayers().size() - VanishAPI.getInvisiblePlayers().size()) + " §7[§f+" + VanishAPI.getInvisiblePlayers().size() + "§7]");
-                    gracze.setScore(14);
-                    Score ping = objective.getScore("§e» §6Ping §e» " + p.spigot().getPing() + "ms");
-                    ping.setScore(13);
-                    double itps;
-                    itps = Math.round(Bukkit.getTPS()[0] * 100.0) / 100.0;
-                    String wyd;
-                    if (itps <= 8) {
-                        wyd = "§4uhh";
-                    } else if (itps >= 8) {
-                        wyd = "§4uhh";
-                        if (itps >= 10) {
-                            wyd = "§4tragiczna";
-                            if (itps >= 14) {
-                                wyd = "§4zła";
-                                if (itps >= 16) {
-                                    wyd = "§ckiepska";
-                                    if (itps >= 18) {
-                                        wyd = "§aok";
-                                        if (itps >= 19) {
-                                            wyd = "§2dobra";
-                                            if (itps >= 20) {
-                                                wyd = "§2super";
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        wyd = "?";
-                    }
-                    Score wydajnosc = objective.getScore("§e» §6Wydajność §e» " + wyd);
-                    wydajnosc.setScore(12);
-                    Score tps = objective.getScore("§e» §6TPS §e» " + itps);
-                    tps.setScore(11);
-                    String kolor2 = "§2";
-                    float ms = (float) Bukkit.getAverageTickTime();
-                    if (ms <= 45) {
-                        kolor2 = "§2";
-                    }
-                    if (ms >= 45) {
-                        kolor2 = "§a";
-                    }
-                    if (ms >= 50) {
-                        kolor2 = "§e";
-                    }
-                    if (ms >= 55) {
-                        kolor2 = "§6";
-                    }
-                    if (ms >= 60) {
-                        kolor2 = "§c";
-                    }
-                    if (ms >= 70) {
-                        kolor2 = "§4";
-                    }
-                    Score mss = objective.getScore("§e» §6Średni MSPT §e» " + kolor2 + round(ms, 2) + "§ems");
-                    mss.setScore(10);
-                    Runtime r = Runtime.getRuntime();
-                    long memUsed = ((r.totalMemory() / 1048576) - (r.freeMemory() / 1048576));
-                    long memCala = (r.totalMemory() / 1048576);
-                    long memFree = (r.freeMemory() / 1048576);
-
-                    String kolor = "§a";
-                    String powiadom = "";
-                    if (memFree < 1000) {
-                        kolor = "§a";
-                        powiadom = "";
-                    }
-                    if (memFree < 800) {
-                        kolor = "§e";
-                        powiadom = "";
-                    }
-                    if (memFree < 600) {
-                        kolor = "§6";
-                        powiadom = "";
-                    }
-                    if (memFree < 400) {
-                        kolor = "§c";
-                        powiadom = "";
-                    }
-                    if (memFree < 200) {
-                        kolor = "§4";
-                        powiadom = "";
-                    }
-                    if (memFree < 100) {
-                        kolor = "§4";
-                        powiadom = "§c!";
-                    } else if (memFree >= 1000) {
-                        kolor = "§2";
-                        powiadom = "";
-                    }
-                    Score ram = objective.getScore("§e» " + kolor + "§lRAM §e» §6" + memUsed + "§e/§6" + memCala + " " + powiadom);
-                    ram.setScore(9);
-                    Score uptime = objective.getScore("§e» §6Aktywny od §e» " + PlaceholderAPI.setPlaceholders(p, "%server_uptime%"));
-                    uptime.setScore(8);
-                    Score newest_t = objective.getScore("§e» §6Najnowszy gracz§e:");
-                    newest_t.setScore(7);
-                    Score newest = objective.getScore("§e» " + getDataFile().getString("najnowszy"));
-                    newest.setScore(6);
-                    Score zgl = objective.getScore("§e» §6Zgłoszenie §e» " + Bot.getInstance().getConfig().getString("numer"));
-                    zgl.setScore(5);
-                    Score zgl_dsc = objective.getScore("§e» §6Zgłoszenie (DSC) §e» " + Bot.getInstance().getConfig().getString("numerek_dsc"));
-                    zgl_dsc.setScore(4);
-                    p.setScoreboard(admpanel);
 
                     saveData();
                     return true;
                 } else if (getDataFile().getBoolean(sender.getName() + ".stream") == false) {
                     getDataFile().set(sender.getName() + ".stream", true);
                     sender.sendMessage(prefix + " §aWłączono tryb streamu.");
-
-                    ScoreboardManager manager = Bukkit.getScoreboardManager();
-                    Scoreboard emptyBoard = manager.getNewScoreboard();
-                    p.setScoreboard(emptyBoard);
-
+                    hidePanel(p);
                     saveData();
                     return true;
                 }
@@ -1795,17 +1149,17 @@ public class CommandManager implements CommandExecutor {
                 sender.sendMessage("§e§lDragon§6§lCraft§e » §cOstrzeżenia §e" + args[0] + "§e:");
                 List<String> lista = new ArrayList();
 
-                for (int j = 0; j < pun.size(); ++j) {
-                    if (pun.get(j).getType().toString().equalsIgnoreCase("TEMP_WARNING")) {
-                        lista.add("§6ID §e» " + pun.get(j).getId() + " §e» §c" + pun.get(j).getReason());
+                for (Punishment punishment : pun) {
+                    if (punishment.getType().toString().equalsIgnoreCase("TEMP_WARNING")) {
+                        lista.add("§6ID §e» " + punishment.getId() + " §e» §c" + punishment.getReason());
                     }
                 }
                 if (lista.isEmpty()) {
                     sender.sendMessage("§e» §cbrak");
 
                 } else {
-                    for (int j = 0; j < lista.size(); ++j) {
-                        sender.sendMessage("§e» " + lista.get(j));
+                    for (String s : lista) {
+                        sender.sendMessage("§e» " + s);
                     }
                 }
             }
@@ -1926,38 +1280,38 @@ public class CommandManager implements CommandExecutor {
                                     meta6.setDisplayName("§6Kary §e»");
                                     List<String> lista = new ArrayList();
 
-                                    for (int j = 0; j < pun.size(); ++j) {
+                                    for (Punishment punishment : pun) {
                                         String typ;
-                                        if (pun.get(j).getType().toString() != "WARNING" && pun.get(j).getType().toString() != "TEMP_WARNING") {
-                                            if (pun.get(j).getType().toString() == "BAN") {
+                                        if (punishment.getType().toString() != "WARNING" && punishment.getType().toString() != "TEMP_WARNING") {
+                                            if (punishment.getType().toString() == "BAN") {
                                                 typ = "§6Ban";
-                                                lista.add("§6Ban" + " §e» §c" + pun.get(j).getReason());
+                                                lista.add("§6Ban" + " §e» §c" + punishment.getReason());
                                             } else {
                                                 Date d;
                                                 SimpleDateFormat df2;
                                                 String data;
-                                                if (pun.get(j).getType().toString() == "TEMP_BAN") {
+                                                if (punishment.getType().toString() == "TEMP_BAN") {
                                                     typ = "§6Ban";
-                                                    d = new Date(pun.get(j).getEnd());
+                                                    d = new Date(punishment.getEnd());
                                                     df2 = new SimpleDateFormat("dd.MM.YYYY 'o' HH:mm");
                                                     data = df2.format(d);
-                                                    lista.add("§6Ban" + " §e» §c" + pun.get(j).getReason() + ", §6wygasa: §e" + data);
-                                                } else if (pun.get(j).getType().toString() == "MUTE") {
+                                                    lista.add("§6Ban" + " §e» §c" + punishment.getReason() + ", §6wygasa: §e" + data);
+                                                } else if (punishment.getType().toString() == "MUTE") {
                                                     typ = "§6Wyciszenie";
-                                                    lista.add("§6Wyciszenie" + " §e» §c" + pun.get(j).getReason());
-                                                } else if (pun.get(j).getType().toString() == "TEMP_MUTE") {
+                                                    lista.add("§6Wyciszenie" + " §e» §c" + punishment.getReason());
+                                                } else if (punishment.getType().toString() == "TEMP_MUTE") {
                                                     typ = "§6Wyciszenie";
-                                                    d = new Date(pun.get(j).getEnd());
+                                                    d = new Date(punishment.getEnd());
                                                     df2 = new SimpleDateFormat("dd.MM.YYYY 'o' HH:mm");
                                                     data = df2.format(d);
-                                                    lista.add("§6Wyciszenie" + " §e» §c" + pun.get(j).getReason() + ", §6wygasa: §e" + data);
+                                                    lista.add("§6Wyciszenie" + " §e» §c" + punishment.getReason() + ", §6wygasa: §e" + data);
                                                 } else {
                                                     lista.add("§cbłąd");
                                                 }
                                             }
                                         } else {
                                             typ = "§6Ostrzeżenie";
-                                            lista.add("§6Ostrzeżenie" + " §e» §c" + pun.get(j).getReason());
+                                            lista.add("§6Ostrzeżenie" + " §e» §c" + punishment.getReason());
                                         }
 
                                         meta6.setLore(lista);

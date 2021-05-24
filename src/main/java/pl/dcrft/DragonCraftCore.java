@@ -72,8 +72,8 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         this.filtry = this.getConfig().getConfigurationSection("filtry").getValues(true);
 
         List<Command> commands = PluginCommandYamlParser.parse(this);
-        for (int i=0; i<commands.size(); i++){
-            getCommand(commands.get(i).getName()).setExecutor(new CommandManager());
+        for (Command command : commands) {
+            getCommand(command.getName()).setExecutor(new CommandManager());
         }
         startBroadcast();
         for(Player p : Bukkit.getOnlinePlayers()) {

@@ -21,9 +21,9 @@ public class PlayerUseListener implements Listener {
     @EventHandler(priority= EventPriority.HIGH)
     public void onPlayerUse(PlayerInteractEvent e){
         Player p = e.getPlayer();
-        for (int i = 0; i < list.size(); i++) {
-            if (p.getUniqueId() == list.get(i).getPlayer().getUniqueId()) {
-                list.get(i).resetMinute();
+        for (pl.dcrft.Managers.SessionManager sessionManager : list) {
+            if (p.getUniqueId() == sessionManager.getPlayer().getUniqueId()) {
+                sessionManager.resetMinute();
                 break;
             }
         }
