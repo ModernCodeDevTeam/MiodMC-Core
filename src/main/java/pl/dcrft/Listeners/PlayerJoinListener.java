@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
-import static pl.dcrft.Managers.ConnectionManager.*;
+import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.DataManager.saveData;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Utils.RoundUtil.round;
@@ -71,7 +71,7 @@ public class PlayerJoinListener implements Listener {
             saveData();
             openConnection();
             Statement statement = connection.createStatement();
-            statement.executeUpdate("UPDATE staty_ogolem SET online='teraz', serwer_online='" + plugin.getConfig().getString("nazwa_serwera") + "' WHERE nick = '" + e.getPlayer().getName() + "'");
+            statement.executeUpdate("UPDATE " + table_bungee + " SET online='teraz', serwer_online='" + plugin.getConfig().getString("nazwa_serwera") + "' WHERE nick = '" + e.getPlayer().getName() + "'");
             int kille;
             int dedy;
             float kdr;
@@ -141,7 +141,7 @@ public class PlayerJoinListener implements Listener {
                 return;
             }
 
-            update = PlaceholderAPI.setPlaceholders(e.getPlayer(), "UPDATE `" + tabela + "` SET kille = '%statistic_player_kills%', dedy = '%statistic_deaths%', kdr = '" + kdr + "', ranga = '" + ranga + "', bloki = '%statistic_mine_block%' WHERE nick = '" + e.getPlayer().getName() + "'");
+            update = PlaceholderAPI.setPlaceholders(e.getPlayer(), "UPDATE `" + table + "` SET kille = '%statistic_player_kills%', dedy = '%statistic_deaths%', kdr = '" + kdr + "', ranga = '" + ranga + "', bloki = '%statistic_mine_block%' WHERE nick = '" + e.getPlayer().getName() + "'");
             statement.executeUpdate(update);
 
             statement.close();

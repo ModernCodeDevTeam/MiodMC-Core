@@ -1,41 +1,26 @@
 package pl.dcrft;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.*;
-import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.jetbrains.annotations.NotNull;
 import pl.dcrft.Listeners.*;
 import pl.dcrft.Managers.CommandManager;
 import pl.dcrft.Managers.Panel.PanelType;
-import pl.dcrft.Managers.SessionManager;
 import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Stream;
 
 import static pl.dcrft.Managers.BroadcasterManager.startBroadcast;
-import static pl.dcrft.Managers.ConfigManger.*;
-import static pl.dcrft.Managers.ConnectionManager.*;
-import static pl.dcrft.Managers.DataManager.saveData;
+import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.Panel.PanelManager.showPanel;
 import static pl.dcrft.Utils.ConfigUtil.initializeFiles;
+import static pl.dcrft.Utils.DatabaseUtil.initializeTable;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
-import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
-import static pl.dcrft.Utils.RoundUtil.round;
 
 public class DragonCraftCore extends JavaPlugin implements Listener, CommandExecutor {
     private static DragonCraftCore instance;
@@ -69,7 +54,6 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
 
         openConnection();
 
-
         this.filtry = this.getConfig().getConfigurationSection("filtry").getValues(true);
 
         List<Command> commands = PluginCommandYamlParser.parse(this);
@@ -80,12 +64,12 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         for(Player p : Bukkit.getOnlinePlayers()) {
             if (p.hasPermission("panel.adm")) {
                 showPanel(p, PanelType.ADMIN);
-                getLogger().info("aaa");
             }
             else if (p.hasPermission("panel.mod")) {
                 showPanel(p, PanelType.MOD);
             }
         }
+        initializeTable(table);
     }
 
     public void onDisable() {

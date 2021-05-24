@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Managers.MessageManager;
 import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.ResultSet;
@@ -22,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static pl.dcrft.Managers.ConnectionManager.*;
-import static pl.dcrft.Managers.ConnectionManager.closeConnection;
+import static pl.dcrft.Managers.DatabaseManager.*;
+import static pl.dcrft.Managers.DatabaseManager.closeConnection;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 
@@ -34,7 +33,7 @@ public class StatisticManager {
             try {
                 openConnection();
                 Statement statement = connection.createStatement();
-                ResultSet ogol = statement.executeQuery("SELECT * FROM `staty_ogolem` WHERE nick = '" + args[0] + "'");
+                ResultSet ogol = statement.executeQuery("SELECT * FROM `" + table_bungee + "` WHERE nick = '" + args[0] + "'");
                 boolean val = ogol.next();
                 if (!val) {
                     sendPrefixedMessage(p, "wrong_player_nickname");
@@ -65,7 +64,7 @@ public class StatisticManager {
                     for (int i = 0; i < 9; ++i) {
                         inv.setItem(i + 9, szklo);
                     }
-                    ResultSet serwer = statement.executeQuery("SELECT * FROM `" + tabela + "` WHERE nick = '" + args[0] + "'");
+                    ResultSet serwer = statement.executeQuery("SELECT * FROM `" + table + "` WHERE nick = '" + args[0] + "'");
                     if (!serwer.next()) {
                         sendPrefixedMessage(p, "wrong_player_nickname");
                         return;

@@ -12,9 +12,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
-import static pl.dcrft.Managers.ConnectionManager.connection;
-import static pl.dcrft.Managers.ConnectionManager.openConnection;
 import static pl.dcrft.Managers.DataManager.saveData;
+import static pl.dcrft.Managers.DatabaseManager.*;
 
 public class PlayerQuitListener implements Listener {
     @EventHandler
@@ -27,7 +26,7 @@ public class PlayerQuitListener implements Listener {
             saveData();
             openConnection();
             Statement statement = connection.createStatement();
-            String update = PlaceholderAPI.setPlaceholders(event.getPlayer(), "UPDATE staty_ogolem SET online='"+ dtf.format(now) + "', serwer_online='null' WHERE nick = '" + event.getPlayer().getName() + "'");
+            String update = PlaceholderAPI.setPlaceholders(event.getPlayer(), "UPDATE " + table_bungee + " SET online='"+ dtf.format(now) + "', serwer_online='null' WHERE nick = '" + event.getPlayer().getName() + "'");
             statement.executeUpdate(update);
             statement.close();
         }

@@ -11,23 +11,22 @@ import java.sql.SQLException;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 import static pl.dcrft.Managers.ConfigManger.getCustomConfig;
 
-public class ConnectionManager {
+public class DatabaseManager {
     public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
 
     public static Connection connection;
     public static String host = getCustomConfig().getString("host");
-    public static String database = getCustomConfig().getString("baza");
+    public static String database = getCustomConfig().getString("database");
     public static String username = getCustomConfig().getString("user");
-    public static String password = getCustomConfig().getString("haslo");
+    public static String password = getCustomConfig().getString("password");
     public static int port = getCustomConfig().getInt("port");
-    public static String tabela = getCustomConfig().getString("tabela");
+    public static String table = getCustomConfig().getString("table");
+    public static String table_bungee = getCustomConfig().getString("table_bungee");
 
     public static void openConnection() {
-        BukkitRunnable runnable = new BukkitRunnable() {
-            public void run() {
                 try {
                     if (connection == null || connection.isClosed()) {
-                        synchronized(this) {
+                        synchronized(plugin) {
                             if (connection == null || connection.isClosed()) {
                                 Class.forName("com.mysql.jdbc.Driver");
                                 connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&useSSL=false", username, password);
@@ -40,12 +39,6 @@ public class ConnectionManager {
                 }
 
             }
-        };
-        runnable.runTaskAsynchronously(plugin);
-
-
-
-    }
 
     public static void closeConnection() {
         BukkitRunnable runnable = new BukkitRunnable() {

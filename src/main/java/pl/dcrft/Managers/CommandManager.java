@@ -19,11 +19,9 @@ import java.util.List;
 import java.util.Random;
 
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
-import static pl.dcrft.Managers.ConfigManger.getMessagesFile;
-import static pl.dcrft.Managers.ConnectionManager.*;
+import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.DataManager.saveData;
 import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
-import static pl.dcrft.Managers.Language.LanguageManager.load;
 import static pl.dcrft.Managers.MaintenanceManager.*;
 import static pl.dcrft.Managers.MessageManager.*;
 import static pl.dcrft.Managers.Panel.PanelManager.hidePanel;
@@ -285,8 +283,8 @@ public class CommandManager implements CommandExecutor {
                     openConnection();
                     try {
                         Statement statement = connection.createStatement();
-                        String updatep = "UPDATE `" + tabela + "` SET slub = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "' WHERE nick = '" + p.getName() + "'";
-                        String updateo = "UPDATE `" + tabela + "` SET slub = '" + p.getName() + "' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
+                        String updatep = "UPDATE `" + table + "` SET slub = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "' WHERE nick = '" + p.getName() + "'";
+                        String updateo = "UPDATE `" + table + "` SET slub = '" + p.getName() + "' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
                         statement.executeUpdate(updatep);
                         statement.executeUpdate(updateo);
                         statement.close();
@@ -325,8 +323,8 @@ public class CommandManager implements CommandExecutor {
                 openConnection();
                 try {
                     Statement statement = connection.createStatement();
-                    String updatep = "UPDATE `" + tabela + "` SET slub = 'NULL' WHERE nick = '" + p.getName() + "'";
-                    String updateo = "UPDATE `" + tabela + "` SET slub = 'NULL' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
+                    String updatep = "UPDATE `" + table + "` SET slub = 'NULL' WHERE nick = '" + p.getName() + "'";
+                    String updateo = "UPDATE `" + table + "` SET slub = 'NULL' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
                     statement.executeUpdate(updatep);
                     statement.executeUpdate(updateo);
                     statement.close();
