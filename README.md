@@ -1,4 +1,4 @@
-###### This plugin is still WIP! **Do not** try to use it at the moment. It is **not** finished and contains many bugs which may lead to server instability!
+###### This plugin is still WIP! **Do not** try to use it at the moment. It is **not** finished and probably won't be finished as the plugin is mainly focued on DragonCraft server. Using this plugin at the moment may cause issues and server instability.
 # DragonCraftCore
 DragonCraftCore is a <i>core</i> plugin. It provides common features for a survival Minecraft server.\
 Intended to use <b>only</b> with DragonCraft (DCRFT.PL) Minecraft server. Probably useless on other servers. We're trying to make it easy-to-use for every server, but our focus is DragonCraft.\
