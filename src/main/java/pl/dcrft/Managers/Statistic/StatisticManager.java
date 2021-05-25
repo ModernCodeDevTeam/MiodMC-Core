@@ -1,209 +1,125 @@
 package pl.dcrft.Managers.Statistic;
 
-import me.leoko.advancedban.manager.PunishmentManager;
-import me.leoko.advancedban.utils.Punishment;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.SkullType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import static pl.dcrft.Managers.DatabaseManager.*;
-import static pl.dcrft.Managers.DatabaseManager.closeConnection;
-import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 
 public class StatisticManager {
     public static DragonCraftCore plugin = DragonCraftCore.getInstance();
-    public static void showStatistics(Player p, String[] args){
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                openConnection();
-                Statement statement = connection.createStatement();
-                ResultSet ogol = statement.executeQuery("SELECT * FROM `" + table_bungee + "` WHERE nick = '" + args[0] + "'");
-                boolean val = ogol.next();
-                if (!val) {
-                    sendPrefixedMessage(p, "wrong_player_nickname");
-                    return;
+    private static ResultSet ogol;
+    private static ResultSet server;
+    private static boolean val;
+    private static boolean val1;
+
+    private static String kills;
+    private static String deaths;
+    private static String kdr;
+    private static String rank;
+    private static String blocks;
+    private static String marry;
+
+    private static String since;
+    private static String online;
+    private static String server_online;
+
+    public static boolean checkPlayer(Player p){
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    openConnection();
+                    Statement statement = connection.createStatement();
+                    ogol = statement.executeQuery("SELECT * FROM `" + table_bungee + "` WHERE nick = '" + p.getName() + "'");
+                    server = statement.executeQuery("SELECT * FROM `" + table + "` WHERE nick = '" + p.getName() + "'");
+                    val=ogol.next();
+                    val1=ogol.next();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
+            }
+        });
+        if(!val || !val1){
+            return false;
+        }
+        return true;
+    }
 
-                if (val) {
+    public static String getStatistic(Player p, StatisticType type){
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    openConnection();
+                    Statement statement = connection.createStatement();
+                    ogol = statement.executeQuery("SELECT * FROM `" + table_bungee + "` WHERE nick = '" + p.getName() + "'");
+                    server = statement.executeQuery("SELECT * FROM `" + table + "` WHERE nick = '" + p.getName() + "'");
+                    val=ogol.next();
+                    val1=ogol.next();
 
-                    String online = ogol.getString("online");
+                    online = ogol.getString("online");
+                    since = ogol.getString("since");
                     if (online == null) {
                         online = "?";
                     }
-                    String since = ogol.getString("since");
                     if (since == null) {
                         since = "?";
                     }
-
-                    String serwer_online = ogol.getString("serwer_online");
-                    Inventory inv = Bukkit.createInventory(null, 54, "§6Profil §e» §3" + args[0]);
-                    ItemStack glowa = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
-                    ItemStack szklo = new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (short) 0);
-                    SkullMeta meta = (SkullMeta) glowa.getItemMeta();
-                    meta.setOwner(args[0]);
-                    meta.setDisplayName("§6Głowa §e» " + args[0]);
-                    glowa.setItemMeta(meta);
-                    inv.setItem(4, glowa);
-
-                    for (int i = 0; i < 9; ++i) {
-                        inv.setItem(i + 9, szklo);
+                    server_online = ogol.getString("serwer_online");
+                    kills = server.getString("kille");
+                    deaths = server.getString("dedy");
+                    kdr = server.getString("kdr");
+                    rank = server.getString("ranga");
+                    blocks = server.getString("bloki");
+                    marry = server.getString("slub");
+                    if (server_online.equalsIgnoreCase("lobby")) {
+                        server_online = "Lobby";
                     }
-                    ResultSet serwer = statement.executeQuery("SELECT * FROM `" + table + "` WHERE nick = '" + args[0] + "'");
-                    if (!serwer.next()) {
-                        sendPrefixedMessage(p, "wrong_player_nickname");
-                        return;
+                    if (server_online.equalsIgnoreCase("s12")) {
+                        server_online = "Survival 1.12";
                     }
-                    String kille = serwer.getString("kille");
-                    String dedy = serwer.getString("dedy");
-                    String kdr = serwer.getString("kdr");
-                    String ranga = serwer.getString("ranga");
-                    String bloki = serwer.getString("bloki");
-                    String slub = serwer.getString("slub");
-
-                    if (serwer_online.equalsIgnoreCase("lobby")) {
-                        serwer_online = "Lobby";
+                    if (server_online.equalsIgnoreCase("s16")) {
+                        server_online = "Survival 1.16";
                     }
-                    if (serwer_online.equalsIgnoreCase("s12")) {
-                        serwer_online = "Survival 1.12";
-                    }
-                    if (serwer_online.equalsIgnoreCase("s16")) {
-                        serwer_online = "Survival 1.16";
-                    }
-                    if (serwer_online.equalsIgnoreCase("pvp")) {
-                        serwer_online = "PvP";
+                    if (server_online.equalsIgnoreCase("pvp")) {
+                        server_online = "PvP";
                     }
 
-                    ItemStack emeraldBlock;
-                    ItemMeta meta3;
-                    if (online.equalsIgnoreCase("teraz")) {
-                        emeraldBlock = new ItemStack(Material.LIME_WOOL, 1, (short) 5);
-                        meta3 = emeraldBlock.getItemMeta();
-                        meta3.setDisplayName("§6Status §e» §aonline\n§6Aktualnie na serwerze§e » &6" + serwer_online);
-                        emeraldBlock.setItemMeta(meta3);
-                        inv.setItem(20, emeraldBlock);
-                    } else {
-                        emeraldBlock = new ItemStack(Material.RED_WOOL, 1, (short) 14);
-                        meta3 = emeraldBlock.getItemMeta();
-                        meta3.setDisplayName("§6Ostatnio online §e» §c" + online);
-                        emeraldBlock.setItemMeta(meta3);
-                        inv.setItem(20, emeraldBlock);
-                    }
-
-                    emeraldBlock = new ItemStack(Material.EMERALD_BLOCK);
-                    meta3 = emeraldBlock.getItemMeta();
-                    meta3.setDisplayName("§6Ranga §e» " + ranga);
-                    emeraldBlock.setItemMeta(meta3);
-                    inv.setItem(24, emeraldBlock);
-                    ItemStack mapa = new ItemStack(Material.MAP);
-                    ItemMeta meta4 = mapa.getItemMeta();
-                    if (slub != null && !slub.equalsIgnoreCase("NULL")) {
-                        meta4.setDisplayName("§6Ślub §e» §e" + slub);
-                    } else {
-                        meta4.setDisplayName("§6Ślub §e» §ebrak");
-                    }
-
-                    mapa.setItemMeta(meta4);
-                    inv.setItem(27, mapa);
-                    ItemStack kilof = new ItemStack(Material.DIAMOND_PICKAXE);
-                    ItemMeta meta5 = kilof.getItemMeta();
-                    meta5.setDisplayName("§6Wykopane bloki §e» §e" + bloki);
-                    kilof.setItemMeta(meta5);
-                    inv.setItem(31, kilof);
-                    ItemStack siekiera = new ItemStack(Material.WOODEN_AXE);
-                    ItemMeta meta6 = siekiera.getItemMeta();
-                    List<Punishment> pun = PunishmentManager.get().getPunishments(args[0], null, true);
-                    if (pun.isEmpty()) {
-                        meta6.setDisplayName("§6Kary §e» §abrak");
-                    } else {
-                        meta6.setDisplayName("§6Kary §e»");
-                        List<String> lista = new ArrayList();
-
-                        for (Punishment punishment : pun) {
-                            String typ;
-                            if (punishment.getType().toString() != "WARNING" && punishment.getType().toString() != "TEMP_WARNING") {
-                                if (punishment.getType().toString() == "BAN") {
-                                    typ = "§6Ban";
-                                    lista.add("§6Ban" + " §e» §c" + punishment.getReason());
-                                } else {
-                                    Date d;
-                                    SimpleDateFormat df2;
-                                    String data;
-                                    if (punishment.getType().toString() == "TEMP_BAN") {
-                                        typ = "§6Ban";
-                                        d = new Date(punishment.getEnd());
-                                        df2 = new SimpleDateFormat("dd.MM.YYYY 'o' HH:mm");
-                                        data = df2.format(d);
-                                        lista.add("§6Ban" + " §e» §c" + punishment.getReason() + ", §6wygasa: §e" + data);
-                                    } else if (punishment.getType().toString() == "MUTE") {
-                                        typ = "§6Wyciszenie";
-                                        lista.add("§6Wyciszenie" + " §e» §c" + punishment.getReason());
-                                    } else if (punishment.getType().toString() == "TEMP_MUTE") {
-                                        typ = "§6Wyciszenie";
-                                        d = new Date(punishment.getEnd());
-                                        df2 = new SimpleDateFormat("dd.MM.YYYY 'o' HH:mm");
-                                        data = df2.format(d);
-                                        lista.add("§6Wyciszenie" + " §e» §c" + punishment.getReason() + ", §6wygasa: §e" + data);
-                                    } else {
-                                        lista.add("§cbłąd");
-                                    }
-                                }
-                            } else {
-                                typ = "§6Ostrzeżenie";
-                                lista.add("§6Ostrzeżenie" + " §e» §c" + punishment.getReason());
-                            }
-
-                            meta6.setLore(lista);
-                        }
-                    }
-
-                    siekiera.setItemMeta(meta6);
-                    inv.setItem(35, siekiera);
-                    ItemStack miecz = new ItemStack(Material.IRON_SWORD);
-                    ItemMeta meta7 = miecz.getItemMeta();
-                    meta7.setDisplayName("§6Zabójstwa §e» " + kille);
-                    List<String> lore = new ArrayList();
-                    lore.add("§6Śmierci §e» " + dedy);
-                    lore.add("§6Stosunek Z/ś §e» " + kdr);
-                    meta7.setLore(lore);
-                    miecz.setItemMeta(meta7);
-                    inv.setItem(38, miecz);
-                    ItemStack jablko = new ItemStack(Material.GOLDEN_APPLE);
-                    ItemMeta meta8 = jablko.getItemMeta();
-                    meta8.setDisplayName("§6Gra od §e» " + since);
-                    jablko.setItemMeta(meta8);
-                    inv.setItem(42, jablko);
-                    ItemStack wersja = new ItemStack(Material.LEGACY_REDSTONE_TORCH_ON);
-                    ItemMeta meta9 = wersja.getItemMeta();
-                    meta9.setDisplayName("§6Wersja §e» " + plugin.getDescription().getVersion());
-                    wersja.setItemMeta(meta9);
-                    inv.setItem(49, wersja);
-                    Bukkit.getScheduler().runTask(plugin, () -> {
-                        p.openInventory(inv);
-                    });
-                    statement.close();
-                    closeConnection();
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-            } catch (SQLException var35 ) {
-                logError(ErrorReason.DATABASE);
-                var35.printStackTrace();
             }
-
         });
+        if(!val || !val1){
+            return "error";
+        }
+        else {
+            switch (type){
+                case KILLS:
+                    return kills;
+                case DEATHS:
+                    return deaths;
+                case KDR:
+                    return kdr;
+                case RANK:
+                    return rank;
+                case BLOCKS:
+                    return blocks;
+                case MARRY:
+                    return marry;
+                case SINCE:
+                    return since;
+                case ONLINE:
+                    return online;
+                case SERVER_ONLINE:
+                    return server_online;
+            }
+        }
+        return "error";
     }
 }

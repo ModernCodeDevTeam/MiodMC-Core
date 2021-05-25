@@ -1,6 +1,7 @@
 package pl.dcrft.Listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -8,15 +9,18 @@ import org.bukkit.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.SessionManager;
+import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Locale;
 
 import static pl.dcrft.Managers.ConfigManger.getDataFile;
 import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.DataManager.saveData;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
+import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 import static pl.dcrft.Utils.RoundUtil.round;
 
 import static pl.dcrft.Managers.SessionManager.list;
@@ -69,16 +73,19 @@ public class PlayerJoinListener implements Listener {
         if (!e.getPlayer().hasPermission("pt.adm")) {
             getDataFile().set(e.getPlayer().getName() + ".online", null);
             saveData();
-            openConnection();
-            Statement statement = connection.createStatement();
-            statement.executeUpdate("UPDATE " + table_bungee + " SET online='teraz', serwer_online='" + plugin.getConfig().getString("nazwa_serwera") + "' WHERE nick = '" + e.getPlayer().getName() + "'");
-            int kille;
-            int dedy;
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        openConnection();
+                        Statement statement = connection.createStatement();
+                        statement.executeUpdate("UPDATE " + table_bungee + " SET online='teraz', serwer_online='" + plugin.getConfig().getString("nazwa_serwera") + "' WHERE nick = '" + e.getPlayer().getName() + "'");
+
+            int kille = Integer.parseInt(PlaceholderAPI.setPlaceholders(e.getPlayer(), "%statistic_player_kills%"));
+            int dedy = Integer.parseInt(PlaceholderAPI.setPlaceholders(e.getPlayer(), "%statistic_deaths%"));
             float kdr;
             String ranga;
             String update;
-            kille = Integer.parseInt(PlaceholderAPI.setPlaceholders(e.getPlayer(), "%statistic_player_kills%"));
-            dedy = Integer.parseInt(PlaceholderAPI.setPlaceholders(e.getPlayer(), "%statistic_deaths%"));
             if (dedy == 0) {
                 kdr = (float)kille;
             } else if (kille == 0) {
@@ -89,55 +96,17 @@ public class PlayerJoinListener implements Listener {
 
             kdr = round(kdr, 2);
             ranga = PlaceholderAPI.setPlaceholders(e.getPlayer(), "%vault_rank%");
-            if (ranga.equalsIgnoreCase("default")) {
-                ranga = "Gracz";
-            }
 
-            if (ranga.equalsIgnoreCase("vip")) {
-                ranga = "VIP";
+            if (ranga.equalsIgnoreCase("vip") || ranga.equalsIgnoreCase("vip+") || ranga.equalsIgnoreCase("svip") || ranga.equalsIgnoreCase("svip+") || ranga.equalsIgnoreCase("mvip") || ranga.equalsIgnoreCase("mvip+") || ranga.equalsIgnoreCase("evip") || ranga.equalsIgnoreCase("evip+")) {
+                ranga = ranga.toUpperCase();
             }
-
-            if (ranga.equalsIgnoreCase("vip+")) {
-                ranga = "VIP+";
+            else if (ranga.equalsIgnoreCase("default") || ranga.equalsIgnoreCase("pomocnik") || ranga.equalsIgnoreCase("moderator")) {
+                ranga = ranga.substring(0, 1).toUpperCase() + ranga.substring(1);
             }
-
-            if (ranga.equalsIgnoreCase("svip")) {
-                ranga = "SVIP";
-            }
-
-            if (ranga.equalsIgnoreCase("svip+")) {
-                ranga = "SVIP+";
-            }
-
-            if (ranga.equalsIgnoreCase("mvip")) {
-                ranga = "MVIP";
-            }
-
-            if (ranga.equalsIgnoreCase("mvip+")) {
-                ranga = "MVIP+";
-            }
-
-            if (ranga.equalsIgnoreCase("evip")) {
-                ranga = "EVIP";
-            }
-
-            if (ranga.equalsIgnoreCase("evip+")) {
-                ranga = "EVIP+";
-            }
-
-            if (ranga.equalsIgnoreCase("pomocnik")) {
-                ranga = "Pomocnik";
-            }
-
-            if (ranga.equalsIgnoreCase("moderator")) {
-                ranga = "Moderator";
-            }
-
-            if (ranga.equalsIgnoreCase("youtuber")) {
+            else if (ranga.equalsIgnoreCase("youtuber")) {
                 ranga = "YouTuber";
             }
-
-            if (ranga.equalsIgnoreCase("w?a?ciciel") || ranga.equalsIgnoreCase("admin") || ranga.equalsIgnoreCase("viceadministrator")) {
+            else if (ranga.equalsIgnoreCase("w?a?ciciel") || ranga.equalsIgnoreCase("admin") || ranga.equalsIgnoreCase("viceadministrator")) {
                 return;
             }
 
@@ -145,6 +114,13 @@ public class PlayerJoinListener implements Listener {
             statement.executeUpdate(update);
 
             statement.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        logError(ErrorReason.DATABASE);
+                    }
+
+                }
+            });
         }
     }
 }

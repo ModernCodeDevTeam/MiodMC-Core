@@ -26,7 +26,7 @@ import static pl.dcrft.Managers.MaintenanceManager.*;
 import static pl.dcrft.Managers.MessageManager.*;
 import static pl.dcrft.Managers.Panel.PanelManager.hidePanel;
 import static pl.dcrft.Managers.Panel.PanelManager.updatePanel;
-import static pl.dcrft.Managers.Statistic.StatisticManager.showStatistics;
+import static pl.dcrft.Managers.Statistic.StatisticGUIManager.showStatistics;
 import static pl.dcrft.Utils.ConfigUtil.initializeFiles;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 
