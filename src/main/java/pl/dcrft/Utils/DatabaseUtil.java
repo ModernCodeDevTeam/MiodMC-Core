@@ -1,17 +1,14 @@
 package pl.dcrft.Utils;
 
-import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.SQLException;
 
-import static pl.dcrft.Managers.ConfigManger.getCustomConfig;
 import static pl.dcrft.Managers.DatabaseManager.connection;
 import static pl.dcrft.Managers.DatabaseManager.openConnection;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 
 public class DatabaseUtil {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();
     public static void initializeTable(String table){
         openConnection();
         try {
@@ -25,9 +22,6 @@ public class DatabaseUtil {
                     "  `slub` text COLLATE utf8mb4_polish_ci,\n" +
                     "  `ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY\n" +
                     ")  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;");
-            connection.createStatement().executeUpdate("" +
-                    "ALTER TABLE `" + table + "`\n" +
-                    "  ADD PRIMARY KEY (`ID`);");
         } catch (SQLException e) {
             e.printStackTrace();
             logError(ErrorReason.DATABASE);

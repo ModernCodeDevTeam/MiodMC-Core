@@ -3,225 +3,265 @@ package pl.dcrft.Managers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.Language.LanguageManager;
+
+import java.text.MessageFormat;
 
 import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
 
 public class MaintenanceManager {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
+    public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
+    
+    public static void saveAll() {
+        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "save-all");
+    }
     public static void stopServer(){
-        Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 1 minutę serwer zostanie zatrzymany.");
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "whitelist on");
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 30 sekund serwer zostanie zatrzymany.");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-            }
-        }, 600L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 15 sekund serwer zostanie zatrzymany.");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-            }
-        }, 900L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                int i = 10;
-                while (i>0){
-                    Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa " + i + " sekund serwer zostanie zatrzymany.");
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                    try {
-                        Thread.sleep(1000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    i--;
-                }
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZapisywanie plik\u00f3w \u015bwiata..");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cTrwa zatrzymywanie serwera...");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "whitelist off");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "stop");
-            }
-        }, 1000L);
+        saveAll();
+        Bukkit.getServer().shutdown();
     }
     public static void restartServer(){
-        Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 1 minutę serwer zostanie uruchomiony ponownie.");
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "whitelist on");
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 30 sekund serwer zostanie uruchomiony ponownie.");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-            }
-        }, 600L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 15 sekund serwer zostanie uruchomiony ponownie.");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-            }
-        }, 900L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                int i = 10;
-                while (i>0){
-                    Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa " + i + " sekund serwer zostanie uruchomiony ponownie.");
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                    try {
-                        Thread.sleep(1000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    i--;
-                }
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZapisywanie plik\u00f3w \u015bwiata..");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cTrwa ponowne uruchamiani serwera...");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "whitelist off");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "restart");
-            }
-        }, 1000L);
+        saveAll();
+        Bukkit.spigot().restart();
     }
     public static void reloadServer(){
-        Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 1 minutę pliki serwera zostaną przeładowane.");
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "whitelist on");
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 30 sekund pliki serwera zostaną przeładowane.");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-            }
-        }, 600L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 15 sekund pliki serwera zostaną przeładowane.");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-            }
-        }, 900L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                int i = 10;
-                while (i>0){
-                    Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa " + i + " sekund pliki serwera zostaną przeładowane.");
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                    try {
-                        Thread.sleep(1000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    i--;
-                }
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZapisywanie plik\u00f3w \u015bwiata..");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cTrwa ponowne ładowanie plików serwera...");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "whitelist off");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "reload confirm");
-            }
-        }, 1000L);
+        saveAll();
+        Bukkit.reload();
     }
     public static void maintenanceStart(){
-        Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 1 minutę odbędzie się przerwa techniczna.");
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "whitelist on");
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 30 sekund odbędzie się przerwa techniczna.");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
+        saveAll();
+        Bukkit.setWhitelist(true);
+        for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (!p.isOp() && !p.isWhitelisted()) {
+                MessageManager.broadcastPrefixed("maintenance.maintenance.in_progress");
             }
-        }, 600L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa 15 sekund pliki sodbędzie się przerwa techniczna.");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-            }
-        }, 900L);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                int i = 10;
-                while (i>0){
-                    Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZa " + i + " sekund odbędzie się przerwa techniczna.");
-                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                    try {
-                        Thread.sleep(1000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    i--;
-                }
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cZapisywanie plik\u00f3w \u015bwiata..");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cTrwa przerwa techniczna...");
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                try {
-                    Thread.sleep(1000L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        }
+    }
 
-                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "save-all");
-                for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
-                    if (!p.isOp() && !p.isWhitelisted()) {
-                        p.kickPlayer(getMessage("prefix") + " §cTrwa przerwa techniczna...");
-                    }
+    public static boolean stopServer(int minutes){
+        if(minutes < 1){
+            return false;
+        }
+        if (minutes > 1){
+            saveAll();
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), + minutes + " " + getMessage("maintenance.timeformat.minutes")));
+        }
+        saveAll();
+        MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), "1 " + getMessage("maintenance.timeformat.minute")));
+        saveAll();
+        Bukkit.getServer().setWhitelist(true);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), "30 " + getMessage("maintenance.timeformat.seconds")));
+            saveAll();
+        }, 600L);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), "15 " + getMessage("maintenance.timeformat.seconds")));
+            saveAll();
+        }, 900L);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            int i = 10;
+            while (i>0){
+                if(i==1){
+                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), i + " " + getMessage("maintenance.timeformat.second")));
+                }else {
+                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), i + " " + getMessage("maintenance.timeformat.seconds")));
+                }
+                saveAll();
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                i--;
+            }
+            MessageManager.broadcastPrefixed("maintenance.saving");
+            saveAll();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            MessageManager.broadcastPrefixed("maintenance.stop.in_progress");
+            saveAll();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            saveAll();
+            Bukkit.getServer().setWhitelist(false);
+            Bukkit.getServer().shutdown();
+        }, 1000L);
+        return true;
+    }
+    public static boolean restartServer(int minutes) {
+        if (minutes < 1) {
+            return false;
+        }
+        if (minutes > 1) {
+            saveAll();
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), +minutes + " " + getMessage("maintenance.timeformat.minutes")));
+        }
+        MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), "1 " + getMessage("maintenance.timeformat.minute")));
+        saveAll();
+        Bukkit.getServer().setWhitelist(true);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), "30 " + getMessage("maintenance.timeformat.seconds")));
+            saveAll();
+        }, 600L);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), "15 " + getMessage("maintenance.timeformat.seconds")));
+            saveAll();
+        }, 900L);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            int i = 10;
+            while (i > 0) {
+                if (i == 1) {
+                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), i + " " + getMessage("maintenance.timeformat.second")));
+                } else {
+                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), i + " " + getMessage("maintenance.timeformat.seconds")));
+                }
+                saveAll();
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                i--;
+            }
+            MessageManager.broadcastPrefixed("maintenance.saving");
+            saveAll();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            MessageManager.broadcastPrefixed("maintenance.restart.in_progress");
+            saveAll();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            saveAll();
+            Bukkit.getServer().setWhitelist(false);
+            Bukkit.spigot().restart();
+        }, 1000L);
+        return true;
+    }
+    public static boolean reloadServer(int minutes){
+        if(minutes < 1){
+            return false;
+        }
+        if (minutes > 1){
+            saveAll();
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), + minutes + " " + getMessage("maintenance.timeformat.minutes")));
+        }
+        MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
+        saveAll();
+        Bukkit.getServer().setWhitelist(true);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), "30 " + getMessage("maintenance.timeformat.seconds")));
+            saveAll();
+        }, 600L);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), "15 " + getMessage("maintenance.timeformat.seconds")));
+            saveAll();
+        }, 900L);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            int i = 10;
+            while (i>0){
+                if(i == 1){
+                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), i + " " + getMessage("maintenance.timeformat.second")));
+                }else {
+                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), i + " " + getMessage("maintenance.timeformat.seconds")));
+                }
+                saveAll();
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                i--;
+            }
+            MessageManager.broadcastPrefixed("maintenance.saving");
+            saveAll();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            MessageManager.broadcastPrefixed("maintenance.reload.in_progress");
+            saveAll();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            saveAll();
+            Bukkit.getServer().setWhitelist(false);
+            Bukkit.reload();
+        }, 1000L);
+        return true;
+    }
+    public static boolean maintenanceStart(int minutes){
+        if(minutes < 1){
+            return false;
+        }
+        if (minutes > 1){
+            saveAll();
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), + minutes + " " + getMessage("maintenance.timeformat.minutes")));
+        }
+        MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
+        saveAll();
+        Bukkit.getServer().setWhitelist(true);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), "30 " + getMessage("maintenance.timeformat.seconds")));
+            saveAll();
+        }, 600L);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), "15 " + getMessage("maintenance.timeformat.seconds")));
+            saveAll();
+        }, 900L);
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            int i = 10;
+            while (i>0){
+                if(i == 1){
+                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), i + " " + getMessage("maintenance.timeformat.second")));
+                }else {
+                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), i + " " + getMessage("maintenance.timeformat.seconds")));
+                }
+                saveAll();
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                i--;
+            }
+            MessageManager.broadcastPrefixed("maintenance.saving");
+            saveAll();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cTrwa przerwa techniczna...");
+            saveAll();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            saveAll();
+            for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
+                if (!p.isOp() && !p.isWhitelisted()) {
+                    MessageManager.broadcastPrefixed("maintenance.maintenance.in_progress");
                 }
             }
         }, 1000L);
+        return true;
     }
 
 }

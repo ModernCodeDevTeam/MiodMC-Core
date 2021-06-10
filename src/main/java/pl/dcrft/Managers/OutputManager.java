@@ -13,6 +13,6 @@ public class OutputManager
     }
 
     public static void print(final Object message) {
-        OutputManager.ccs.sendMessage(new StringBuilder().append(message).toString());
+        OutputManager.ccs.sendMessage(String.valueOf(message));
     }
 }

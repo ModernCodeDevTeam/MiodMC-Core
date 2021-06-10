@@ -1,125 +1,108 @@
 package pl.dcrft.Managers.Statistic;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Utils.Error.ErrorUtil;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 import static pl.dcrft.Managers.DatabaseManager.*;
 
 public class StatisticManager {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();
-    private static ResultSet ogol;
-    private static ResultSet server;
-    private static boolean val;
-    private static boolean val1;
+    public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
-    private static String kills;
-    private static String deaths;
-    private static String kdr;
-    private static String rank;
-    private static String blocks;
-    private static String marry;
-
-    private static String since;
-    private static String online;
-    private static String server_online;
-
-    public static boolean checkPlayer(Player p){
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
+    public static boolean checkPlayer(String p){
+        boolean val = false, val1 = false;
                 try {
                     openConnection();
-                    Statement statement = connection.createStatement();
-                    ogol = statement.executeQuery("SELECT * FROM `" + table_bungee + "` WHERE nick = '" + p.getName() + "'");
-                    server = statement.executeQuery("SELECT * FROM `" + table + "` WHERE nick = '" + p.getName() + "'");
-                    val=ogol.next();
-                    val1=ogol.next();
+                    ResultSet ogol;
+                    Statement o = connection.createStatement();
+                    ogol = o.executeQuery("SELECT * FROM `" + table_bungee + "` WHERE nick = '" + p + "'");
+                    val = ogol.next();
+
+                    ResultSet server;
+                    Statement s = connection.createStatement();
+                    server = s.executeQuery("SELECT * FROM `" + table + "` WHERE nick = '" + p + "'");
+                    val1 = server.next();
+                    s.close();
+                    o.close();
+                    ogol.close();
+                    server.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            }
-        });
-        if(!val || !val1){
-            return false;
-        }
-        return true;
+        return val && val1;
     }
 
-    public static String getStatistic(Player p, StatisticType type){
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    openConnection();
-                    Statement statement = connection.createStatement();
-                    ogol = statement.executeQuery("SELECT * FROM `" + table_bungee + "` WHERE nick = '" + p.getName() + "'");
-                    server = statement.executeQuery("SELECT * FROM `" + table + "` WHERE nick = '" + p.getName() + "'");
-                    val=ogol.next();
-                    val1=ogol.next();
+    public static HashMap<StatisticType, String> getStatistics(String p){
+        boolean val;
 
-                    online = ogol.getString("online");
-                    since = ogol.getString("since");
+        String kills;
+        String deaths;
+        String kdr;
+        String rank;
+        String blocks;
+        String marry;
+
+        String since;
+        String online;
+        String server_online;
+        HashMap<StatisticType, String> result = new HashMap<>();
+            try {
+
+                ResultSet rs;
+                Statement statement = connection.createStatement();
+                rs = statement.executeQuery("SELECT * FROM `" + table + "` INNER JOIN `" + table_bungee + "` ON " + table + ".nick = " + table_bungee + ".nick WHERE " + table +  ".nick = '" + p + "'");
+                val=rs.next();
+                while(val){
+                    online = rs.getString("online");
+                    since = rs.getString("since");
+                    server_online = rs.getString("serwer_online");
                     if (online == null) {
                         online = "?";
                     }
                     if (since == null) {
                         since = "?";
                     }
-                    server_online = ogol.getString("serwer_online");
-                    kills = server.getString("kille");
-                    deaths = server.getString("dedy");
-                    kdr = server.getString("kdr");
-                    rank = server.getString("ranga");
-                    blocks = server.getString("bloki");
-                    marry = server.getString("slub");
-                    if (server_online.equalsIgnoreCase("lobby")) {
-                        server_online = "Lobby";
-                    }
-                    if (server_online.equalsIgnoreCase("s12")) {
-                        server_online = "Survival 1.12";
-                    }
-                    if (server_online.equalsIgnoreCase("s16")) {
-                        server_online = "Survival 1.16";
-                    }
-                    if (server_online.equalsIgnoreCase("pvp")) {
-                        server_online = "PvP";
-                    }
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                        kills = rs.getString("kille");
+                        deaths = rs.getString("dedy");
+                        kdr = rs.getString("kdr");
+                        rank = rs.getString("ranga");
+                        blocks = rs.getString("bloki");
+                        marry = rs.getString("slub");
+                        if (server_online.equalsIgnoreCase("lobby")) {
+                            server_online = "Lobby";
+                        }
+                        if (server_online.equalsIgnoreCase("s12")) {
+                            server_online = "Survival 1.12";
+                        }
+                        if (server_online.equalsIgnoreCase("s16")) {
+                            server_online = "Survival 1.16";
+                        }
+                        if (server_online.equalsIgnoreCase("pvp")) {
+                            server_online = "PvP";
+                        }
+                    result.put(StatisticType.KILLS, kills);
+                    result.put(StatisticType.DEATHS, deaths);
+                    result.put(StatisticType.KDR, kdr);
+                    result.put(StatisticType.RANK, rank);
+                    result.put(StatisticType.BLOCKS, blocks);
+                    result.put(StatisticType.MARRY, marry);
+                    result.put(StatisticType.SINCE, since);
+                    result.put(StatisticType.ONLINE, online);
+                    result.put(StatisticType.SERVER_ONLINE, server_online);
+                    return result;
                 }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                ErrorUtil.logError(ErrorReason.DATABASE);
             }
-        });
-        if(!val || !val1){
-            return "error";
-        }
-        else {
-            switch (type){
-                case KILLS:
-                    return kills;
-                case DEATHS:
-                    return deaths;
-                case KDR:
-                    return kdr;
-                case RANK:
-                    return rank;
-                case BLOCKS:
-                    return blocks;
-                case MARRY:
-                    return marry;
-                case SINCE:
-                    return since;
-                case ONLINE:
-                    return online;
-                case SERVER_ONLINE:
-                    return server_online;
-            }
-        }
-        return "error";
+        return null;
     }
 }

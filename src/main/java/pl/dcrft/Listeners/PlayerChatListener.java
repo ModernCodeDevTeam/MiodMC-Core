@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Managers.Language.LanguageManager;
+import pl.dcrft.Managers.ConfigManager;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -15,14 +15,13 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.bukkit.Bukkit.getServer;
-import static pl.dcrft.Managers.ConfigManger.getDataFile;
-import static pl.dcrft.Managers.DataManager.saveData;
+import static pl.dcrft.Managers.ConfigManager.getDataFile;
 import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 
 public class PlayerChatListener implements Listener {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();
+    public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler
     public void onPlayerChat(final AsyncPlayerChatEvent e) {
@@ -33,8 +32,8 @@ public class PlayerChatListener implements Listener {
             return;
         }
 
-        List<String> red = plugin.getConfig().getStringList("czerwonyczat");
-        List<String> green = plugin.getConfig().getStringList("zielonyczat");
+        List<String> red = plugin.getConfig().getStringList("redchat");
+        List<String> green = plugin.getConfig().getStringList("greenchat");
         String message = e.getMessage();
 
         for(int i = 0; i<red.size(); i++){
@@ -47,20 +46,23 @@ public class PlayerChatListener implements Listener {
 
         }
         String niezmieniona = message;
-        for (final Map.Entry<String, Object> filter : plugin.filtry.entrySet()) {
+        for (final Map.Entry<String, Object> filter : plugin.filters.entrySet()) {
             message = message.toLowerCase().replaceAll(filter.getKey().toLowerCase(), filter.getValue().toString());
         }
         if (!message.equalsIgnoreCase(niezmieniona)) {
+            if(e.getPlayer().isOp()){
+                return;
+            }
             e.setMessage(message);
-            String[] words = plugin.getConfig().getStringList("zastepowanie").toArray(new String[0]);
+            String[] words = plugin.getConfig().getStringList("replacement").toArray(new String[0]);
 
             String finalMessage = message;
-            if (!Stream.of(words).anyMatch(word -> finalMessage.contains(word.toLowerCase()))) {
-                getServer().getLogger().info("§e" + e.getPlayer().getName() + " §cużył niedozwolonego słowa §e» §e" + niezmieniona);
+            if (Stream.of(words).noneMatch(word -> finalMessage.contains(word.toLowerCase()))) {
+                String msg = MessageFormat.format(getMessage("censored_notification"), p.getName(), niezmieniona);
+                getServer().getLogger().info(msg);
 
                 for(Player o : Bukkit.getOnlinePlayers()){
-                    if(o.hasPermission("panel.mod") && getDataFile().getBoolean(o.getName() + ".stream") == false) {
-                        String msg = MessageFormat.format(getMessage("censored_notification"), p.getName(), niezmieniona);
+                    if(o.hasPermission("panel.mod") && !getDataFile().getBoolean(o.getName() + ".stream")) {
                         o.sendMessage(getMessage("prefix") + msg);
                     }
                 }
@@ -72,12 +74,12 @@ public class PlayerChatListener implements Listener {
             e.setCancelled(true);
         }
         if (getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat")) {
-            if (getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat") == true) {
-                if (getDataFile().getBoolean(e.getPlayer().getName() + ".stream") == true) {
+            if (getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat")) {
+                if (getDataFile().getBoolean(e.getPlayer().getName() + ".stream")) {
                     sendPrefixedMessage(p, "stream.cant_write_turned_off");
                     getDataFile().set(e.getPlayer().getName() + ".adminchat", false);
                     e.setCancelled(true);
-                    saveData();
+                    ConfigManager.saveData();
                     return;
                 }
                 e.setCancelled(true);
@@ -89,21 +91,22 @@ public class PlayerChatListener implements Listener {
                 else {
                     wiad = niezmieniona;
                 }
-                getServer().getLogger().info("§c§lAdmin§4§lChat §e» " + PlaceholderAPI.setPlaceholders(sender, "%vault_prefix%") + sender.getName() + "§e » §c" + wiad);
+                String msg = getMessage("staffchat.adminchat.title") + getMessage("staffchat.adminchat.spacer") + PlaceholderAPI.setPlaceholders(sender, "%vault_prefix%") + sender.getName() + getMessage("staffchat.adminchat.spacer") + wiad;
+                getServer().getLogger().info(msg);
                 for(Player o : Bukkit.getOnlinePlayers()){
-                    if(o.hasPermission("admin.see") && getDataFile().getBoolean(o.getName() + ".stream") == false) {
-                        o.sendMessage("§c§lAdmin§4§lChat §e» " + PlaceholderAPI.setPlaceholders(sender, "%vault_prefix%") + sender.getName() + "§e » §c" + wiad);
+                    if(o.hasPermission("admin.see") && !getDataFile().getBoolean(o.getName() + ".stream")) {
+                        o.sendMessage(msg);
                     }
                 }
             }
         }
         if (getDataFile().getBoolean(e.getPlayer().getName() + ".modchat")) {
-            if (getDataFile().getBoolean(e.getPlayer().getName() + ".modchat") == true) {
-                if (getDataFile().getBoolean(e.getPlayer().getName() + ".stream") == true) {
+            if (getDataFile().getBoolean(e.getPlayer().getName() + ".modchat")) {
+                if (getDataFile().getBoolean(e.getPlayer().getName() + ".stream")) {
                     sendPrefixedMessage(p, "stream.cant_write_turned_off");
                     getDataFile().set(e.getPlayer().getName() + ".modchat", false);
                     e.setCancelled(true);
-                    saveData();
+                    ConfigManager.saveData();
                     return;
                 }
                 e.setCancelled(true);
@@ -115,10 +118,11 @@ public class PlayerChatListener implements Listener {
                 else {
                     wiad = niezmieniona;
                 }
-                getServer().getLogger().info("§a§lMod§2§lChat §e» " + PlaceholderAPI.setPlaceholders(sender, "%vault_prefix%") + sender.getName() + "§e » §c" + wiad);
+                String msg = getMessage("staffchat.modchat.title") + getMessage("staffchat.modchat.spacer")  + PlaceholderAPI.setPlaceholders(sender, "%vault_prefix%") + sender.getName() + getMessage("staffchat.modchat.spacer") + wiad;
+                getServer().getLogger().info(msg);
                 for(Player o : Bukkit.getOnlinePlayers()){
-                    if(o.hasPermission("mod.see") && getDataFile().getBoolean(o.getName() + ".stream") == false) {
-                        o.sendMessage("§a§lMod§2§lChat §e» " + PlaceholderAPI.setPlaceholders(sender, "%vault_prefix%") + sender.getName() + "§e » §a" + wiad);
+                    if(o.hasPermission("mod.see") && !getDataFile().getBoolean(o.getName() + ".stream")) {
+                        o.sendMessage(msg);
 
                     }
                 }

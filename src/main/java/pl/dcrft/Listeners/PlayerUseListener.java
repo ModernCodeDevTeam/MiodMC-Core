@@ -8,15 +8,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.ConfigManager;
 
-import static pl.dcrft.Managers.ConfigManger.getDataFile;
-import static pl.dcrft.Managers.DataManager.saveData;
+import static pl.dcrft.Managers.ConfigManager.getDataFile;
 
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerUseListener implements Listener {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
+    public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler(priority= EventPriority.HIGH)
     public void onPlayerUse(PlayerInteractEvent e){
@@ -28,24 +28,18 @@ public class PlayerUseListener implements Listener {
             }
         }
         if(e.getClickedBlock() != null && e.getClickedBlock().getType() != null && e.getClickedBlock().getType().isBlock() && e.getClickedBlock().getType() == Material.LEVER) {
-            if(Integer.parseInt(plugin.getConfig().getString("cooldown_lever")) > 0){
+            if(Integer.parseInt(getDataFile().getString("cooldown_lever")) > 0){
                 e.setCancelled(true);
                 sendPrefixedMessage(p, "lever_cooldown");
-                return;
             }
             else {
                 getDataFile().set("cooldown_lever", 1);
-                saveData();
-                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        getDataFile().set("cooldown_lever", 0);
-                        saveData();
-                    }
+                ConfigManager.saveData();
+                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                    getDataFile().set("cooldown_lever", 0);
+                    ConfigManager.saveData();
                 }, 10L);
-                return;
             }
         }
-        return;
     }
 }

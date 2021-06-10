@@ -11,150 +11,40 @@
 #Pomoc
 
 #
-#  &6na &aPomocnika&6!'
-nazwa_serwera: s16
-cooldown_lever: 0
-czat: true
-vip:
-  - '&e&lDragon&6&lCraft &e» &bVIP'
-  - '&e» &3Ranga &bVIP&3 jest na zawsze'
-  - '&e» &3Ranga &bVIP &3daje:'
-  - '&e» &3rezerwację slota'
-  - '&e» &b10 &3Kuboid'
-  - '&e» &b5x&3 /sethome'
-  - '&e» &3Dostęp do strefy &bVIP'
-  - '&e» &3/kit &bVIP'
-  - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
-svip:
-  - '&e&lDragon&6&lCraft &e» &5SVIP'
-  - '&e» &3Ranga &5SVIP&3 jest na zawsze'
-  - '&e» &3Ranga &5SVIP &3daje wszystko to co &bVIP &3oraz:'
-  - '&e» &b20 &3Kuboid'
-  - '&e» &b10x&3 /sethome'
-  - '&e» &3Dostęp do strefy &bSVIP'
-  - '&e» &3/kit &bSVIP'
-  - '&e» &3/workbench'
-  - '&e» &3/enderchest'
-  - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
-mvip:
-  - '&e&lDragon&6&lCraft &e» &9MVIP'
-  - '&e» &3Ranga &9MVIP&3 jest na zawsze'
-  - '&e» &3Ranga &9MVIP &3daje wszystko to co &5SVIP &3oraz:'
-  - '&e» &b30 &3Kuboid'
-  - '&e» &b15x&3 /sethome'
-  - '&e» &3Dostęp do strefy &bMVIP'
-  - '&e» &3/kit &bMVIP'
-  - '&e» &3pisanie kolorami na tabliczkach'
-  - '&e» &3brak cooldownu na teleportację'
-  - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
-evip:
-  - '&e&lDragon&6&lCraft &e» &6EVIP'
-  - '&e» &3Ranga &6EVIP&3 jest na zawsze'
-  - '&e» &3Ranga &6EVIP &3daje wszystko to co &9MVIP &3oraz:'
-  - '&e» &b40 &3Kuboid'
-  - '&e» &b20x&3 /sethome'
-  - '&e» &3Dostęp do strefy &bEVIP'
-  - '&e» &3/kit &bEVIP'
-  - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
-pomoc:
-  - '&6--==[&9&lInformacje o serwerze&6]==--'
-  - '&6-==[&9&lOgólne&6]==-'
-  - '&eSerwer jest serwerem typu &9&lsurvival&e z możliwością stworzenia &9&ldziałki&e
-  za pomocą &9&lnoteblocka&e.'
-  - '&6-==[&b&lDziałki&6]==-'
-  - '&9&lDziałkę&e stworzysz za pomocą &9&lnoteblocka&e. Ma ona wymiary &9&l51x501x51&e.'
-  - '&eSzczegółowe informacje dotyczące &9&lkuboid&e znajdziesz na /info.'
-  - '&6-==[&e&lRangi&6]==-'
-  - '&eDostępne rangi to &9&lVIP&e,&5&l SVIP&e, &9&lMVIP&e, &6&lEVIP&e, oraz rangi z
-  &e"+"'
-  - '&eMożna je zakupić na stronie serwera &9&lDCRFT.PL&e.'
-  - '&6-==[&6&lSmocze jaja&6]==-'
-  - '&e&lSmocze jaja&e są walutą premium serwera. Można je zakupić na stronie, na /sklep
-  bądż wydropić z niektórych mobów.'
-  - '&eSzczegółowe informacje dotyczące &e&lSmoczych jaj &eznajdziesz na /info.'
-  - '&6-==[&2&lPomocnicy &9&li &2&lmoderatorzy&6]==-'
-  - '&eRekrutacja na &a&lpomocnika &ejest zapowiadana na czacie. Rangę &a&lpomocnik
-  &emożna jednak zdobyć postępując zgodnie z krokami na /info, tak samo jak rangę
-  &2&lmoderator&e.'
-  - '&eSzczegółowe informacje dotyczące pomocników i moderatorów znajdziesz na /info.'
-  - '&6-==[&4&lYou&f&lTuberzy&6]==-'
-  - '&eRangę &4&lYou&f&lTuber&e można otrzymać wrzucając na swój kanał reklamę naszego
-  serwera. Kanał ten musi mieć co najmniej &9&l500 subskrypcji&e.'
-  - '&6-==[&9&lInformacje o graczu&6]==-'
-  - '&eInformacje o graczu wyświetlisz poprzez wpisanie komendy &9&l/gracz [nick]&e.'
-  - '&6-==[&4&lRegulamin&6]==-'
-  - '&9&lRegulamin serwera &eznajduje się na /info&e, na /spawn&e oraz na stronie.'
-  - '&6-==[&f&lSkórki&6]==-'
-  - '&9&lSkórkę&e ustawisz za pomocą &9&l/skin [nick]&e.'
-  - '&6-==[&9&lDiscord&6]==-'
-  - '&eNasz serwer &9&lDiscord&e to: &9&ldiscord.gg/7pPNbUU&e. Aby połączyć konto Minecraft
-  z naszym serwerem &9&lDiscord&e, wpisz /dclink.'
-  - '&6-==[&7&lQuesty&6]==-'
-  - '&7&lQuesty &esą dodatkiem do serwera. Aby wykonać quest, należy kliknąć prawym
-  przyciskiem mysz na NPC. Jeśli quest nie wymaga przedmiotów, należy kliknąć drugi
-  raz na NPC, jeśli jednak wymaga on dostarczenia przedmiot u, należy kliknąć na NPC
-  trzymając przedmiot w ręce.'
-  - '&6-==[&a&lWięcej informacji znajduje się na /info&6]==-'
-przedrostek: '&e&lDragon&6&lCraft&e » &aPomoc'
-czerwonyczat: W?a?ciciel
-czerwonyczat2: Administrator
-czerwonyczat3: ViceAdministrator
-zielonyczat: Pomocnik
-zielonyczat2: Moderator
-filtry:
+server:
+  name: "s16"
+  supported_versions:
+    - 735
+    - 736
+    - 751
+    - 753
+    - 754
+redchat:
+- W?a?ciciel
+greenchat:
+- Moderator
+filters:
   kurwa: (ಠ益ಠ)
   <3: ❤
   ogolem: ogółem
-zastepowanie:
+replacement:
   - ❤
-cc: '&e&lDragon&6&lCraft&e » &cCzat został wyczyszczony.'
-losuje: '&e&lDragon&6&lCraft &e» &3Losuję...'
-wylosowano: '&e&lDragon&6&lCraft &e» &aWylosowany kolor to: '
-kolorki:
-  - '&fbiały'
-  - '&6pomarańczowy'
-  - '&2zielony'
-  - '&eżółty'
-  - '&dróżowy'
-  - '&8czarny'
-  - '&4czerwony'
-  - '&1niebieski'
-  - '&3morski'
-sklep: '&e&lDragon&6&lCraft &e» &6Sklep'
-przedrostekwiadomosci: '&e&lDragon&6&lCraft &e» '
-cooldown: 90
-wiadomosci:
-  - '&6Wszelkie informacje znajdują się na &e/info&6 i &e/pomoc&6.'
-  - '&6Discord &e&lDragon&6&lCraft&6: &ediscord.gg/7pPNbUU&6. Więcej pod &e/discord&6.'
-  - '&6Chcesz połączyć swoje konto na serwerze z kontem Discord &e&lDragon&6&lCraft&6?
-  Dowiedz się więcej pod &e/discord&6.'
-  - '&6Witamy na nowej, &eV Edycji&6 &e&lDragon&6&lCraft &eSurvival&6!'
-  - '&6Chcesz przenieść &erangę&6 na &enowe konto&6? Użyj &e/przeniesrange&6!'
-  - '&eSmocze jaja&6 zakupisz na &eDCRFT.PL &6i &e/sklep&6. &6Mogą one też wypaść z
-  &eagresywnych mobów&6.'
-  - '&6Strefę &b&lVIP&6 znajdziesz pod /&bvip&6, &5&lSVIP&6 pod /&5svip&6, &9&lMVIP&6
-  pod /&9mvip&6, a &6&lEVIP&6 pod /&6evip&6.'
-  - '&6Rangę &b&lVIP&6 zakupisz również na /spawn, a rangę + na /&bvip&6, /&5svip&6,
-  /&9mvip&6 i /&6evip&6.'
-  - '&6Serwer zmienisz za pomocą &e/serwer&6.'
-  - '&6Jeśli potrzebujesz &epomocy&6 nieznajdującej się pod &e/pomoc&6, zgłoś się do
-  &eaktywnych &6osób z &eadministracji&6 na naszym serwerze &eDiscord&6.'
-  - '&6Problemy i zgłoszenia zgłaszaj administracji na serwerze &eDiscord &6bądź poprzez
-  &e/zglos treść zgłoszenia&6.'
-  - '&6Gracza łamiącego regulamin zgłosisz na naszym serwerze &eDiscord &6lub za pomocą
-  komendy &e/zglos treść zgłoszenia&6.'
-  - '&6Zapraszamy na naszego &eFacebooka&6: &ehttp://fb.com/dcrft.pl&6.'
-  - '&6Polub nas na &ewww.topkamc.pl/server/grOWQQqb&6.'
-  - '&6Zapraszamy na naszego &eInstagrama&6: &e@dcrft.pl&6.'
 afk:
-  prefix: §e§lDragon§6§lCraft §e»
-  kick_msg: §cZostałeś wyrzucony za bycie nieaktywnym dłużej niż 15 minut.
   kick_warn_delay: 14
-  kick_warn_msg: §cHej! Za chwilę zostaniesz wyrzucony za zbyt długą nieaktywność.
-  kick_warn_msg_afk: §e» §6Nie jestem AFK [kliknij]
   kick_delay: 15
-  kick_not_afk_msg: §aUff. Potwierdziłeś, że nie jesteś AFK.
   sound_on_get_warn: true
-  sond_on_notafk: true
-  config_noperm: §e§lDragon§6§lCraft §e» §cNie ma takiej komendy. Użyj §e/info§c,
-    aby dowiedzieć się więcej o dostępnych komendach.
+  sound_on_notafk: true
+shop_purchase:
+  sound: "ENTITY_PLAYER_LEVELUP"
+broadcast:
+  cooldown: 90
+staff:
+  - NickNickerYT
+  - JaneQ
+  - MikiIgi192
+  - kalkulator888
+commamnds:
+  vip: "/warp vip"
+  svip: "/warp svip"
+  mvip: "/warp mvip"
+  evip: "/warp evip"

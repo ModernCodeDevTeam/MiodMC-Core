@@ -1,24 +1,352 @@
-prefix: "§6§lDragon§e§lCraft §e» "
+prefix: "§e§lDragon§6§lCraft §e» "
 server_full: "§cSerwer jest pełen graczy!\n§cZakup rangę §b§lVIP§c, aby dołączyć na serwer, gdy jest pełen!"
 notfound: "§cNie ma takiej komendy. Użyj §e/info§c, aby dowiedzieć się więcej o dostępnych komendach."
-version_warning: "§cJeśli masz wersję inną niż §e1.16-1.16.5§c, mogą wystąpić pewne błędy w rozgrywce. Prosimy ich nie zgłaszać. Serwer przystosowany jest do działania na wersjach §e1.16-1.16.5§c. Używanie innych wersji może skutkować błędami, w razie ich wystąpienia zmień wersję na §e1.16-1.16.5§c."
+version_warning: "§cWygląda na to, że używasz wersji innej niż zalecane! Z tego powodu mogą wystąpić błędy w rozgrywce. Prosimy ich nie zgłaszać. Serwer przystosowany jest do działania na wersjach §e1.16-1.16.5§c."
 lever_cooldown: "§cPoczekaj sekundę przed użyciem tej dźwigni."
 wrong_player_nickname: "§cPodaj poprawny nick gracza."
 chat_muted: "§cCzat jest wyciszony."
 censored_notification: "§e {0} §cużył niedozwolonego słowa §e» §e {1}"
+console_error: "Tej komendy nie można wywołać z konsoli."
 friends:
   help:
     title: "§6Znajomi"
     contents:
-    - "§e» §6/znajomi lista §e» §3lista znajomych"
-    - "§e» §6/znajomi dodaj §enick » §3dodaj gracza do znajomych"
-    - "§e» §6/znajomi usun §enick » §3usuń gracza ze znajomych"
-    - "§e» §6/znajomi akceptuj §enick » §3zaakceptuj zaproszenie do znajomych od gracza"
-    - "§e» §6/znajomi odrzuc §enick » §3odrzuć zaproszenie do znajomych od gracza"
+      - "§e» §6/znajomi lista §e» §3lista znajomych"
+      - "§e» §6/znajomi dodaj §enick » §3dodaj gracza do znajomych"
+      - "§e» §6/znajomi usun §enick » §3usuń gracza ze znajomych"
+      - "§e» §6/znajomi akceptuj §enick » §3zaakceptuj zaproszenie do znajomych od gracza"
+      - "§e» §6/znajomi odrzuc §enick » §3odrzuć zaproszenie do znajomych od gracza"
   list:
     title: "§6Lista znajomych"
     none: "§e» §cbrak"
     online: "§aonline"
     player_format: "§e» §3{0}§e» §c{1}"
+  remove:
+    not_your_friend: "§e {0} §cnie jest twoim znajomym."
+    removed:  "§e {0} §anie jest już twoim znajomym."
+  add:
+    self: "§cNo co ty! Siebie samego chcesz dodawać do znajomych? Pff!"
+    staff: "§cNo nie bardzo. Administracja to nie twoi znajomi."
+    already_friend: "§cTen gracz jest już twoim znajomym!"
+    invited: "§aZaproszono §e{0} §ado znajomych."
+    notification:
+      title: "§aOtrzymano zaproszenie do znajomych od §e{0}§a."
+      accept: "§aUżyj §e/znajomi akceptuj §e{0}§a, aby je zaakceptować."
+      cancel: "§aUżyj §e/znajomi odrzuc §e{0}§a, aby je odrzucić."
+  accept:
+    invitation_not_send: "§cPodaj nick gracza, który wysłał do ciebie zaproszenie do znajomych"
+    accepted_target: " §aZaakceptowano zaprosznie do znajomych od §e{0}§a."
+    accepted_self: " §e{0} §azaakceptował twoje zaproszenie do znajomych."
+  reject:
+    invitation_not_send: "§cPodaj nick gracza, który wysłał do ciebie zaproszenie do znajomych"
+    rejected_target: " §aOdrzucono zaprosznie do znajomych od §e{0}§c."
+    rejected_self: " §e{0} §codrzucił twoje zaproszenie do znajomych."
+  marry:
+    already: "§cJuż jesteś w związku."
+    target_already: "§cTen gracz już jest w związku."
+    no_ivite_send: "§cTen gracz nie wysłał do ciebie prośby o ślub."
+    not_in: "§cNie jesteś w związku."
+    not_with_target: "§cNie jesteś w związku z tą osobą."
+    self: "§cNo... Nie."
+    send:
+      self: "§cNo coś ty, chcesz się związać z samym sobą?"
+      sent:
+        self: "§aWysłano prośbę o ślub."
+        target: " §e{0} §aprosi cię o ślub! Wpisz §e/sakceptuj {0} §alub §e/sodrzuc {0}§a, aby odpowiedzieć na prośbę."
+      accept:
+        missing_diamond: "§cNie posiadasz 1 diamentu potrzebnego do zawarcia ślubu."
+        accepted: "§aŚlub został zawarty!"
+        broadcast: " §e{0} §bi §e{1} §bwłaśnie zawarli ślub!"
+      reject:
+        rejected: "§aProśba o ślub została odrzucona."
+        broadcast: " §e{0} §bi §e{1} §bwłaśnie się rozwiedli."
 stream:
   cant_write_turned_off: "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie. Wyłączono czat automatycznie."
+advancedban_warn_usage: "§cUżycie: §e/warn <nick> <powód> [-s]§c."
+checkwarn:
+  usage: "§cUżycie: §e/checkwarn <nick>§c."
+  title: "§cOstrzeżenia §e{0}§e:"
+  list: "§6ID §e» {0} §e» §c{1}"
+  list_prefix: "§e» "
+  none: "§e» §cbrak"
+statistics:
+  title: "§6Profil §e» §3"
+  head: "§6Głowa §e»"
+  status:
+    online: "§6Status §e» §aonline"
+    offline: "§6Ostatnio online §e» §c"
+    current_server: "§6Aktualnie na serwerze§e » &6"
+  rank: "§6Ranga §e»"
+  marry:
+    title: "§6Ślub §e»§e"
+    none: "§ebrak"
+  blocks: "§6Wykopane bloki §e»§e"
+  punishments:
+    title: "§6Kary §e»"
+    none: "§abrak"
+    ban: "§6Ban §e» §c"
+    mute: "§6Wyciszenie §e» §c"
+    warning: "§6Ostrzeżenie §e» §c"
+    error: "§cbłąd"
+    expires: ", §6wygasa: §e"
+  kills: "§6Zabójstwa §e»"
+  deaths: "§6Śmierci §e»"
+  kdr: "§6Stosunek Z/ś §e»"
+  since: "§6Gra od §e»"
+  plugin_version: "§6Wersja §e»"
+staffchat:
+  enabled: "§aWłączono czat."
+  disabled: "§cWyłączono czat."
+  auto_enabled: "§aAutomatycznie włączono czat."
+  stream:
+    enabled:
+    disabled:
+    error: "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie."
+  adminchat:
+    title: "§c§lAdmin§4§lChat"
+    spacer: "§e » §c"
+  modchat:
+    title: "§a§lMod§2§lChat"
+    spacer: "§e » §a"
+  both: "§c§lA§4§lC §ei §a§lM§2§lC"
+  public: "§ePubliczny"
+staffpanel:
+  prefix: "§e»"
+  modpanel:
+    title: "§a§lMod§2§lPanel"
+  adminpanel:
+    title: "§c§lAdmin§4§lPanel"
+  nickname_prefix: "§e» §6"
+  chat: "§e» §6Czat §e»"
+  players: "§e» §6Gracze §e»"
+  ping: "§e» §6Ping §e»"
+  newest_player: "§6Najnowszy gracz§e:"
+  performance:
+    title: "§e» §6Wydajność §e»"
+    tps:
+      title: "§e» §6TPS §e»"
+      0-10: "§4uhh"
+      10-14: "§4tragiczna"
+      14-16: "§4zła"
+      16-18: "§ckiepska"
+      18-19: "§aok"
+      19-20: "§2dobra"
+      20: "§2super"
+      unknown: "?"
+    mspt: "§e» §6Średni MSPT §e»"
+    ram:
+      title: "§lRAM §e» §6"
+      spacer: "§e/§6"
+    uptime: "§6Aktywny od §e»"
+  no_newest: "§cbrak"
+chat:
+  enabled: "§aCzat został włączony."
+  disabled: "§cCzat został wyciszony."
+  cleared: '&cCzat został wyczyszczony.'
+help:
+  title: '&aPomoc'
+  contents:
+    - '&6--==[&9&lInformacje o serwerze&6]==--'
+    - '&6-==[&9&lOgólne&6]==-'
+    - '&eSerwer jest serwerem typu &9&lsurvival&e z możliwością stworzenia &9&ldziałki&e
+    za pomocą &9&lnoteblocka&e.'
+    - '&6-==[&b&lDziałki&6]==-'
+    - '&9&lDziałkę&e stworzysz za pomocą &9&lnoteblocka&e. Ma ona wymiary &9&l51x501x51&e.'
+    - '&eSzczegółowe informacje dotyczące &9&lkuboid&e znajdziesz na /info.'
+    - '&6-==[&e&lRangi&6]==-'
+    - '&eDostępne rangi to &9&lVIP&e,&5&l SVIP&e, &9&lMVIP&e, &6&lEVIP&e, oraz rangi z
+    &e"+"'
+    - '&eMożna je zakupić na stronie serwera &9&lDCRFT.PL&e.'
+    - '&6-==[&6&lSmocze jaja&6]==-'
+    - '&e&lSmocze jaja&e są walutą premium serwera. Można je zakupić na stronie, na /sklep
+    bądż wydropić z niektórych mobów.'
+    - '&eSzczegółowe informacje dotyczące &e&lSmoczych jaj &eznajdziesz na /info.'
+    - '&6-==[&2&lPomocnicy &9&li &2&lmoderatorzy&6]==-'
+    - '&eRekrutacja na &a&lpomocnika &ejest zapowiadana na czacie. Rangę &a&lpomocnik
+    &emożna jednak zdobyć postępując zgodnie z krokami na /info, tak samo jak rangę
+    &2&lmoderator&e.'
+    - '&eSzczegółowe informacje dotyczące pomocników i moderatorów znajdziesz na /info.'
+    - '&6-==[&4&lYou&f&lTuberzy&6]==-'
+    - '&eRangę &4&lYou&f&lTuber&e można otrzymać wrzucając na swój kanał reklamę naszego
+    serwera. Kanał ten musi mieć co najmniej &9&l500 subskrypcji&e.'
+    - '&6-==[&9&lInformacje o graczu&6]==-'
+    - '&eInformacje o graczu wyświetlisz poprzez wpisanie komendy &9&l/gracz [nick]&e.'
+    - '&6-==[&4&lRegulamin&6]==-'
+    - '&9&lRegulamin serwera &eznajduje się na /info&e, na /spawn&e oraz na stronie.'
+    - '&6-==[&f&lSkórki&6]==-'
+    - '&9&lSkórkę&e ustawisz za pomocą &9&l/skin [nick]&e.'
+    - '&6-==[&9&lDiscord&6]==-'
+    - '&eNasz serwer &9&lDiscord&e to: &9&ldiscord.gg/7pPNbUU&e. Aby połączyć konto Minecraft
+    z naszym serwerem &9&lDiscord&e, wpisz /dclink.'
+    - '&6-==[&7&lQuesty&6]==-'
+    - '&7&lQuesty &esą dodatkiem do serwera. Aby wykonać quest, należy kliknąć prawym
+    przyciskiem mysz na NPC. Jeśli quest nie wymaga przedmiotów, należy kliknąć drugi
+    raz na NPC, jeśli jednak wymaga on dostarczenia przedmiot u, należy kliknąć na NPC
+    trzymając przedmiot w ręce.'
+    - '&6-==[&a&lWięcej informacji znajduje się na /info&6]==-'
+pluginhelp:
+  contents:
+  - "§e» §6/dcc przeladuj§3 - przeładowuje config"
+  - "§e» §6/dcc afk§3 - wyświetla konfigurację wyrzucania za AFK"
+  - "§e» §6/dcccast§3 - wyświetla ogłoszenie na publicznym czacie"
+  - "§e» §6/pomoc§3 - wyświetla pomoc"
+  - "§e» §6/sklepbroadcast§3 - ogłasza zakup ze sklepu"
+  - "§e» §6/sklepbroadcastdonate§3 - ogłasza donate"
+  - "§e» §6/cc§3 - czyści czat"
+  - "§e» §6/losuj§3 - losuje"
+  - "§e» §6/reload60§3 - przeładowuje serwer za minutę"
+  - "§e» §6/restart60§3 - restartuje serwer za minutę"
+  - "§e» §6/stop60§3 - zatrzymuje serwer za minutę"
+  - "§e» §6/przerwa60§3 - rozpoczyna przerwę techniczną za minutę"
+  - "§e» §6/mc§3 - przełącza §a§lMod§2§lChat"
+  - "§e» §6/ac§3 - przełącza §c§lAdmin§4§lChat"
+  - "§e» §6/stream§3 - przełącza tryb streamu"
+  - "§e» §6/czat§3 - przełącza czat"
+  afk:
+    title: "§e» §a§lKonfiguracja §2§lAFK"
+    kick_msg: "§e» §3Wiadomość przy wyrzuceniu §e»"
+    kick_warn_delay: "§e» §3Czas, po jakim pojawi się ostrzeżenie §e»"
+    kick_warn_msg: "§e» §3Treść ostrzeżenia §e»"
+    kick_warn_msg_afk: "§e» §3Wiadomość nie-AFK §e»"
+    notafkmsg: "§e» §3Wiadomość potwierdzeia nie-AFK §e»"
+    kick_delay: "§e» §3Czas, po jakim gracz zostanie wyrzucony §e»"
+    sound_on_get_warn: "§e» §3Dźwięk ostrzeżenia §e»"
+    sound_on_notafk: "§e» §3Dźwięk potwierdzenia nie-AFK §e»"
+ranks:
+  vip:
+    - '&e&lDragon&6&lCraft &e» &bVIP'
+    - '&e» &3Ranga &bVIP&3 jest na zawsze'
+    - '&e» &3Ranga &bVIP &3daje:'
+    - '&e» &3rezerwację slota'
+    - '&e» &b10 &3Kuboid'
+    - '&e» &b5x&3 /sethome'
+    - '&e» &3Dostęp do strefy &bVIP'
+    - '&e» &3/kit &bVIP'
+    - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
+  svip:
+    - '&e&lDragon&6&lCraft &e» &5SVIP'
+    - '&e» &3Ranga &5SVIP&3 jest na zawsze'
+    - '&e» &3Ranga &5SVIP &3daje wszystko to co &bVIP &3oraz:'
+    - '&e» &b20 &3Kuboid'
+    - '&e» &b10x&3 /sethome'
+    - '&e» &3Dostęp do strefy &bSVIP'
+    - '&e» &3/kit &bSVIP'
+    - '&e» &3/workbench'
+    - '&e» &3/enderchest'
+    - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
+  mvip:
+    - '&e&lDragon&6&lCraft &e» &9MVIP'
+    - '&e» &3Ranga &9MVIP&3 jest na zawsze'
+    - '&e» &3Ranga &9MVIP &3daje wszystko to co &5SVIP &3oraz:'
+    - '&e» &b30 &3Kuboid'
+    - '&e» &b15x&3 /sethome'
+    - '&e» &3Dostęp do strefy &bMVIP'
+    - '&e» &3/kit &bMVIP'
+    - '&e» &3pisanie kolorami na tabliczkach'
+    - '&e» &3brak cooldownu na teleportację'
+    - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
+  evip:
+    - '&e&lDragon&6&lCraft &e» &6EVIP'
+    - '&e» &3Ranga &6EVIP&3 jest na zawsze'
+    - '&e» &3Ranga &6EVIP &3daje wszystko to co &9MVIP &3oraz:'
+    - '&e» &b40 &3Kuboid'
+    - '&e» &b20x&3 /sethome'
+    - '&e» &3Dostęp do strefy &bEVIP'
+    - '&e» &3/kit &bEVIP'
+    - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
+broadcast:
+  - '&6Wszelkie informacje znajdują się na &e/info&6 i &e/pomoc&6.'
+  - '&6Discord &e&lDragon&6&lCraft&6: &ediscord.gg/7pPNbUU&6. Więcej pod &e/discord&6.'
+  - '&6Chcesz połączyć swoje konto na serwerze z kontem Discord &e&lDragon&6&lCraft&6?
+  Dowiedz się więcej pod &e/discord&6.'
+  - '&6Witamy na nowej, &eV Edycji&6 &e&lDragon&6&lCraft &eSurvival&6!'
+  - '&6Chcesz przenieść &erangę&6 na &enowe konto&6? Użyj &e/przeniesrange&6!'
+  - '&eSmocze jaja&6 zakupisz na &eDCRFT.PL &6i &e/sklep&6. &6Mogą one też wypaść z
+  &eagresywnych mobów&6.'
+  - '&6Strefę &b&lVIP&6 znajdziesz pod /&bvip&6, &5&lSVIP&6 pod /&5svip&6, &9&lMVIP&6
+  pod /&9mvip&6, a &6&lEVIP&6 pod /&6evip&6.'
+  - '&6Rangę &b&lVIP&6 zakupisz również na /spawn, a rangę + na /&bvip&6, /&5svip&6,
+  /&9mvip&6 i /&6evip&6.'
+  - '&6Serwer zmienisz za pomocą &e/serwer&6.'
+  - '&6Jeśli potrzebujesz &epomocy&6 nieznajdującej się pod &e/pomoc&6, zgłoś się do
+  &eaktywnych &6osób z &eadministracji&6 na naszym serwerze &eDiscord&6.'
+  - '&6Problemy i zgłoszenia zgłaszaj administracji na serwerze &eDiscord &6bądź poprzez
+  &e/zglos treść zgłoszenia&6.'
+  - '&6Gracza łamiącego regulamin zgłosisz na naszym serwerze &eDiscord &6lub za pomocą
+  komendy &e/zglos treść zgłoszenia&6.'
+  - '&6Zapraszamy na naszego &eFacebooka&6: &ehttp://fb.com/dcrft.pl&6.'
+  - '&6Polub nas na &ewww.topkamc.pl/server/grOWQQqb&6.'
+  - '&6Zapraszamy na naszego &eInstagrama&6: &e@dcrft.pl&6.'
+afk:
+  kick_msg: "§cZostałeś wyrzucony za bycie nieaktywnym dłużej niż 15 minut."
+  kick_warn_msg: "§cHej! Za chwilę zostaniesz wyrzucony za zbyt długą nieaktywność."
+  kick_warn_msg_afk: "§e» §6Nie jestem AFK [kliknij]"
+  kick_not_afk_msg: "§aUff. Potwierdziłeś, że nie jesteś AFK."
+maintenance:
+  reload_plugin: "§aPrzeładowano plik konfiguracyjny §e§lDragon§6§lCraft§b§lCore§a."
+  saving: "§cZapisywanie plików świata..."
+  timeformat:
+    minute: "minutę"
+    minutes: "minut"
+    second: "sekundę"
+    seconds: "sekund"
+  wrong_value: "§cWartość musi być liczbą nie mniejsza od 1."
+  stop:
+    in_progress: "§cTrwa zatrzymywanie serwera..."
+    broadcast: "§cZa {0} zostanie zatrzymany."
+  restart:
+    in_progress: "§cTrwa ponowne uruchamianie serwera..."
+    broadcast: "§cZa {0} zostanie uruchomiony ponownie."
+  reload:
+    in_progress: "§cTrwa ponowne ładowanie plików serwera..."
+    broadcast: "§cZa {0} pliki serwera zostaną przeładowane."
+  maintenance:
+    in_progress: "Trwa przerwa techniczna..."
+    broadcast: "§cZa {0} odbędzie się przerwa techniczna."
+randomizer:
+  broadcast: '&3Losuję...'
+  list:
+    - '&fbiały'
+    - '&6pomarańczowy'
+    - '&2zielony'
+    - '&eżółty'
+    - '&dróżowy'
+    - '&8czarny'
+    - '&4czerwony'
+    - '&1niebieski'
+    - '&3morski'
+  randomized: '&aWylosowany kolor to: '
+shopbroadcast:
+  title: '&6Sklep'
+  purchase: "&e» &3Gracz &b{0}&3 zakupił &b{1}&3!"
+  donate: "&e» &3Gracz &b{0}&3 wpłacił &b{1} &3na rozwój serwera!"
+  other:
+    - "&e» &3Dziękujemy za wsparcie!"
+    - "&e» &6Smocze jaja&b dostępne już od &61.23zł!"
+    - "&e» &bSprawdź ofertę na &6DCRFT.PL"
+errors:
+  database:
+    - "§e--------------------------------------------"
+    - "§cWystąpił problem podczas łączenia się z bazą danych MySQL! Wszelke przydatne informacje znajdziesz poniżej."
+    - "§e--------------------------------------------"
+  data:
+    - "§e--------------------------------------------"
+    - "§cWystąpił problem podczas odczytywania pliku data.yml! Wszelke przydatne informacje znajdziesz poniżej."
+    - "§e--------------------------------------------"
+  config:
+    - "§e--------------------------------------------"
+    - "§cWystąpił problem podczas odczytywania pliku config.yml! Wszelke przydatne informacje znajdziesz poniżej."
+    - "§e--------------------------------------------"
+  messages:
+    - "§e--------------------------------------------"
+    - "§cWystąpił problem podczas odczytywania pliku messages.yml! Wszelke przydatne informacje znajdziesz poniżej."
+    - "§e--------------------------------------------"
+  other:
+    - "§e--------------------------------------------"
+    - "§cWystąpił nieznany problem! Wszelke przydatne informacje znajdziesz poniżej."
+    - "§e--------------------------------------------"
+plugin:
+  header: "§e--------------------------------------------"
+  footer: "§e--------------------------------------------"
+  enabled: "§aWłączono wersję §2"
+  disabled: "§cWyłączono wersję §2"

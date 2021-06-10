@@ -67,13 +67,6 @@
             <artifactId>AdvancedBan</artifactId>
             <version>2.3.0</version>
         </dependency>
-        <dependency>
-            <groupId>pl.dcbot</groupId>
-            <artifactId>DragonBot</artifactId>
-            <version>4.0.9</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/DragonBot.jar</systemPath>
-        </dependency>
 
     </dependencies>
     <scm>

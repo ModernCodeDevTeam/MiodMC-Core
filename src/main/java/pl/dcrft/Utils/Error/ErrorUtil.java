@@ -1,34 +1,35 @@
 package pl.dcrft.Utils.Error;
 
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.Language.LanguageManager;
 
 public class ErrorUtil {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();
+    public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
     public static void logError(ErrorReason type){
         if(type.equals(ErrorReason.DATABASE)) {
-            plugin.getLogger().info("§e--------------------------------------------");
-            plugin.getLogger().info("§cWystąpił problem podczas łączenia się z bazą danych MySQL! Wszelke przydatne informacje znajdziesz poniżej.");
-            plugin.getLogger().info("§e--------------------------------------------");
+            for (String s : LanguageManager.getMessageList("errors.database")){
+                plugin.getLogger().info((s));
+            }
         }
         else if(type.equals(ErrorReason.DATA)) {
-            plugin.getLogger().info("§e--------------------------------------------");
-            plugin.getLogger().info("§cWystąpił problem podczas odczytywania pliku data.yml! Wszelke przydatne informacje znajdziesz poniżej.");
-            plugin.getLogger().info("§e--------------------------------------------");
+            for (String s : LanguageManager.getMessageList("errors.data")){
+                plugin.getLogger().info((s));
+            }
         }
         else if(type.equals(ErrorReason.CONFIG)) {
-            plugin.getLogger().info("§e--------------------------------------------");
-            plugin.getLogger().info("§cWystąpił problem podczas odczytywania pliku config.yml! Wszelke przydatne informacje znajdziesz poniżej.");
-            plugin.getLogger().info("§e--------------------------------------------");
+            for (String s : LanguageManager.getMessageList("errors.config")){
+                plugin.getLogger().info((s));
+            }
         }
         else if(type.equals(ErrorReason.MESSAGES)) {
-            plugin.getLogger().info("§e--------------------------------------------");
-            plugin.getLogger().info("§cWystąpił problem podczas odczytywania pliku messages.yml! Wszelke przydatne informacje znajdziesz poniżej.");
-            plugin.getLogger().info("§e--------------------------------------------");
+            for (String s : LanguageManager.getMessageList("errors.messages")){
+                plugin.getLogger().info((s));
+            }
         }
         else if(type.equals(ErrorReason.OTHER)) {
-            plugin.getLogger().info("§e--------------------------------------------");
-            plugin.getLogger().info("§cWystąpił nieznany problem! Wszelke przydatne informacje znajdziesz poniżej.");
-            plugin.getLogger().info("§e--------------------------------------------");
+            for (String s : LanguageManager.getMessageList("errors.other")){
+                plugin.getLogger().info((s));
+            }
         }
     }
 }

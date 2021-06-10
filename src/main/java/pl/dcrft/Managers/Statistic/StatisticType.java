@@ -7,7 +7,6 @@ public enum StatisticType {
     RANK,
     BLOCKS,
     MARRY,
-
     SINCE,
     ONLINE,
     SERVER_ONLINE

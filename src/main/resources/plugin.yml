@@ -1,6 +1,6 @@
 main: pl.dcrft.DragonCraftCore
 name: ${project.name}
-version: ${project.version}.${buildNumber}
+version: ${project.version}-b${buildNumber}
 author: NickNickerYT
 loadbefore: [AdvancedBan]
 softdepend: [AdvancedBan, PlaceholderAPI, Vault, LuckPerms, Skript, SuperVanish]
@@ -21,16 +21,16 @@ commands:
   losuj:
     description: Losowanie kolorków.
     usage: /losuj
-  restart60:
+  restart:
     description: Restartuje serwer za minutę.
     usage: /restart60
-  reload60:
+  reload:
     description: Przeładowuje serwer za minutę.
     usage: /reload60
-  stop60:
+  stop:
     description: Zatrzumuje serwer za minutę.
     usage: /stop60
-  przerwa60:
+  przerwa:
     description: Rozpoczyna przerwę techniczną za minutę.
     usage: /przerwa60
   sklepbroadcast:

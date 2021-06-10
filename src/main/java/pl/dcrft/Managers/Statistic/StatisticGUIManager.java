@@ -11,163 +11,153 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Managers.Language.LanguageManager;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
-import static pl.dcrft.Managers.DatabaseManager.*;
-import static pl.dcrft.Managers.DatabaseManager.closeConnection;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 
 public class StatisticGUIManager {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();
-    public static void showStatistics(Player p, String[] args){
+    public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
+
+    public static void showStatistics(Player sender, String p) {
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if (!StatisticManager.checkPlayer(p)) {
+                sendPrefixedMessage(sender, "wrong_player_nickname");
+                return;
+            }
+            HashMap <StatisticType, String> statistics = StatisticManager.getStatistics(p);
 
-                    String kills = StatisticManager.getStatistic(p, StatisticType.KILLS);
-                    String deaths = StatisticManager.getStatistic(p, StatisticType.DEATHS);
-                    String kdr = StatisticManager.getStatistic(p, StatisticType.DEATHS);
-                    String rank = StatisticManager.getStatistic(p, StatisticType.DEATHS);
-                    String blocks = StatisticManager.getStatistic(p, StatisticType.DEATHS);
-                    String marry = StatisticManager.getStatistic(p, StatisticType.DEATHS);
+            String kills = statistics.get(StatisticType.KILLS);
+            String deaths = statistics.get(StatisticType.DEATHS);
+            String kdr = statistics.get(StatisticType.KDR);
+            String rank = statistics.get(StatisticType.RANK);
+            String blocks = statistics.get(StatisticType.BLOCKS);
+            String marry = statistics.get(StatisticType.MARRY);
 
-                    String since = StatisticManager.getStatistic(p, StatisticType.DEATHS);
-                    String online = StatisticManager.getStatistic(p, StatisticType.DEATHS);
-                    String server_online = StatisticManager.getStatistic(p, StatisticType.DEATHS);
+            String since = statistics.get(StatisticType.SINCE);
+            String online = statistics.get(StatisticType.ONLINE);
+            String server_online = statistics.get(StatisticType.SERVER_ONLINE);
 
-                    Inventory inv = Bukkit.createInventory(null, 54, "§6Profil §e» §3" + args[0]);
-                    ItemStack glowa = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
-                    ItemStack szklo = new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (short) 0);
-                    SkullMeta meta = (SkullMeta) glowa.getItemMeta();
-                    meta.setOwner(args[0]);
-                    meta.setDisplayName("§6Głowa §e» " + args[0]);
-                    glowa.setItemMeta(meta);
-                    inv.setItem(4, glowa);
+            Inventory inv = Bukkit.createInventory(null, 54, LanguageManager.getMessage("statistics.title") + p);
+            ItemStack glowa = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
+            ItemStack szklo = new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (short) 0);
+            SkullMeta meta = (SkullMeta) glowa.getItemMeta();
+            meta.setOwner(p);
+            meta.setDisplayName(LanguageManager.getMessage("statistics.head") + " " + p);
+            glowa.setItemMeta(meta);
+            inv.setItem(4, glowa);
 
-                    for (int i = 0; i < 9; ++i) {
-                        inv.setItem(i + 9, szklo);
-                    }
+            for (int i = 0; i < 9; ++i) {
+                inv.setItem(i + 9, szklo);
+            }
 
-                    if (!StatisticManager.checkPlayer(p)) {
-                        sendPrefixedMessage(p, "wrong_player_nickname");
-                        return;
-                    }
+            ItemStack wool;
+            ItemMeta meta2;
+            if (online.equalsIgnoreCase("teraz")) {
+                wool = new ItemStack(Material.LIME_WOOL, 1, (short) 5);
+                meta2 = wool.getItemMeta();
+                meta2.setDisplayName(LanguageManager.getMessage("statistics.status.online") + "\n" + LanguageManager.getMessage("statistics.status.current_server") + server_online);
+            } else {
+                wool = new ItemStack(Material.RED_WOOL, 1, (short) 14);
+                meta2 = wool.getItemMeta();
+                meta2.setDisplayName(LanguageManager.getMessage("statistics.status.offline") + online);
+            }
+            wool.setItemMeta(meta2);
+            inv.setItem(20, wool);
 
-                    ItemStack emeraldBlock;
-                    ItemMeta meta3;
+            ItemStack emeraldBlock = new ItemStack(Material.EMERALD_BLOCK);
+            ItemMeta meta3 = emeraldBlock.getItemMeta();
+            meta3.setDisplayName(LanguageManager.getMessage("statistics.rank") + " " + rank);
+            emeraldBlock.setItemMeta(meta3);
+            inv.setItem(22, emeraldBlock);
+            ItemStack mapa = new ItemStack(Material.MAP);
+            ItemMeta meta4 = mapa.getItemMeta();
+            if (marry != null && !marry.equalsIgnoreCase("NULL")) {
+                meta4.setDisplayName(LanguageManager.getMessage("statistics.marry.title") + " " + marry);
+            } else {
+                meta4.setDisplayName(LanguageManager.getMessage("statistics.marry.title") + " " + LanguageManager.getMessage("statistics.marry.none"));
+            }
 
-                    if (online.equalsIgnoreCase("teraz")) {
-                        emeraldBlock = new ItemStack(Material.LIME_WOOL, 1, (short) 5);
-                        meta3 = emeraldBlock.getItemMeta();
-                        meta3.setDisplayName("§6Status §e» §aonline\n§6Aktualnie na serwerze§e » &6" + server_online);
-                        emeraldBlock.setItemMeta(meta3);
-                        inv.setItem(20, emeraldBlock);
-                    } else {
-                        emeraldBlock = new ItemStack(Material.RED_WOOL, 1, (short) 14);
-                        meta3 = emeraldBlock.getItemMeta();
-                        meta3.setDisplayName("§6Ostatnio online §e» §c" + online);
-                        emeraldBlock.setItemMeta(meta3);
-                        inv.setItem(20, emeraldBlock);
-                    }
+            mapa.setItemMeta(meta4);
+            inv.setItem(29, mapa);
+            ItemStack kilof = new ItemStack(Material.DIAMOND_PICKAXE);
+            ItemMeta meta5 = kilof.getItemMeta();
+            meta5.setDisplayName(LanguageManager.getMessage("statistics.blocks") + " " + blocks);
+            kilof.setItemMeta(meta5);
+            inv.setItem(31, kilof);
+            ItemStack siekiera = new ItemStack(Material.WOODEN_AXE);
+            ItemMeta meta6 = siekiera.getItemMeta();
+            List<Punishment> pun = PunishmentManager.get().getPunishments(p, null, true);
+            if (pun.isEmpty()) {
+                meta6.setDisplayName(LanguageManager.getMessage("statistics.punishments.title") + " " + LanguageManager.getMessage("statistics.punishments.none"));
+            } else {
+                meta6.setDisplayName(LanguageManager.getMessage("statistics.punishments.title"));
+                ArrayList<String> lista = new ArrayList<>();
 
-                    emeraldBlock = new ItemStack(Material.EMERALD_BLOCK);
-                    meta3 = emeraldBlock.getItemMeta();
-                    meta3.setDisplayName("§6Ranga §e» " + rank);
-                    emeraldBlock.setItemMeta(meta3);
-                    inv.setItem(24, emeraldBlock);
-                    ItemStack mapa = new ItemStack(Material.MAP);
-                    ItemMeta meta4 = mapa.getItemMeta();
-                    if (marry != null && !marry.equalsIgnoreCase("NULL")) {
-                        meta4.setDisplayName("§6Ślub §e» §e" + marry);
-                    } else {
-                        meta4.setDisplayName("§6Ślub §e» §ebrak");
-                    }
-
-                    mapa.setItemMeta(meta4);
-                    inv.setItem(27, mapa);
-                    ItemStack kilof = new ItemStack(Material.DIAMOND_PICKAXE);
-                    ItemMeta meta5 = kilof.getItemMeta();
-                    meta5.setDisplayName("§6Wykopane bloki §e» §e" + blocks);
-                    kilof.setItemMeta(meta5);
-                    inv.setItem(31, kilof);
-                    ItemStack siekiera = new ItemStack(Material.WOODEN_AXE);
-                    ItemMeta meta6 = siekiera.getItemMeta();
-                    List<Punishment> pun = PunishmentManager.get().getPunishments(args[0], null, true);
-                    if (pun.isEmpty()) {
-                        meta6.setDisplayName("§6Kary §e» §abrak");
-                    } else {
-                        meta6.setDisplayName("§6Kary §e»");
-                        List<String> lista = new ArrayList();
-
-                        for (Punishment punishment : pun) {
-                            String typ;
-                            if (punishment.getType().toString() != "WARNING" && punishment.getType().toString() != "TEMP_WARNING") {
-                                if (punishment.getType().toString() == "BAN") {
-                                    typ = "§6Ban";
-                                    lista.add("§6Ban" + " §e» §c" + punishment.getReason());
-                                } else {
-                                    Date d;
-                                    SimpleDateFormat df2;
-                                    String data;
-                                    if (punishment.getType().toString() == "TEMP_BAN") {
-                                        typ = "§6Ban";
-                                        d = new Date(punishment.getEnd());
-                                        df2 = new SimpleDateFormat("dd.MM.YYYY 'o' HH:mm");
-                                        data = df2.format(d);
-                                        lista.add("§6Ban" + " §e» §c" + punishment.getReason() + ", §6wygasa: §e" + data);
-                                    } else if (punishment.getType().toString() == "MUTE") {
-                                        typ = "§6Wyciszenie";
-                                        lista.add("§6Wyciszenie" + " §e» §c" + punishment.getReason());
-                                    } else if (punishment.getType().toString() == "TEMP_MUTE") {
-                                        typ = "§6Wyciszenie";
-                                        d = new Date(punishment.getEnd());
-                                        df2 = new SimpleDateFormat("dd.MM.YYYY 'o' HH:mm");
-                                        data = df2.format(d);
-                                        lista.add("§6Wyciszenie" + " §e» §c" + punishment.getReason() + ", §6wygasa: §e" + data);
-                                    } else {
-                                        lista.add("§cbłąd");
-                                    }
-                                }
-                            } else {
-                                typ = "§6Ostrzeżenie";
-                                lista.add("§6Ostrzeżenie" + " §e» §c" + punishment.getReason());
+                for (Punishment punishment : pun) {
+                    if (!punishment.getType().toString().equals("WARNING") && !punishment.getType().toString().equals("TEMP_WARNING")) {
+                        if (punishment.getType().toString().equals("BAN")) {
+                            lista.add(LanguageManager.getMessage("statistics.punishments.ban") + punishment.getReason());
+                        } else {
+                            Date d;
+                            SimpleDateFormat df2;
+                            String data;
+                            switch (punishment.getType().toString()) {
+                                case "TEMP_BAN":
+                                    d = new Date(punishment.getEnd());
+                                    df2 = new SimpleDateFormat("dd.MM.yyyy 'o' HH:mm");
+                                    data = df2.format(d);
+                                    lista.add(LanguageManager.getMessage("statistics.punishments.title") + punishment.getReason() + LanguageManager.getMessage("statistics.punishments.expires") + data);
+                                    break;
+                                case "MUTE":
+                                    lista.add(LanguageManager.getMessage("statistics.punishments.mute") + punishment.getReason());
+                                    break;
+                                case "TEMP_MUTE":
+                                    d = new Date(punishment.getEnd());
+                                    df2 = new SimpleDateFormat("dd.MM.yyyy 'o' HH:mm");
+                                    data = df2.format(d);
+                                    lista.add(LanguageManager.getMessage("statistics.punishments.mute") + punishment.getReason() + LanguageManager.getMessage("statistics.punishments.expires") + data);
+                                    break;
+                                default:
+                                    lista.add(LanguageManager.getMessage("statistics.punishments.error"));
+                                    break;
                             }
-
-                            meta6.setLore(lista);
                         }
+                    } else {
+                        lista.add(LanguageManager.getMessage("statistics.punishments.warning") + punishment.getReason());
                     }
 
-                    siekiera.setItemMeta(meta6);
-                    inv.setItem(35, siekiera);
-                    ItemStack miecz = new ItemStack(Material.IRON_SWORD);
-                    ItemMeta meta7 = miecz.getItemMeta();
-                    meta7.setDisplayName("§6Zabójstwa §e» " + kills);
-                    List<String> lore = new ArrayList();
-                    lore.add("§6Śmierci §e» " + deaths);
-                    lore.add("§6Stosunek Z/ś §e» " + kdr);
-                    meta7.setLore(lore);
-                    miecz.setItemMeta(meta7);
-                    inv.setItem(38, miecz);
-                    ItemStack jablko = new ItemStack(Material.GOLDEN_APPLE);
-                    ItemMeta meta8 = jablko.getItemMeta();
-                    meta8.setDisplayName("§6Gra od §e» " + since);
-                    jablko.setItemMeta(meta8);
-                    inv.setItem(42, jablko);
-                    ItemStack wersja = new ItemStack(Material.LEGACY_REDSTONE_TORCH_ON);
-                    ItemMeta meta9 = wersja.getItemMeta();
-                    meta9.setDisplayName("§6Wersja §e» " + plugin.getDescription().getVersion());
-                    wersja.setItemMeta(meta9);
-                    inv.setItem(49, wersja);
-                    Bukkit.getScheduler().runTask(plugin, () -> {
-                        p.openInventory(inv);
-                    });
+                    meta6.setLore(lista);
+                }
+            }
+
+            siekiera.setItemMeta(meta6);
+            inv.setItem(24, siekiera);
+            ItemStack miecz = new ItemStack(Material.IRON_SWORD);
+            ItemMeta meta7 = miecz.getItemMeta();
+            meta7.setDisplayName(LanguageManager.getMessage("statistics.kills") + " " + kills);
+            ArrayList<String> lore = new ArrayList<>();
+            lore.add(LanguageManager.getMessage("statistics.deaths") + " " + deaths);
+            lore.add(LanguageManager.getMessage("statistics.kdr") + " " + kdr);
+            meta7.setLore(lore);
+            miecz.setItemMeta(meta7);
+            inv.setItem(38, miecz);
+            ItemStack jablko = new ItemStack(Material.GOLDEN_APPLE);
+            ItemMeta meta8 = jablko.getItemMeta();
+            meta8.setDisplayName(LanguageManager.getMessage("statistics.since") + " " + since);
+            jablko.setItemMeta(meta8);
+            inv.setItem(40, jablko);
+            ItemStack wersja = new ItemStack(Material.LEGACY_REDSTONE_TORCH_ON);
+            ItemMeta meta9 = wersja.getItemMeta();
+            meta9.setDisplayName(LanguageManager.getMessage("statistics.plugin_version")+ " " + plugin.getDescription().getVersion());
+            wersja.setItemMeta(meta9);
+            inv.setItem(53, wersja);
+            Bukkit.getScheduler().runTask(plugin, () -> sender.openInventory(inv));
 
 
         });

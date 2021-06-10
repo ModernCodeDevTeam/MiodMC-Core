@@ -15,12 +15,9 @@ public class PlayerLoginListener implements Listener {
     public void onLogin(PlayerLoginEvent event) {
         if (event.getResult() == PlayerLoginEvent.Result.KICK_FULL) {
             Player player = event.getPlayer();
-            if (player != null) {
-            }
 
-            if (player != null && player.hasPermission("vipslot.allow")) {
+            if (player.hasPermission("vipslot.allow")) {
                 event.allow();
-                return;
             } else {
                 event.setKickMessage(getMessage("prefix") + getMessage("server_full"));
             }

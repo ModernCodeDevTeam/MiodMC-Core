@@ -4,13 +4,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.SessionManager;
 
 import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerDisconnectListener implements Listener {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
 
     @EventHandler
     public void onPlayerDisconnect(PlayerQuitEvent e) {

@@ -9,19 +9,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
-import static pl.dcrft.Managers.ConfigManger.getCustomConfig;
+import static pl.dcrft.Managers.ConfigManager.getDatabaseFile;
 
 public class DatabaseManager {
-    public static DragonCraftCore plugin = DragonCraftCore.getInstance();;
+    public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     public static Connection connection;
-    public static String host = getCustomConfig().getString("host");
-    public static String database = getCustomConfig().getString("database");
-    public static String username = getCustomConfig().getString("user");
-    public static String password = getCustomConfig().getString("password");
-    public static int port = getCustomConfig().getInt("port");
-    public static String table = getCustomConfig().getString("table");
-    public static String table_bungee = getCustomConfig().getString("table_bungee");
+    public static final String host = getDatabaseFile().getString("host");
+    public static final String database = getDatabaseFile().getString("database");
+    public static final String username = getDatabaseFile().getString("user");
+    public static final String password = getDatabaseFile().getString("password");
+    public static final int port = getDatabaseFile().getInt("port");
+    public static final String table = getDatabaseFile().getString("table");
+    public static final String table_bungee = getDatabaseFile().getString("table_bungee");
 
     public static void openConnection() {
                 try {
