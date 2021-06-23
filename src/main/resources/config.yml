@@ -43,7 +43,7 @@ staff:
   - JaneQ
   - MikiIgi192
   - kalkulator888
-commamnds:
+commands:
   vip: "/warp vip"
   svip: "/warp svip"
   mvip: "/warp mvip"

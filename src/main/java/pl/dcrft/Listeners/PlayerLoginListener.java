@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
-import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
+import static pl.dcrft.Managers.LanguageManager.getMessage;
 
 
 public class PlayerLoginListener implements Listener {

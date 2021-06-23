@@ -50,7 +50,7 @@ public class ConfigManager {
         }
 
     }
-    public static void saveCustomConfig() {
+    public static void saveDatabaseConfig() {
         try {
             databaseConfig.save(databaseConfigFile);
 

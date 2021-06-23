@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
+import pl.dcrft.Utils.ColorUtil;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.stream.Stream;
 
 import static org.bukkit.Bukkit.getServer;
 import static pl.dcrft.Managers.ConfigManager.getDataFile;
-import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
+import static pl.dcrft.Managers.LanguageManager.getMessage;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 
@@ -91,7 +92,12 @@ public class PlayerChatListener implements Listener {
                 else {
                     wiad = niezmieniona;
                 }
-                String msg = getMessage("staffchat.adminchat.title") + getMessage("staffchat.adminchat.spacer") + PlaceholderAPI.setPlaceholders(sender, "%vault_prefix%") + sender.getName() + getMessage("staffchat.adminchat.spacer") + wiad;
+                String msg = ColorUtil.colorize(
+                        getMessage("staffchat.adminchat.title") +
+                                getMessage("staffchat.adminchat.spacer") +
+                                sender.getDisplayName() +
+                                getMessage("staffchat.adminchat.spacer") +
+                                wiad);
                 getServer().getLogger().info(msg);
                 for(Player o : Bukkit.getOnlinePlayers()){
                     if(o.hasPermission("admin.see") && !getDataFile().getBoolean(o.getName() + ".stream")) {
@@ -118,7 +124,12 @@ public class PlayerChatListener implements Listener {
                 else {
                     wiad = niezmieniona;
                 }
-                String msg = getMessage("staffchat.modchat.title") + getMessage("staffchat.modchat.spacer")  + PlaceholderAPI.setPlaceholders(sender, "%vault_prefix%") + sender.getName() + getMessage("staffchat.modchat.spacer") + wiad;
+                String msg = ColorUtil.colorize(
+                        getMessage("staffchat.modchat.title") +
+                                getMessage("staffchat.modchat.spacer")  +
+                                sender.getDisplayName() +
+                                getMessage("staffchat.modchat.spacer") +
+                                wiad);
                 getServer().getLogger().info(msg);
                 for(Player o : Bukkit.getOnlinePlayers()){
                     if(o.hasPermission("mod.see") && !getDataFile().getBoolean(o.getName() + ".stream")) {

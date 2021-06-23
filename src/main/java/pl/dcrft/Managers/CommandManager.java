@@ -2,7 +2,6 @@ package pl.dcrft.Managers;
 
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.utils.Punishment;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,8 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Managers.Language.LanguageManager;
 import pl.dcrft.Managers.Panel.PanelType;
+import pl.dcrft.Utils.ConfigUtil;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,7 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 import static pl.dcrft.Managers.DatabaseManager.*;
-import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
+import static pl.dcrft.Managers.LanguageManager.getMessage;
 import static pl.dcrft.Managers.MaintenanceManager.*;
 import static pl.dcrft.Managers.MessageManager.*;
 import static pl.dcrft.Managers.Panel.PanelManager.hidePanel;
@@ -322,7 +321,7 @@ public class CommandManager implements CommandExecutor {
         }
         if (cmd.getName().equalsIgnoreCase("czat")) {
             if (!sender.hasPermission("panel.mod")) {
-                MessageManager.sendPrefixedMessage(sender,"marry.not_in");
+                MessageManager.sendPrefixedMessage(sender,"notfound");
             } else {
                 if (ConfigManager.getDataFile().getBoolean("czat")) {
                     ConfigManager.getDataFile().set("czat", false);
@@ -416,10 +415,7 @@ public class CommandManager implements CommandExecutor {
                 }
                 final String sub = args[0];
                 if (sub.equalsIgnoreCase("przeladuj")) {
-                    ConfigManager.saveData();
-                    initializeFiles();
-                    plugin.filters = plugin.getConfig().getConfigurationSection("filters").getValues(true);
-
+                    ConfigUtil.reloadFiles();
                     MessageManager.sendPrefixedMessage(sender, "maintenance.reload_plugin");
                 }
                 else if (sub.equalsIgnoreCase("afk")) {

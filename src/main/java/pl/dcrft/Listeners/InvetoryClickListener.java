@@ -3,7 +3,7 @@ package pl.dcrft.Listeners;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import pl.dcrft.Managers.Language.LanguageManager;
+import pl.dcrft.Managers.LanguageManager;
 
 public class InvetoryClickListener implements Listener {
     @EventHandler

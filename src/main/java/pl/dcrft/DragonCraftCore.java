@@ -1,5 +1,6 @@
 package pl.dcrft;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommandYamlParser;
@@ -7,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.dcrft.Listeners.*;
 import pl.dcrft.Managers.CommandManager;
-import pl.dcrft.Managers.Language.LanguageManager;
+import pl.dcrft.Managers.LanguageManager;
 import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.*;
@@ -73,6 +74,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
             e.printStackTrace();
             logError(ErrorReason.DATABASE);
         }
+
         getLogger().info(LanguageManager.getMessage("plugin.header"));
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");
         getLogger().info(LanguageManager.getMessage("plugin.disabled") + getDescription().getVersion());

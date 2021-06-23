@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Managers.Language.LanguageManager;
+import pl.dcrft.Managers.LanguageManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

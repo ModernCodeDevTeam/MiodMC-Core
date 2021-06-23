@@ -1,4 +1,4 @@
-package pl.dcrft.Managers.Language;
+package pl.dcrft.Managers;
 
 import org.bukkit.ChatColor;
 import pl.dcrft.DragonCraftCore;

@@ -41,25 +41,25 @@ friends:
     invitation_not_send: "§cPodaj nick gracza, który wysłał do ciebie zaproszenie do znajomych"
     rejected_target: " §aOdrzucono zaprosznie do znajomych od §e{0}§c."
     rejected_self: " §e{0} §codrzucił twoje zaproszenie do znajomych."
-  marry:
-    already: "§cJuż jesteś w związku."
-    target_already: "§cTen gracz już jest w związku."
-    no_ivite_send: "§cTen gracz nie wysłał do ciebie prośby o ślub."
-    not_in: "§cNie jesteś w związku."
-    not_with_target: "§cNie jesteś w związku z tą osobą."
-    self: "§cNo... Nie."
-    send:
-      self: "§cNo coś ty, chcesz się związać z samym sobą?"
-      sent:
-        self: "§aWysłano prośbę o ślub."
-        target: " §e{0} §aprosi cię o ślub! Wpisz §e/sakceptuj {0} §alub §e/sodrzuc {0}§a, aby odpowiedzieć na prośbę."
-      accept:
-        missing_diamond: "§cNie posiadasz 1 diamentu potrzebnego do zawarcia ślubu."
-        accepted: "§aŚlub został zawarty!"
-        broadcast: " §e{0} §bi §e{1} §bwłaśnie zawarli ślub!"
-      reject:
-        rejected: "§aProśba o ślub została odrzucona."
-        broadcast: " §e{0} §bi §e{1} §bwłaśnie się rozwiedli."
+marry:
+  already: "§cJuż jesteś w związku."
+  target_already: "§cTen gracz już jest w związku."
+  no_ivite_send: "§cTen gracz nie wysłał do ciebie prośby o ślub."
+  not_in: "§cNie jesteś w związku."
+  not_with_target: "§cNie jesteś w związku z tą osobą."
+  self: "§cNo... Nie."
+  send:
+    self: "§cNo coś ty, chcesz się związać z samym sobą?"
+    sent:
+      self: "§aWysłano prośbę o ślub."
+      target: " §e{0} §aprosi cię o ślub! Wpisz §e/sakceptuj {0} §alub §e/sodrzuc {0}§a, aby odpowiedzieć na prośbę."
+    accept:
+      missing_diamond: "§cNie posiadasz 1 diamentu potrzebnego do zawarcia ślubu."
+      accepted: "§aŚlub został zawarty!"
+      broadcast: " §e{0} §bi §e{1} §bwłaśnie zawarli ślub!"
+    reject:
+      rejected: "§aProśba o ślub została odrzucona."
+      broadcast: " §e{0} §bi §e{1} §bwłaśnie się rozwiedli."
 stream:
   cant_write_turned_off: "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie. Wyłączono czat automatycznie."
 advancedban_warn_usage: "§cUżycie: §e/warn <nick> <powód> [-s]§c."
@@ -126,8 +126,8 @@ staffpanel:
     tps:
       title: "§e» §6TPS §e»"
       0-10: "§4uhh"
-      10-14: "§4tragiczna"
-      14-16: "§4zła"
+      10-12: "§4tragiczna"
+      12-14: "§4zła"
       16-18: "§ckiepska"
       18-19: "§aok"
       19-20: "§2dobra"

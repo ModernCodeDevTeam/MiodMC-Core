@@ -3,11 +3,10 @@ package pl.dcrft.Managers;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Managers.Language.LanguageManager;
 
 import java.text.MessageFormat;
 
-import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
+import static pl.dcrft.Managers.LanguageManager.getMessage;
 
 public class MaintenanceManager {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();

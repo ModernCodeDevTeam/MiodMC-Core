@@ -1,7 +1,7 @@
 package pl.dcrft.Utils.Error;
 
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Managers.Language.LanguageManager;
+import pl.dcrft.Managers.LanguageManager;
 
 public class ErrorUtil {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();

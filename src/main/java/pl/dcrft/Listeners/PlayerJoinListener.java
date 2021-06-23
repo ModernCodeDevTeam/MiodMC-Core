@@ -9,10 +9,10 @@ import org.bukkit.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
-import pl.dcrft.Managers.Language.LanguageManager;
-import pl.dcrft.Managers.Panel.PanelType;
+import pl.dcrft.Managers.LanguageManager;
 import pl.dcrft.Managers.SessionManager;
 import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Utils.GroupUtil;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,7 +21,6 @@ import java.util.List;
 import static pl.dcrft.Managers.ConfigManager.getDataFile;
 import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
-import static pl.dcrft.Managers.Panel.PanelManager.showRepeatingPanel;
 import static pl.dcrft.Managers.Panel.PanelManager.updatePanels;
 import static pl.dcrft.Utils.Error.ErrorUtil.logError;
 import static pl.dcrft.Utils.RoundUtil.round;
@@ -69,7 +68,7 @@ public class PlayerJoinListener implements Listener {
             }
             if (!getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat")) {
                 getDataFile().set(e.getPlayer().getName() + ".adminchat", true);
-                e.getPlayer().sendMessage(LanguageManager.getMessage("staffchat.modchat.title") + " " + LanguageManager.getMessage("staffchat.auto_enabled"));
+                e.getPlayer().sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessageList("staffchat.adminchat.spacer") + LanguageManager.getMessage("staffchat.auto_enabled"));
                 ConfigManager.saveData();
                 return;
             }
@@ -95,7 +94,6 @@ public class PlayerJoinListener implements Listener {
         } else {
             kdr = (float)kille / (float)dedy;
         }
-
         kdr = round(kdr, 2);
         ranga = PlaceholderAPI.setPlaceholders(e.getPlayer(), "%vault_rank%");
 

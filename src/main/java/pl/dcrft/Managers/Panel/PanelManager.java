@@ -7,10 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Managers.Language.LanguageManager;
+import pl.dcrft.Managers.LanguageManager;
 
 import static pl.dcrft.Managers.ConfigManager.getDataFile;
-import static pl.dcrft.Managers.Language.LanguageManager.getMessage;
+import static pl.dcrft.Managers.LanguageManager.getMessage;
 import static pl.dcrft.Utils.RoundUtil.round;
 
 
@@ -56,7 +56,7 @@ public class PanelManager {
         ping.setScore(13);
         double itps;
         itps = Math.round(Bukkit.getTPS()[0] * 100.0) / 100.0;
-        String wyd;
+        String wyd = LanguageManager.getMessage("staffpanel.performance.tps.unknown");
         if (itps <= 8) {
             wyd = LanguageManager.getMessage("staffpanel.performance.tps.0-10");
         } else if (itps >= 8) {
@@ -79,8 +79,6 @@ public class PanelManager {
                     }
                 }
             }
-        } else {
-            wyd = LanguageManager.getMessage("staffpanel.performance.tps.unknown");
         }
         Score wydajnosc = objective.getScore(LanguageManager.getMessage("staffpanel.performance.title") + " " + wyd);
         wydajnosc.setScore(12);
