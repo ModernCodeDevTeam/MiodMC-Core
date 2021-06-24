@@ -24,9 +24,13 @@ Main features:\
 • admin/moderator panel - server performance and other statistics in scoreboard\
 • stream mode for staff - hides staff's panel and disables staff's chat\
 • server reload/restart/stop/maintenance broadcast with countdown and full automation\
-• enable/disable chat for players
+• enable/disable chat for players\
 • AdvancedBan integration - chechkwarn command an warn comand as an alias for tempwarn\
 • vip/svip/mvip/evip commands which teleports to vip area or, if a player doesn't have specified permission, shows some information about the rank like price\
 • error handling\
 • fully customizable messages\
 • full RGB colors support
+
+##### Sources which helped develop DragonCraftCore:
+[EssentialsX](https://github.com/EssentialsX/Essentials)\
+[CommandAliases](https://github.com/Kneesnap/CommandAliases)
