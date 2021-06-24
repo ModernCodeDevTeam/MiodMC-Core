@@ -5,6 +5,7 @@ import me.leoko.advancedban.utils.Punishment;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
+import org.bukkit.block.data.Lightable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -44,17 +45,48 @@ public class StatisticGUIManager {
             String server_online = statistics.get(StatisticType.SERVER_ONLINE);
 
             Inventory inv = Bukkit.createInventory(null, 54, LanguageManager.getMessage("statistics.title") + p);
-            ItemStack glowa = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (short) SkullType.PLAYER.ordinal());
-            ItemStack szklo = new ItemStack(Material.LEGACY_STAINED_GLASS_PANE, 1, (short) 0);
+
+            ItemStack green = new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1);
+            ItemStack white = new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
+            ItemStack orange = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE, 1);
+            ItemStack yellow = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE, 1);
+
+            for (int i = 0; i < 9; ++i) {
+                inv.setItem(i, green);
+            }
+            for (int i = 0; i < 9; ++i) {
+                inv.setItem(i + 9, white);
+            }
+            inv.setItem(12, orange);
+            inv.setItem(14, orange);
+
+            for (int i = 0; i < 36; ++i) {
+                inv.setItem(i + 18, orange);
+            }
+            inv.setItem(13, yellow);
+            inv.setItem(21, yellow);
+            inv.setItem(23, yellow);
+
+            inv.setItem(27, yellow);
+            inv.setItem(28, yellow);
+
+            inv.setItem(33, yellow);
+            inv.setItem(34, yellow);
+            inv.setItem(35, yellow);
+
+            inv.setItem(39, yellow);
+            inv.setItem(41, yellow);
+
+            inv.setItem(45, yellow);
+            inv.setItem(49, yellow);
+
+
+            ItemStack glowa = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) glowa.getItemMeta();
-            meta.setOwner(p);
+            meta.setOwningPlayer(Bukkit.getOfflinePlayer(Bukkit.getPlayerUniqueId(p)));
             meta.setDisplayName(LanguageManager.getMessage("statistics.head") + " " + p);
             glowa.setItemMeta(meta);
             inv.setItem(4, glowa);
-
-            for (int i = 0; i < 9; ++i) {
-                inv.setItem(i + 9, szklo);
-            }
 
             ItemStack wool;
             ItemMeta meta2;
@@ -152,7 +184,8 @@ public class StatisticGUIManager {
             meta8.setDisplayName(LanguageManager.getMessage("statistics.since") + " " + since);
             jablko.setItemMeta(meta8);
             inv.setItem(40, jablko);
-            ItemStack wersja = new ItemStack(Material.LEGACY_REDSTONE_TORCH_ON);
+            ItemStack wersja = new ItemStack(Material.REDSTONE_TORCH, (short) 1);
+
             ItemMeta meta9 = wersja.getItemMeta();
             meta9.setDisplayName(LanguageManager.getMessage("statistics.plugin_version")+ " " + plugin.getDescription().getVersion());
             wersja.setItemMeta(meta9);
