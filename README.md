@@ -14,7 +14,7 @@ Main features:\
 • clear chat command\
 • staff chat color\
 • admin/moderator chat\
-• btring list randomizer used for events, games on server\
+• string list randomizer used for events, games on server\
 • broadcast message on purchase from item shop/donate\
 • message broadcast every x seconds\
 • broadcast custom message command\
