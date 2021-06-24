@@ -17,6 +17,7 @@ import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import static pl.dcrft.Managers.DatabaseManager.*;
@@ -35,6 +36,7 @@ public class CommandManager implements CommandExecutor {
 
     public final ArrayList<SessionManager> list = new ArrayList<>();
     final String prefix = LanguageManager.getMessage("prefix");
+
     public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
         if (cmd.getName().equalsIgnoreCase("nieafk")) {
             Player p = (Player) sender;
@@ -53,7 +55,7 @@ public class CommandManager implements CommandExecutor {
             return true;
         }
         if (cmd.getName().equalsIgnoreCase("z") || cmd.getName().equalsIgnoreCase("znajomi") || cmd.getName().equalsIgnoreCase("f")) {
-            if(!(sender instanceof Player)){
+            if (!(sender instanceof Player)) {
                 sender.sendMessage(LanguageManager.getMessage("console_error"));
                 return false;
             }
@@ -101,7 +103,7 @@ public class CommandManager implements CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("dodaj") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("d")) {
                 if (args.length == 1) {
-                    MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                     return false;
                 }
                 if (args[1].equalsIgnoreCase(sender.getName())) {
@@ -109,20 +111,20 @@ public class CommandManager implements CommandExecutor {
                     return false;
                 }
                 if (Bukkit.getPlayer(args[1]) == null) {
-                    MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                     return false;
                 }
                 if (!Bukkit.getPlayer(args[1]).isOnline()) {
-                    MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                     return false;
                 }
                 if (plugin.getConfig().getStringList("staff").contains(args[1])) {
-                    MessageManager.sendPrefixedMessage(p,"friends.add.staff");
+                    MessageManager.sendPrefixedMessage(p, "friends.add.staff");
                     return false;
                 } else {
                     List<String> znajomip = ConfigManager.getDataFile().getStringList(sender.getName() + ".znajomi");
                     if (znajomip.contains(Bukkit.getOfflinePlayer(args[1]).getName())) {
-                        MessageManager.sendPrefixedMessage(p,"friends.add.already_friend");
+                        MessageManager.sendPrefixedMessage(p, "friends.add.already_friend");
                         return false;
                     }
                     ConfigManager.getDataFile().set(sender.getName() + ".znajprosba." + Bukkit.getOfflinePlayer(args[1]).getName(), true);
@@ -135,11 +137,11 @@ public class CommandManager implements CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("akceptuj") || args[0].equalsIgnoreCase("a")) {
                 if (args.length == 1) {
-                    MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                     return false;
                 }
                 if (!ConfigManager.getDataFile().getBoolean(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName())) {
-                    MessageManager.sendPrefixedMessage(p,"friends.accept.invitation_not_send");
+                    MessageManager.sendPrefixedMessage(p, "friends.accept.invitation_not_send");
                     return false;
                 } else {
                     ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName(), null);
@@ -159,11 +161,11 @@ public class CommandManager implements CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("odrzuc") || args[0].equalsIgnoreCase("o")) {
                 if (args.length == 1) {
-                    MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                     return false;
                 }
                 if (!ConfigManager.getDataFile().getBoolean(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName())) {
-                    MessageManager.sendPrefixedMessage(p,"friends.reject.invitation_not_send");
+                    MessageManager.sendPrefixedMessage(p, "friends.reject.invitation_not_send");
                     return false;
                 } else {
                     ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName(), null);
@@ -185,16 +187,16 @@ public class CommandManager implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("slub")) {
             Player p = (Player) sender;
             if (args.length == 0) {
-                MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
             if (!Bukkit.getPlayer(args[0]).isOnline()) {
-                MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
             Player other = Bukkit.getPlayer(args[0]);
             if (plugin.getConfig().getStringList("staff").contains(args[1])) {
-                MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
             if (args[0].equalsIgnoreCase(p.getName())) {
@@ -222,7 +224,7 @@ public class CommandManager implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("sakceptuj")) {
             Player p = (Player) sender;
             if (args.length == 0) {
-                MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
+                MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
             if (ConfigManager.getDataFile().getString(p.getName() + ".slub") != null) {
@@ -270,14 +272,13 @@ public class CommandManager implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("sodrzuc")) {
             Player p = (Player) sender;
             if (args.length == 0) {
-                MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
-            }
-            else if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
+                MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
+            } else if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
                 MessageManager.sendPrefixedMessage(p, "marry.no_ivite_send");
             } else {
-                MessageManager.sendPrefixedMessage(p,"marry.reject.rejected");
+                MessageManager.sendPrefixedMessage(p, "marry.reject.rejected");
                 if (Bukkit.getPlayer(args[0]).isOnline()) {
-                    MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]),"marry.reject.rejected");
+                    MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.reject.rejected");
                 }
                 ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
                 ConfigManager.saveData();
@@ -287,16 +288,13 @@ public class CommandManager implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("rozwod")) {
             Player p = (Player) sender;
             if (args.length == 0) {
-                MessageManager.sendPrefixedMessage(p,"wrong_player_nickname");
-            }
-            else if (args[0].equalsIgnoreCase(p.getName())) {
-                MessageManager.sendPrefixedMessage(p,"marry.self");
-            }
-            else if (ConfigManager.getDataFile().getString(p.getName() + ".slub") == null) {
-                MessageManager.sendPrefixedMessage(p,"marry.not_in");
-            }
-            else if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub").equalsIgnoreCase(p.getName()) || !ConfigManager.getDataFile().getString(p.getName() + ".slub").equalsIgnoreCase(Bukkit.getOfflinePlayer(args[0]).getName())) {
-                MessageManager.sendPrefixedMessage(p,"marry.not_with_target");
+                MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
+            } else if (args[0].equalsIgnoreCase(p.getName())) {
+                MessageManager.sendPrefixedMessage(p, "marry.self");
+            } else if (ConfigManager.getDataFile().getString(p.getName() + ".slub") == null) {
+                MessageManager.sendPrefixedMessage(p, "marry.not_in");
+            } else if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub").equalsIgnoreCase(p.getName()) || !ConfigManager.getDataFile().getString(p.getName() + ".slub").equalsIgnoreCase(Bukkit.getOfflinePlayer(args[0]).getName())) {
+                MessageManager.sendPrefixedMessage(p, "marry.not_with_target");
             } else {
                 ConfigManager.getDataFile().set(p.getName() + ".slub", null);
                 ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub", null);
@@ -321,7 +319,7 @@ public class CommandManager implements CommandExecutor {
         }
         if (cmd.getName().equalsIgnoreCase("czat")) {
             if (!sender.hasPermission("panel.mod")) {
-                MessageManager.sendPrefixedMessage(sender,"notfound");
+                MessageManager.sendPrefixedMessage(sender, "notfound");
             } else {
                 if (ConfigManager.getDataFile().getBoolean("czat")) {
                     ConfigManager.getDataFile().set("czat", false);
@@ -345,8 +343,8 @@ public class CommandManager implements CommandExecutor {
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
-                p.chat(plugin.getConfig().getString("commands."  + cmd.getName()));
-            }else {
+                p.chat(plugin.getConfig().getString("commands." + cmd.getName()));
+            } else {
                 MessageManager.sendMessageList(p, "ranks." + cmd.getName());
             }
             return true;
@@ -355,7 +353,7 @@ public class CommandManager implements CommandExecutor {
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
                 p.chat(plugin.getConfig().getString("commands." + cmd.getName()));
-            }else {
+            } else {
                 MessageManager.sendMessageList(p, "ranks." + cmd.getName());
             }
             return true;
@@ -363,8 +361,8 @@ public class CommandManager implements CommandExecutor {
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
-                p.chat(plugin.getConfig().getString("commands."  + cmd.getName()));
-            }else {
+                p.chat(plugin.getConfig().getString("commands." + cmd.getName()));
+            } else {
                 MessageManager.sendMessageList(p, "ranks." + cmd.getName());
             }
             return true;
@@ -372,8 +370,8 @@ public class CommandManager implements CommandExecutor {
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
-                p.chat(plugin.getConfig().getString("commands."  + cmd.getName()));
-            }else {
+                p.chat(plugin.getConfig().getString("commands." + cmd.getName()));
+            } else {
                 MessageManager.sendMessageList(p, "ranks." + cmd.getName());
             }
             return true;
@@ -397,7 +395,7 @@ public class CommandManager implements CommandExecutor {
                 }
                 final String allArgs = sb.toString().trim();
                 Bukkit.getServer().broadcastMessage(prefix + ChatColor.translateAlternateColorCodes('&', allArgs));
-            }else {
+            } else {
                 sendPrefixedMessage(sender, "notfound");
             }
             return true;
@@ -406,7 +404,7 @@ public class CommandManager implements CommandExecutor {
                 if (sender.hasPermission("dcc.adm")) {
                     sender.sendMessage("§e§lDragon§6§lCraft§b§lCore " + plugin.getDescription().getVersion());
                     MessageManager.sendMessageList(sender, "pluginhelp.contents");
-                }else {
+                } else {
                     sendPrefixedMessage(sender, "notfound");
                 }
             } else {
@@ -417,8 +415,7 @@ public class CommandManager implements CommandExecutor {
                 if (sub.equalsIgnoreCase("przeladuj")) {
                     ConfigUtil.reloadFiles();
                     MessageManager.sendPrefixedMessage(sender, "maintenance.reload_plugin");
-                }
-                else if (sub.equalsIgnoreCase("afk")) {
+                } else if (sub.equalsIgnoreCase("afk")) {
                     String kick_msg = plugin.getConfig().getString("afk.kick_msg");
                     int kick_warn_delay = plugin.getConfig().getInt("afk.kick_warn_delay");
                     String kick_warn_msg = plugin.getConfig().getString("afk.kick_warn_msg");
@@ -433,10 +430,10 @@ public class CommandManager implements CommandExecutor {
                     sender.sendMessage(getMessage("pluginhelp.afk.kick_msg") + " " + kick_msg);
                     sender.sendMessage(plugin.getConfig().getString("afk.kick_warn_delay") + " " + kick_warn_delay);
                     sender.sendMessage(getMessage("pluginhelp.afk.kick_warn_msg") + " " + kick_warn_msg);
-                    sender.sendMessage(getMessage("pluginhelp.afk.kick_warn_msg_afk") + " " +  kick_warn_msg_afk);
-                    sender.sendMessage(getMessage("pluginhelp.afk.notafkmsg") + " " +  notafkmsg);
+                    sender.sendMessage(getMessage("pluginhelp.afk.kick_warn_msg_afk") + " " + kick_warn_msg_afk);
+                    sender.sendMessage(getMessage("pluginhelp.afk.notafkmsg") + " " + notafkmsg);
                     sender.sendMessage(plugin.getConfig().getString("afk.kick_delay") + " " + kick_delay);
-                    sender.sendMessage(plugin.getConfig().getString("afk.sound_on_get_warn") + " " +  sound_on_get_warn);
+                    sender.sendMessage(plugin.getConfig().getString("afk.sound_on_get_warn") + " " + sound_on_get_warn);
                     sender.sendMessage(plugin.getConfig().getString("afk.sound_on_notafk") + " " + sound_on_notafk);
                 } else {
                     MessageManager.sendPrefixedMessage(sender, "notfound");
@@ -455,71 +452,63 @@ public class CommandManager implements CommandExecutor {
             return true;
         } else if (cmd.getName().equalsIgnoreCase("stop")) {
             if (sender.hasPermission("r.adm")) {
-                if(args.length == 0){
+                if (args.length == 0) {
                     stopServer();
-                }
-                else{
-                    if(args[0].contains("[0-9]+")){
+                } else {
+                    if (args[0].contains("[0-9]+")) {
                         sendPrefixedMessage(sender, "maintenance.wrong_value");
-                    }
-                    else{
+                    } else {
                         stopServer(Integer.valueOf(args[0]));
                     }
                 }
-            }else {
+            } else {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
             }
         } else if (cmd.getName().equalsIgnoreCase("reload")) {
             if (sender.hasPermission("r.adm")) {
-                if(args.length == 0){
+                if (args.length == 0) {
                     reloadServer();
-                }
-                else{
-                    if(args[0].contains("[0-9]+")){
+                } else {
+                    if (args[0].contains("[0-9]+")) {
                         sendPrefixedMessage(sender, "maintenance.wrong_value");
-                    }
-                    else{
+                    } else {
                         reloadServer(Integer.valueOf(args[0]));
                     }
                 }
-            }else {
+            } else {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("restart")) {
             if (sender.hasPermission("r.adm")) {
-                if(args.length == 0){
+                if (args.length == 0) {
                     restartServer();
-                }
-                else{
-                    if(args[0].contains("[0-9]+")){
+                } else {
+                    if (args[0].contains("[0-9]+")) {
                         sendPrefixedMessage(sender, "maintenance.wrong_value");
-                    }
-                    else{
+                    } else {
                         restartServer(Integer.valueOf(args[0]));
                     }
                 }
-            }else {
+            } else {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
             }
         } else if (cmd.getName().equalsIgnoreCase("przerwa")) {
             if (sender.hasPermission("r.adm")) {
-                if(args.length == 0){
+                if (args.length == 0) {
                     maintenanceStart();
-                }
-                else{
-                    if(args[0].contains("[0-9]+")){
+                } else {
+                    if (args[0].contains("[0-9]+")) {
                         sendPrefixedMessage(sender, "maintenance.wrong_value");
-                    }
-                    else{
+                    } else {
                         maintenanceStart(Integer.valueOf(args[0]));
                     }
                 }
-            }else {
+            } else {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
             }
         } else if (cmd.getName().equalsIgnoreCase("ac")) {
-            if(!(sender instanceof Player) ){
+            if (!(sender instanceof Player)) {
                 MessageManager.sendMessage(sender, "console_error");
                 return false;
             }
@@ -534,10 +523,9 @@ public class CommandManager implements CommandExecutor {
                     ConfigManager.getDataFile().set(sender.getName() + ".modchat", false);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.enabled"));
 
-                    if(sender.hasPermission("panel.adm")){
+                    if (sender.hasPermission("panel.adm")) {
                         updatePanel(p, PanelType.ADMIN);
-                    }
-                    else if(sender.hasPermission("panel.mod")){
+                    } else if (sender.hasPermission("panel.mod")) {
                         updatePanel(p, PanelType.MOD);
                     }
                     ConfigManager.saveData();
@@ -552,10 +540,9 @@ public class CommandManager implements CommandExecutor {
                     sender.sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.disabled"));
 
 
-                    if(p.hasPermission("panel.adm")){
+                    if (p.hasPermission("panel.adm")) {
                         updatePanel(p, PanelType.ADMIN);
-                    }
-                    else if(p.hasPermission("panel.mod")){
+                    } else if (p.hasPermission("panel.mod")) {
                         updatePanel(p, PanelType.MOD);
                     }
 
@@ -564,15 +551,15 @@ public class CommandManager implements CommandExecutor {
                 } else if (!ConfigManager.getDataFile().getBoolean(sender.getName() + ".adminchat")) {
                     ConfigManager.getDataFile().set(sender.getName() + ".adminchat", true);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.enabled"));
-                    if(p.hasPermission("panel.adm")){
+                    if (p.hasPermission("panel.adm")) {
                         updatePanel(p, PanelType.ADMIN);
-                    }
-                    else if(p.hasPermission("panel.mod")){
+                    } else if (p.hasPermission("panel.mod")) {
                         updatePanel(p, PanelType.MOD);
                     }
                     ConfigManager.saveData();
                     return true;
-                }ConfigManager.saveData();
+                }
+                ConfigManager.saveData();
             }
         } else if (cmd.getName().equalsIgnoreCase("mc")) {
             Player p = (Player) sender;
@@ -580,10 +567,9 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
                 return false;
             } else {
-                if(p.hasPermission("panel.adm")){
+                if (p.hasPermission("panel.adm")) {
                     updatePanel(p, PanelType.ADMIN);
-                }
-                else if(p.hasPermission("panel.mod")){
+                } else if (p.hasPermission("panel.mod")) {
                     updatePanel(p, PanelType.MOD);
                 }
                 if (!ConfigManager.getDataFile().contains(sender.getName())) {
@@ -631,10 +617,9 @@ public class CommandManager implements CommandExecutor {
                     ConfigManager.getDataFile().set(sender.getName() + ".stream", false);
                     sendPrefixedMessage(sender, "staffchat.stream.disabled");
 
-                    if(p.hasPermission("panel.adm")){
+                    if (p.hasPermission("panel.adm")) {
                         updatePanel(p, PanelType.ADMIN);
-                    }
-                    else if(p.hasPermission("panel.mod")){
+                    } else if (p.hasPermission("panel.mod")) {
                         updatePanel(p, PanelType.MOD);
                     }
 
@@ -675,10 +660,9 @@ public class CommandManager implements CommandExecutor {
                 }
             }
         } else if (cmd.getName().equalsIgnoreCase("gracz")) {
-            if(!(sender instanceof Player)){
+            if (!(sender instanceof Player)) {
                 MessageManager.sendPrefixedMessage(sender, "console_error");
-            }
-            else {
+            } else {
                 Player p = (Player) sender;
                 if (args.length == 0) {
                     p.chat("/gracz " + p.getName());
@@ -689,11 +673,10 @@ public class CommandManager implements CommandExecutor {
                 }
             }
             return false;
-        }
-        else if (cmd.getName().equalsIgnoreCase("sklepbroadcast")) {
+        } else if (cmd.getName().equalsIgnoreCase("sklepbroadcast")) {
             if (!sender.hasPermission("r.adm")) {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
-            }  else if (args.length == 0) {
+            } else if (args.length == 0) {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
             } else if (args.length == 1) {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
@@ -705,14 +688,15 @@ public class CommandManager implements CommandExecutor {
                 final String allArgs = sb.toString().trim();
                 Bukkit.getServer().broadcastMessage(prefix + "" + LanguageManager.getMessage("shopbroadcast.title"));
                 Bukkit.getServer().broadcastMessage(MessageFormat.format(getMessage("shopbroadcast.purchase"), args[0], allArgs));
-                for(String msg : LanguageManager.getMessageList("shopbroadcast.other")) {
+                for (String msg : LanguageManager.getMessageList("shopbroadcast.other")) {
                     Bukkit.getServer().broadcastMessage(msg);
                 }
                 Sound sound = Sound.valueOf(plugin.getConfig().getString("shop_purchase.sound"));
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     player.playSound(player.getLocation(), sound, 1.0f, 8.0f);
                 }
-            } return true;
+            }
+            return true;
         } else if (cmd.getName().equalsIgnoreCase("sklepbroadcastdonate")) {
             if (!sender.hasPermission("r.adm")) {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
@@ -728,7 +712,7 @@ public class CommandManager implements CommandExecutor {
                 final String allArgs = sb.toString().trim();
                 Bukkit.getServer().broadcastMessage(prefix + "" + LanguageManager.getMessage("shopbroadcast.title"));
                 Bukkit.getServer().broadcastMessage(MessageFormat.format(getMessage("shopbroadcast.donate"), args[0], allArgs));
-                for(String msg : LanguageManager.getMessageList("shopbroadcast.other")) {
+                for (String msg : LanguageManager.getMessageList("shopbroadcast.other")) {
                     Bukkit.getServer().broadcastMessage(msg);
                 }
                 Sound sound = Sound.valueOf(plugin.getConfig().getString("shop_purchase.sound"));
@@ -737,6 +721,69 @@ public class CommandManager implements CommandExecutor {
                     player.playSound(player.getLocation(), sound, 1.0f, 8.0f);
                 }
             }
-        } return true;
+        } else if (cmd.getName().equalsIgnoreCase("alias")) {
+            if (sender.hasPermission("dcc.adm")) {
+                if (args.length == 0) {
+                    sendPrefixedMessage(sender, "aliases.help.header");
+                    sendMessageList(sender, "aliases.help.contents");
+                    return true;
+                }
+                String subCommand = args[0].toLowerCase();
+                if (subCommand.equals("dodaj") || subCommand.equals("usun") || subCommand.equals("lista")) {
+                    Map<String, Object> map = plugin.getConfig().getConfigurationSection("aliases").getValues(false);
+                    if (subCommand.equalsIgnoreCase("dodaj")) {
+                        if (args.length > 2) {
+                            String name = args[1];
+                            if (map.get(name) == null) {
+                                final StringBuilder sb = new StringBuilder();
+                                for (int i = 2; i < args.length; i++) {
+                                    sb.append(" ").append(args[i]);
+                                }
+                                final String allArgs = sb.toString().trim();
+                                plugin.getConfig().set("aliases." + name, allArgs);
+                                plugin.saveConfig();
+                                String msg = MessageFormat.format(LanguageManager.getMessage("aliases.add.added"), name, allArgs);
+                                sender.sendMessage(prefix + msg);
+                            } else {
+                                sendPrefixedMessage(sender, "aliases.add.exists");
+                            }
+                        } else {
+                            sendPrefixedMessage(sender, "aliases.add.usage");
+                        }
+                    } else if (subCommand.equals("usun")) {
+                        if (args.length > 1) {
+                            if (map.get(args[1]) == null) {
+                                sendPrefixedMessage(sender, "aliases.delete.notfound");
+                            } else {
+                                plugin.getConfig().set("aliases." + args[1], null);
+                                plugin.saveConfig();
+                                sendPrefixedMessage(sender, "aliases.delete.deleted");
+                            }
+                        } else {
+                            sendPrefixedMessage(sender, "aliases.delete.usage");
+                        }
+                    } else if (subCommand.equals("lista")) {
+                        sendPrefixedMessage(sender, "aliases.help.header");
+                        for (String key : map.keySet()) {
+                            String value = map.get(key).toString();
+                            sender.sendMessage(
+                                        getMessage("aliases.list.spacer") +
+                                            " " + getMessage("aliases.list.from") +
+                                            key +
+                                            " " + getMessage("aliases.list.spacer") +
+                                            " " + getMessage("aliases.list.to") +
+                                            value);
+                        }
+                    }
+                } else {
+                    sendPrefixedMessage(sender, "aliases.help.header");
+                    sendMessageList(sender, "aliases.help.contents");
+                }
+            } else {
+                sendPrefixedMessage(sender, "notfound");
+            }
+            return true;
+        }
+        return true;
     }
 }

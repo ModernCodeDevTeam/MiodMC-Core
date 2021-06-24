@@ -82,3 +82,5 @@ commands:
     description: a po co komu to badziewie, no ale jest
   nieafk:
     description: aa
+  alias:
+    description: aliasy

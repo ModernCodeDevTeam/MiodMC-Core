@@ -202,6 +202,7 @@ pluginhelp:
   - "§e» §6/ac§3 - przełącza §c§lAdmin§4§lChat"
   - "§e» §6/stream§3 - przełącza tryb streamu"
   - "§e» §6/czat§3 - przełącza czat"
+  - "§e» §6/alias§3 - zarządzanie aliasami komend"
   afk:
     title: "§e» §a§lKonfiguracja §2§lAFK"
     kick_msg: "§e» §3Wiadomość przy wyrzuceniu §e»"
@@ -324,6 +325,25 @@ shopbroadcast:
     - "&e» &3Dziękujemy za wsparcie!"
     - "&e» &6Smocze jaja&b dostępne już od &61.23zł!"
     - "&e» &bSprawdź ofertę na &6DCRFT.PL"
+aliases:
+  help:
+    header: "&e&lAliasy"
+    contents:
+    - "§e» §6/alias dodaj alias komenda§3 - dodaje nowy alias"
+    - "§e» §6/alias usun alias§3 - usuwa alias"
+    - "§e» §6/alias lista§3 - pokazuje aktywne aliasy"
+  add:
+    exists: "§cTaki alias już istnieje!"
+    usage: "§cUżycie§e: §e/alias dodaj <alias> <komenda>§c."
+    added: "§aStworzono alias §e{0} §aprzypisany do §e{1}§a."
+  delete:
+    notfound: "§cNie znaleziono aliasu."
+    usage: "§cUżycie§e: §e/alias usun <alias>§c."
+    deleted: "§cUsunięto alias."
+  list:
+    spacer: "§e»"
+    from: "§e"
+    to: "§e"
 errors:
   database:
     - "§e--------------------------------------------"

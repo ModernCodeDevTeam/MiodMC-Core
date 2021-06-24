@@ -48,3 +48,5 @@ commands:
   svip: "/warp svip"
   mvip: "/warp mvip"
   evip: "/warp evip"
+aliases:
+  test: "/warp test"
