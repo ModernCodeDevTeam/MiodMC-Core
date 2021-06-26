@@ -10,7 +10,7 @@ Tested Minecraft version: 1.16
 Main features:\
 • help command\
 • lever cooldown (anti-lag)\
-• chat filter - censor\
+• chat filter - censure\
 • anti-AFK kick\
 • clear chat command\
 • staff chat color\
