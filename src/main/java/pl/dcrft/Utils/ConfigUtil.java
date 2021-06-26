@@ -27,6 +27,7 @@ public class ConfigUtil {
         createMessagesFile();
         createCustomConfig();
         createDataFile();
+        createDisabledFile();
         load();
     }
 
@@ -37,6 +38,7 @@ public class ConfigUtil {
         data = YamlConfiguration.loadConfiguration(dataFile);
         databaseConfig = YamlConfiguration.loadConfiguration(databaseConfigFile);
         messagesConfig = YamlConfiguration.loadConfiguration(messagesConfigFile);
+        disabledConfig = YamlConfiguration.loadConfiguration(disabledConfigFile);
 
         plugin.filters = plugin.getConfig().getConfigurationSection("filters").getValues(true);
     }

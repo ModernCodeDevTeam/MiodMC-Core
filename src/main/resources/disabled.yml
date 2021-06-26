@@ -1,0 +1,4 @@
+'?':
+  Message: '&e&lDragon&6&lCraft &e» &cNie ma takiej komendy. Użyj &e/info&c, aby
+   dowiedzieć się więcej o dostępnych komendach.'
+  Permission: cb.allow.help

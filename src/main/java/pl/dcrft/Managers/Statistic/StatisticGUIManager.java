@@ -102,7 +102,7 @@ public class StatisticGUIManager {
             wool.setItemMeta(meta2);
             inv.setItem(20, wool);
 
-            ItemStack emeraldBlock = new ItemStack(Material.EMERALD_BLOCK);
+            ItemStack emeraldBlock = new ItemStack(Material.EMERALD);
             ItemMeta meta3 = emeraldBlock.getItemMeta();
             meta3.setDisplayName(LanguageManager.getMessage("statistics.rank") + " " + rank);
             emeraldBlock.setItemMeta(meta3);

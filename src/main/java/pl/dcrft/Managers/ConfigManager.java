@@ -23,6 +23,9 @@ public class ConfigManager {
     public static File messagesConfigFile;
     public static FileConfiguration messagesConfig;
 
+    public static File disabledConfigFile;
+    public static FileConfiguration disabledConfig;
+
     public static void CheckConfig() {
         if (plugin.getConfig() == null) {
             plugin.saveDefaultConfig();
@@ -119,6 +122,28 @@ public class ConfigManager {
             logError(ErrorReason.MESSAGES);
             e.printStackTrace();
         }
+    }
+
+    public static FileConfiguration getDisabledFile() {
+        return disabledConfig;
+    }
+
+    public static void createDisabledFile() {
+        disabledConfigFile = new File(plugin.getDataFolder(), "disabled.yml");
+        if (!disabledConfigFile.exists()) {
+            disabledConfigFile.getParentFile().mkdirs();
+            plugin.saveResource("disabled.yml", false);
+        }
+
+        disabledConfig = new YamlConfiguration();
+
+        try {
+            disabledConfig.load(disabledConfigFile);
+        } catch (InvalidConfigurationException | IOException var2) {
+            logError(ErrorReason.DISABLED);
+            var2.printStackTrace();
+        }
+
     }
 
 }

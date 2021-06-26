@@ -50,3 +50,4 @@ commands:
   evip: "/warp evip"
 aliases:
   test: "/warp test"
+disabled_default_permission: "cb.adm"
