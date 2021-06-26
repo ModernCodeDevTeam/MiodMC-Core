@@ -38,13 +38,13 @@ public class PanelManager {
         Score nick = objective.getScore(LanguageManager.getMessage("staffpanel.nickname_prefix") + p.getName());
         nick.setScore(16);
         Score czat;
-        if (getDataFile().getBoolean(p.getName() + ".adminchat")) {
-            if (getDataFile().getBoolean(p.getName() + ".modchat")) {
+        if (getDataFile().getBoolean("players." + p.getName() + ".adminchat")) {
+            if (getDataFile().getBoolean("players." + p.getName() + ".modchat")) {
                 czat = objective.getScore(LanguageManager.getMessage("staffpanel.chat") + " " + LanguageManager.getMessage("staffchat.both"));
             } else {
                 czat = objective.getScore(LanguageManager.getMessage("staffpanel.chat") + " "  + LanguageManager.getMessage("staffchat.adminchat.title"));
             }
-        } else if (getDataFile().getBoolean(p.getName() + ".modchat")) {
+        } else if (getDataFile().getBoolean("players." + p.getName() + ".modchat")) {
             czat = objective.getScore(LanguageManager.getMessage("staffpanel.chat") + " " + LanguageManager.getMessage("staffchat.modchat.title"));
         } else {
             czat = objective.getScore(LanguageManager.getMessage("staffpanel.chat") + " " + LanguageManager.getMessage("staffchat.public"));
@@ -137,7 +137,7 @@ public class PanelManager {
         }
         newest.setScore(6);
         p.setScoreboard(admpanel);
-        if (getDataFile().getBoolean(p.getName() + ".stream")) {
+        if (getDataFile().getBoolean("players." + p.getName() + ".stream")) {
             //do not set a new scoreboard if there is already the empty one
             if (!p.getScoreboard().equals(emptyBoard)) {
                 p.setScoreboard(emptyBoard);

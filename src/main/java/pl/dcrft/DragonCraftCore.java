@@ -47,6 +47,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getServer().getPluginManager().registerEvents(new PlayerLoginListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerUseListener(), this);
         getServer().getPluginManager().registerEvents(new CommandPreprocessListener(), this);
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
 
         getLogger().info(LanguageManager.getMessage("plugin.header"));
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");

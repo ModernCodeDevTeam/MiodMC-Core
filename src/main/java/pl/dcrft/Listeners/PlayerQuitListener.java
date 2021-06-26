@@ -25,7 +25,7 @@ public class PlayerQuitListener implements Listener {
             Player p = event.getPlayer();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy 'o' HH:mm");
             LocalDateTime now = LocalDateTime.now();
-            getDataFile().set(p.getName() + ".online", dtf.format(now));
+            getDataFile().set("players." + p.getName() + ".online", dtf.format(now));
             ConfigManager.saveData();
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 openConnection();

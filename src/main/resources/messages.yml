@@ -20,10 +20,10 @@ friends:
     title: "§6Lista znajomych"
     none: "§e» §cbrak"
     online: "§aonline"
-    player_format: "§e» §3{0}§e» §c{1}"
+    player_format: "§e» §3{0} §e» §c{1}"
   remove:
-    not_your_friend: "§e {0} §cnie jest twoim znajomym."
-    removed:  "§e {0} §anie jest już twoim znajomym."
+    not_your_friend: "§e{0} §cnie jest twoim znajomym."
+    removed:  "§e{0} §anie jest już twoim znajomym."
   add:
     self: "§cNo co ty! Siebie samego chcesz dodawać do znajomych? Pff!"
     staff: "§cNo nie bardzo. Administracja to nie twoi znajomi."
@@ -34,13 +34,13 @@ friends:
       accept: "§aUżyj §e/znajomi akceptuj §e{0}§a, aby je zaakceptować."
       cancel: "§aUżyj §e/znajomi odrzuc §e{0}§a, aby je odrzucić."
   accept:
-    invitation_not_send: "§cPodaj nick gracza, który wysłał do ciebie zaproszenie do znajomych"
-    accepted_target: " §aZaakceptowano zaprosznie do znajomych od §e{0}§a."
-    accepted_self: " §e{0} §azaakceptował twoje zaproszenie do znajomych."
+    invitation_not_send: "§cPodaj nick gracza, który wysłał do ciebie zaproszenie do znajomych."
+    accepted_target: "§aZaakceptowano zaprosznie do znajomych od §e{0}§a."
+    accepted_self: "§e{0} §azaakceptował twoje zaproszenie do znajomych."
   reject:
-    invitation_not_send: "§cPodaj nick gracza, który wysłał do ciebie zaproszenie do znajomych"
-    rejected_target: " §aOdrzucono zaprosznie do znajomych od §e{0}§c."
-    rejected_self: " §e{0} §codrzucił twoje zaproszenie do znajomych."
+    invitation_not_send: "§cPodaj nick gracza, który wysłał do ciebie zaproszenie do znajomych."
+    rejected_target: "§aOdrzucono zaprosznie do znajomych od §e{0}§a."
+    rejected_self: "§e{0} §codrzucił twoje zaproszenie do znajomych."
 marry:
   already: "§cJuż jesteś w związku."
   target_already: "§cTen gracz już jest w związku."
@@ -99,8 +99,8 @@ staffchat:
   disabled: "§cWyłączono czat."
   auto_enabled: "§aAutomatycznie włączono czat."
   stream:
-    enabled:
-    disabled:
+    enabled: "§aWłączono tryb §estreamowania§a."
+    disabled: "§cWyłączono tryb §estreamowania§c."
     error: "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie."
   adminchat:
     title: "§c§lAdmin§4§lChat"

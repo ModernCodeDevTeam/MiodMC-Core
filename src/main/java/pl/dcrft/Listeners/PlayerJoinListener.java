@@ -47,34 +47,34 @@ public class PlayerJoinListener implements Listener {
             ConfigManager.saveData();
         }
         if (e.getPlayer().hasPermission("mod.chat")) {
-            if(!getDataFile().contains(e.getPlayer().getName())){
-                getDataFile().set(e.getPlayer().getName() + ":", null);
-                getDataFile().set(e.getPlayer().getName() + ".modchat" , false);
-                getDataFile().set(e.getPlayer().getName() + ".adminchat" , false);
+            if(!getDataFile().contains("players." + e.getPlayer().getName())){
+                getDataFile().set("players." + e.getPlayer().getName() + ":", null);
+                getDataFile().set("players." + e.getPlayer().getName() + ".modchat" , false);
+                getDataFile().set("players." + e.getPlayer().getName() + ".adminchat" , false);
                 ConfigManager.saveData();
             }
-            if (getDataFile().getBoolean(e.getPlayer().getName() + ".modchat")) {
-                getDataFile().set(e.getPlayer().getName() + ".modchat", false);
+            if (getDataFile().getBoolean("players." + e.getPlayer().getName() + ".modchat")) {
+                getDataFile().set("players." + e.getPlayer().getName() + ".modchat", false);
                 ConfigManager.saveData();
                 return;
             }
         }
         if (e.getPlayer().hasPermission("admin.chat")) {
-            if(!getDataFile().contains(e.getPlayer().getName())){
-                getDataFile().set(e.getPlayer().getName() + ":", null);
-                getDataFile().set(e.getPlayer().getName() + ".modchat" , false);
-                getDataFile().set(e.getPlayer().getName() + ".adminchat" , false);
+            if(!getDataFile().contains("players." + e.getPlayer().getName())){
+                getDataFile().set("players." + e.getPlayer().getName() + ":", null);
+                getDataFile().set("players." + e.getPlayer().getName() + ".modchat" , false);
+                getDataFile().set("players." + e.getPlayer().getName() + ".adminchat" , false);
                 ConfigManager.saveData();
             }
-            if (!getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat")) {
-                getDataFile().set(e.getPlayer().getName() + ".adminchat", true);
-                e.getPlayer().sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessageList("staffchat.adminchat.spacer") + LanguageManager.getMessage("staffchat.auto_enabled"));
+            if (!getDataFile().getBoolean("players." + e.getPlayer().getName() + ".adminchat")) {
+                getDataFile().set("players." + e.getPlayer().getName() + ".adminchat", true);
+                e.getPlayer().sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.adminchat.spacer") + LanguageManager.getMessage("staffchat.auto_enabled"));
                 ConfigManager.saveData();
                 return;
             }
         }
         if (!e.getPlayer().hasPermission("pt.adm")) {
-            getDataFile().set(e.getPlayer().getName() + ".online", null);
+            getDataFile().set("players." + e.getPlayer().getName() + ".online", null);
             ConfigManager.saveData();
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 try {

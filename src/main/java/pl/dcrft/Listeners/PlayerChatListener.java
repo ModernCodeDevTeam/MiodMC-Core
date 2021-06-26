@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.bukkit.Bukkit.getServer;
-import static pl.dcrft.Managers.ConfigManager.getDataFile;
+import static pl.dcrft.Managers.ConfigManager.*;
 import static pl.dcrft.Managers.LanguageManager.getMessage;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
@@ -63,7 +63,7 @@ public class PlayerChatListener implements Listener {
                 getServer().getLogger().info(msg);
 
                 for(Player o : Bukkit.getOnlinePlayers()){
-                    if(o.hasPermission("panel.mod") && !getDataFile().getBoolean(o.getName() + ".stream")) {
+                    if(o.hasPermission("panel.mod") && !getDataFile().getBoolean("players." + o.getName() + ".stream")) {
                         o.sendMessage(getMessage("prefix") + msg);
                     }
                 }
@@ -74,11 +74,11 @@ public class PlayerChatListener implements Listener {
         if (e.getMessage().length() == 0) {
             e.setCancelled(true);
         }
-        if (getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat")) {
-            if (getDataFile().getBoolean(e.getPlayer().getName() + ".adminchat")) {
-                if (getDataFile().getBoolean(e.getPlayer().getName() + ".stream")) {
+        if (getDataFile().getBoolean("players." + e.getPlayer().getName() + ".adminchat")) {
+            if (getDataFile().getBoolean("players." + e.getPlayer().getName() + ".adminchat")) {
+                if (getDataFile().getBoolean("players." + e.getPlayer().getName() + ".stream")) {
                     sendPrefixedMessage(p, "stream.cant_write_turned_off");
-                    getDataFile().set(e.getPlayer().getName() + ".adminchat", false);
+                    getDataFile().set("players." + e.getPlayer().getName() + ".adminchat", false);
                     e.setCancelled(true);
                     ConfigManager.saveData();
                     return;
@@ -100,17 +100,17 @@ public class PlayerChatListener implements Listener {
                                 wiad);
                 getServer().getLogger().info(msg);
                 for(Player o : Bukkit.getOnlinePlayers()){
-                    if(o.hasPermission("admin.see") && !getDataFile().getBoolean(o.getName() + ".stream")) {
+                    if(o.hasPermission("admin.see") && !getDataFile().getBoolean("players." + o.getName() + ".stream")) {
                         o.sendMessage(msg);
                     }
                 }
             }
         }
-        if (getDataFile().getBoolean(e.getPlayer().getName() + ".modchat")) {
-            if (getDataFile().getBoolean(e.getPlayer().getName() + ".modchat")) {
-                if (getDataFile().getBoolean(e.getPlayer().getName() + ".stream")) {
+        if (getDataFile().getBoolean("players." + e.getPlayer().getName() + ".modchat")) {
+            if (getDataFile().getBoolean("players." + e.getPlayer().getName() + ".modchat")) {
+                if (getDataFile().getBoolean("players." + e.getPlayer().getName() + ".stream")) {
                     sendPrefixedMessage(p, "stream.cant_write_turned_off");
-                    getDataFile().set(e.getPlayer().getName() + ".modchat", false);
+                    getDataFile().set("players." + e.getPlayer().getName() + ".modchat", false);
                     e.setCancelled(true);
                     ConfigManager.saveData();
                     return;
@@ -132,7 +132,7 @@ public class PlayerChatListener implements Listener {
                                 wiad);
                 getServer().getLogger().info(msg);
                 for(Player o : Bukkit.getOnlinePlayers()){
-                    if(o.hasPermission("mod.see") && !getDataFile().getBoolean(o.getName() + ".stream")) {
+                    if(o.hasPermission("mod.see") && !getDataFile().getBoolean("players." + o.getName() + ".stream")) {
                         o.sendMessage(msg);
 
                     }

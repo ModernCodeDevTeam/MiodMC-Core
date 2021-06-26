@@ -67,16 +67,16 @@ public class CommandManager implements CommandExecutor {
             }
             if (args[0].equalsIgnoreCase("lista") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l") || args[0].equalsIgnoreCase("info")) {
                 MessageManager.sendPrefixedMessage(p, "friends.list.title");
-                List<String> znajomi = ConfigManager.getDataFile().getStringList(p.getName() + ".znajomi");
+                List<String> znajomi = ConfigManager.getDataFile().getStringList("players." + p.getName() + ".znajomi");
                 if (znajomi.size() == 0) {
                     sendMessage(p, "friends.list.none");
                 } else {
                     for (String s : znajomi) {
-                        String online = ConfigManager.getDataFile().getString(s + ".online");
-                        if (online == null) {
-                            sendMessage(p, "friends.list.online");
-                        }
+                        String online = ConfigManager.getDataFile().getString("players." + s + ".online");
                         String msg = MessageFormat.format(LanguageManager.getMessage("friends.list.player_format"), s, online);
+                        if (online == null) {
+                            msg = MessageFormat.format(LanguageManager.getMessage("friends.list.player_format"), s, LanguageManager.getMessage("friends.list.online"));
+                        }
                         p.sendMessage(msg);
                     }
                 }
@@ -86,15 +86,15 @@ public class CommandManager implements CommandExecutor {
                 if (args.length == 1) {
                     MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 } else {
-                    List<String> znajomip = ConfigManager.getDataFile().getStringList(sender.getName() + ".znajomi");
-                    List<String> znajomio = ConfigManager.getDataFile().getStringList(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi");
+                    List<String> znajomip = ConfigManager.getDataFile().getStringList("players." + sender.getName() + ".znajomi");
+                    List<String> znajomio = ConfigManager.getDataFile().getStringList("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi");
                     if (!znajomip.contains(args[1])) {
                         sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.remove.not_your_friend"), Bukkit.getOfflinePlayer(args[1]).getName()));
                     } else {
                         znajomip.remove(Bukkit.getOfflinePlayer(args[1]).getName());
                         znajomio.remove(sender.getName());
-                        ConfigManager.getDataFile().set(sender.getName().toLowerCase() + ".znajomi", znajomip);
-                        ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi", znajomio);
+                        ConfigManager.getDataFile().set("players." + sender.getName() + ".znajomi", znajomip);
+                        ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi", znajomio);
                         ConfigManager.saveData();
                         sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.remove.removed"), Bukkit.getOfflinePlayer(args[1]).getName()));
                     }
@@ -122,16 +122,18 @@ public class CommandManager implements CommandExecutor {
                     MessageManager.sendPrefixedMessage(p, "friends.add.staff");
                     return false;
                 } else {
-                    List<String> znajomip = ConfigManager.getDataFile().getStringList(sender.getName() + ".znajomi");
-                    if (znajomip.contains(Bukkit.getOfflinePlayer(args[1]).getName())) {
+                    Player o = Bukkit.getPlayer(args[1]);
+                    List<String> znajomip = ConfigManager.getDataFile().getStringList("players." + sender.getName() + ".znajomi");
+                    if (znajomip.contains(o.getName())) {
                         MessageManager.sendPrefixedMessage(p, "friends.add.already_friend");
                         return false;
                     }
-                    ConfigManager.getDataFile().set(sender.getName() + ".znajprosba." + Bukkit.getOfflinePlayer(args[1]).getName(), true);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".znajprosba." + Bukkit.getOfflinePlayer(args[1]).getName(), true);
                     ConfigManager.saveData();
-                    sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.title"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.accept"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.cancel"), Bukkit.getOfflinePlayer(args[1]).getName()));
+                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.title"), Bukkit.getOfflinePlayer(args[1]).getName()));
+                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.accept"), Bukkit.getOfflinePlayer(args[1]).getName()));
+                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.cancel"), Bukkit.getOfflinePlayer(args[1]).getName()));
+                    sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.invited"), Bukkit.getOfflinePlayer(args[1]).getName()));
                     return false;
                 }
             }
@@ -140,17 +142,17 @@ public class CommandManager implements CommandExecutor {
                     MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                     return false;
                 }
-                if (!ConfigManager.getDataFile().getBoolean(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName())) {
+                if (!ConfigManager.getDataFile().getBoolean("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName())) {
                     MessageManager.sendPrefixedMessage(p, "friends.accept.invitation_not_send");
                     return false;
                 } else {
-                    ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName(), null);
-                    List<String> znajomip = ConfigManager.getDataFile().getStringList(sender.getName() + ".znajomi");
-                    List<String> znajomio = ConfigManager.getDataFile().getStringList(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi");
+                    ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName(), null);
+                    List<String> znajomip = ConfigManager.getDataFile().getStringList("players." + sender.getName() + ".znajomi");
+                    List<String> znajomio = ConfigManager.getDataFile().getStringList("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi");
                     znajomip.add(Bukkit.getOfflinePlayer(args[1]).getName());
                     znajomio.add(sender.getName());
-                    ConfigManager.getDataFile().set(sender.getName() + ".znajomi", znajomip);
-                    ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi", znajomio);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".znajomi", znajomip);
+                    ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi", znajomio);
                     ConfigManager.saveData();
                     if (Bukkit.getPlayer(args[1]) != null && Bukkit.getPlayer(args[1]).isOnline()) {
                         Bukkit.getPlayer(args[1]).sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.accept.accepted_self"), sender.getName()));
@@ -164,11 +166,11 @@ public class CommandManager implements CommandExecutor {
                     MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                     return false;
                 }
-                if (!ConfigManager.getDataFile().getBoolean(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName())) {
+                if (!ConfigManager.getDataFile().getBoolean("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName())) {
                     MessageManager.sendPrefixedMessage(p, "friends.reject.invitation_not_send");
                     return false;
                 } else {
-                    ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName(), null);
+                    ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName(), null);
                     ConfigManager.saveData();
                     if (Bukkit.getPlayer(args[1]) != null && Bukkit.getPlayer(args[1]).isOnline()) {
                         Bukkit.getPlayer(args[1]).sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.reject.rejected_self"), sender.getName()));
@@ -203,15 +205,15 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(p, "marry.send.self");
                 return false;
             } else {
-                if (ConfigManager.getDataFile().getString(p.getName() + ".slub") != null) {
+                if (ConfigManager.getDataFile().getString("players." + p.getName() + ".slub") != null) {
                     MessageManager.sendPrefixedMessage(p, "marry.already");
                     return false;
                 }
-                if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub") != null) {
+                if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slub") != null) {
                     MessageManager.sendPrefixedMessage(p, "marry.target_already");
                     return false;
                 } else {
-                    ConfigManager.getDataFile().set(p.getName() + ".slubprosba", Bukkit.getOfflinePlayer(args[0]).getName());
+                    ConfigManager.getDataFile().set("players." + p.getName() + ".slubprosba", Bukkit.getOfflinePlayer(args[0]).getName());
                     ConfigManager.saveData();
                     MessageManager.sendPrefixedMessage(p, "marry.send.sent.self");
 
@@ -227,15 +229,15 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
-            if (ConfigManager.getDataFile().getString(p.getName() + ".slub") != null) {
+            if (ConfigManager.getDataFile().getString("players." + p.getName() + ".slub") != null) {
                 MessageManager.sendPrefixedMessage(p, "marry.already");
                 return false;
             }
-            if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
+            if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
                 MessageManager.sendPrefixedMessage(p, "marry.no_ivite_send");
                 return false;
             } else {
-                if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + "slub") != null) {
+                if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + "slub") != null) {
                     MessageManager.sendPrefixedMessage(p, "marry.target_already");
                     return false;
                 }
@@ -248,10 +250,10 @@ public class CommandManager implements CommandExecutor {
                         MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.accept.accepted");
                     }
                     MessageManager.sendPrefixedMessage(p, "marry.accept.accepted");
-                    ConfigManager.getDataFile().set(p.getName() + ".slub", Bukkit.getOfflinePlayer(args[0]).getName());
-                    ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub", p.getName());
-                    ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
-                    ConfigManager.getDataFile().set(p.getName() + ".slubprosba", null);
+                    ConfigManager.getDataFile().set("players." + p.getName() + ".slub", Bukkit.getOfflinePlayer(args[0]).getName());
+                    ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slub", p.getName());
+                    ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
+                    ConfigManager.getDataFile().set("players." + p.getName() + ".slubprosba", null);
                     ConfigManager.saveData();
                     openConnection();
                     try {
@@ -273,14 +275,14 @@ public class CommandManager implements CommandExecutor {
             Player p = (Player) sender;
             if (args.length == 0) {
                 MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-            } else if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
+            } else if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
                 MessageManager.sendPrefixedMessage(p, "marry.no_ivite_send");
             } else {
                 MessageManager.sendPrefixedMessage(p, "marry.reject.rejected");
                 if (Bukkit.getPlayer(args[0]).isOnline()) {
                     MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.reject.rejected");
                 }
-                ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
+                ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
                 ConfigManager.saveData();
             }
             return true;
@@ -291,15 +293,15 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
             } else if (args[0].equalsIgnoreCase(p.getName())) {
                 MessageManager.sendPrefixedMessage(p, "marry.self");
-            } else if (ConfigManager.getDataFile().getString(p.getName() + ".slub") == null) {
+            } else if (ConfigManager.getDataFile().getString("players." + p.getName() + ".slub") == null) {
                 MessageManager.sendPrefixedMessage(p, "marry.not_in");
-            } else if (ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub").equalsIgnoreCase(p.getName()) || !ConfigManager.getDataFile().getString(p.getName() + ".slub").equalsIgnoreCase(Bukkit.getOfflinePlayer(args[0]).getName())) {
+            } else if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slub") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub").equalsIgnoreCase(p.getName()) || !ConfigManager.getDataFile().getString(p.getName() + ".slub").equalsIgnoreCase(Bukkit.getOfflinePlayer(args[0]).getName())) {
                 MessageManager.sendPrefixedMessage(p, "marry.not_with_target");
             } else {
-                ConfigManager.getDataFile().set(p.getName() + ".slub", null);
-                ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub", null);
-                ConfigManager.getDataFile().set(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
-                ConfigManager.getDataFile().set(p.getName() + ".slubprosba", null);
+                ConfigManager.getDataFile().set("players." + p.getName() + ".slub", null);
+                ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slub", null);
+                ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
+                ConfigManager.getDataFile().set("players." + p.getName() + ".slubprosba", null);
                 ConfigManager.saveData();
                 openConnection();
                 try {
@@ -517,10 +519,10 @@ public class CommandManager implements CommandExecutor {
                 return false;
             } else {
                 Player p = (Player) sender;
-                if (!ConfigManager.getDataFile().contains(sender.getName())) {
-                    ConfigManager.getDataFile().set(sender.getName() + ":", null);
-                    ConfigManager.getDataFile().set(sender.getName() + ".adminchat", true);
-                    ConfigManager.getDataFile().set(sender.getName() + ".modchat", false);
+                if (!ConfigManager.getDataFile().contains("players." + sender.getName())) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ":", null);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".adminchat", true);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".modchat", false);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.enabled"));
 
                     if (sender.hasPermission("panel.adm")) {
@@ -531,12 +533,12 @@ public class CommandManager implements CommandExecutor {
                     ConfigManager.saveData();
                     return true;
                 }
-                if (ConfigManager.getDataFile().getBoolean(sender.getName() + ".stream")) {
+                if (ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".stream")) {
                     MessageManager.sendPrefixedMessage(sender, "staffchat.stream.error");
                     return false;
                 }
-                if (ConfigManager.getDataFile().getBoolean(sender.getName() + ".adminchat")) {
-                    ConfigManager.getDataFile().set(sender.getName() + ".adminchat", false);
+                if (ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".adminchat")) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".adminchat", false);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.disabled"));
 
 
@@ -548,8 +550,8 @@ public class CommandManager implements CommandExecutor {
 
                     ConfigManager.saveData();
                     return true;
-                } else if (!ConfigManager.getDataFile().getBoolean(sender.getName() + ".adminchat")) {
-                    ConfigManager.getDataFile().set(sender.getName() + ".adminchat", true);
+                } else if (!ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".adminchat")) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".adminchat", true);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.enabled"));
                     if (p.hasPermission("panel.adm")) {
                         updatePanel(p, PanelType.ADMIN);
@@ -572,25 +574,25 @@ public class CommandManager implements CommandExecutor {
                 } else if (p.hasPermission("panel.mod")) {
                     updatePanel(p, PanelType.MOD);
                 }
-                if (!ConfigManager.getDataFile().contains(sender.getName())) {
-                    ConfigManager.getDataFile().set(sender.getName() + ":", null);
-                    ConfigManager.getDataFile().set(sender.getName() + ".modchat", true);
-                    ConfigManager.getDataFile().set(sender.getName() + ".adminchat", false);
+                if (!ConfigManager.getDataFile().contains("players." + sender.getName())) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ":", null);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".modchat", true);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".adminchat", false);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.modchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.enabled"));
                     ConfigManager.saveData();
                     return true;
                 }
-                if (ConfigManager.getDataFile().getBoolean(sender.getName() + ".stream")) {
+                if (ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".stream")) {
                     MessageManager.sendPrefixedMessage(sender, "staffchat.stream.error");
                     return false;
                 }
-                if (ConfigManager.getDataFile().getBoolean(sender.getName() + ".modchat")) {
-                    ConfigManager.getDataFile().set(sender.getName() + ".modchat", false);
+                if (ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".modchat")) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".modchat", false);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.modchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.disabled"));
                     ConfigManager.saveData();
                     return true;
-                } else if (!ConfigManager.getDataFile().getBoolean(sender.getName() + ".modchat")) {
-                    ConfigManager.getDataFile().set(sender.getName() + ".modchat", true);
+                } else if (!ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".modchat")) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".modchat", true);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.modchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.enabled"));
                     ConfigManager.saveData();
                     return true;
@@ -603,18 +605,18 @@ public class CommandManager implements CommandExecutor {
                 return false;
             } else {
                 Player p = (Player) sender;
-                if (!ConfigManager.getDataFile().contains(sender.getName())) {
-                    ConfigManager.getDataFile().set(sender.getName() + ":", null);
-                    ConfigManager.getDataFile().set(sender.getName() + ".modchat", false);
-                    ConfigManager.getDataFile().set(sender.getName() + ".adminchat", false);
-                    ConfigManager.getDataFile().set(sender.getName() + ".stream", true);
+                if (!ConfigManager.getDataFile().contains("players." + sender.getName())) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ":", null);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".modchat", false);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".adminchat", false);
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".stream", true);
                     sendPrefixedMessage(sender, "staffchat.stream.enabled");
                     hidePanel(p);
                     ConfigManager.saveData();
                     return true;
                 }
-                if (ConfigManager.getDataFile().getBoolean(sender.getName() + ".stream")) {
-                    ConfigManager.getDataFile().set(sender.getName() + ".stream", false);
+                if (ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".stream")) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".stream", false);
                     sendPrefixedMessage(sender, "staffchat.stream.disabled");
 
                     if (p.hasPermission("panel.adm")) {
@@ -625,8 +627,8 @@ public class CommandManager implements CommandExecutor {
 
                     ConfigManager.saveData();
                     return true;
-                } else if (!ConfigManager.getDataFile().getBoolean(sender.getName() + ".stream")) {
-                    ConfigManager.getDataFile().set(sender.getName() + ".stream", true);
+                } else if (!ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".stream")) {
+                    ConfigManager.getDataFile().set("players." + sender.getName() + ".stream", true);
                     sendPrefixedMessage(sender, "staffchat.stream.enabled");
                     hidePanel(p);
                     ConfigManager.saveData();
