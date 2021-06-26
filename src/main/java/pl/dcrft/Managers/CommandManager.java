@@ -3,9 +3,11 @@ package pl.dcrft.Managers;
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.utils.Punishment;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import pl.dcrft.DragonCraftCore;
@@ -15,10 +17,7 @@ import pl.dcrft.Utils.ConfigUtil;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.LanguageManager.getMessage;
@@ -437,8 +436,65 @@ public class CommandManager implements CommandExecutor {
                     sender.sendMessage(plugin.getConfig().getString("afk.kick_delay") + " " + kick_delay);
                     sender.sendMessage(plugin.getConfig().getString("afk.sound_on_get_warn") + " " + sound_on_get_warn);
                     sender.sendMessage(plugin.getConfig().getString("afk.sound_on_notafk") + " " + sound_on_notafk);
+                } else if(sub.equalsIgnoreCase("anvil")){
+                    if(!(sender instanceof Player)){
+                        sendPrefixedMessage(sender, "console_error");
+                    } else {
+                        Player p = (Player) sender;
+                      if(p.getTargetBlock(null, 100) != null){
+                          Block block = p.getTargetBlock(null, 100);
+
+                          if(block.getType() == Material.ANVIL || block.getType() == Material.CHIPPED_ANVIL || block.getType() == Material.DAMAGED_ANVIL) {
+
+                              Location loc = block.getLocation();
+
+                              FileConfiguration data = ConfigManager.getDataFile();
+
+                              Set<String> anvils = data.getConfigurationSection("anvils").getKeys(false);
+                                
+                              int max = 0;
+                              if (anvils != null) {
+                                  for (String i : anvils) {
+                                      int x = data.getInt("anvils." + i + ".x");
+                                      int y = data.getInt("anvils." + i + ".y");
+                                      int z = data.getInt("anvils." + i + ".z");
+                                      String world = data.getString("anvils." + i + ".world");
+                                      Location al = new Location(Bukkit.getWorld(world), x, y, z);
+                                      if (loc.equals(al)) {
+                                          data.set("anvils." + i, null);
+                                          sendPrefixedMessage(p, "anvils.deleted");
+                                          ConfigManager.saveData();
+                                          return true;
+                                      }
+                                      if(Integer.valueOf(i) > max){
+                                          max = Integer.valueOf(i)+1;
+                                      }
+                                  }
+                              }
+
+                              int x = loc.getBlockX();
+                              int y = loc.getBlockY();
+                              int z = loc.getBlockZ();
+                              String world = loc.getWorld().getName();
+
+                              ConfigManager.getDataFile().set("anvils." + max + ".x", x);
+                              ConfigManager.getDataFile().set("anvils." + max + ".y", y);
+                              ConfigManager.getDataFile().set("anvils." + max + ".z", z);
+                              ConfigManager.getDataFile().set("anvils." + max + ".world", world);
+                              sendPrefixedMessage(p, "anvils.created");
+
+                              ConfigManager.saveData();
+                          } else {
+                              sendPrefixedMessage(p, "anvils.not_an_anvil");
+                          }
+
+                      } else {
+                          sendPrefixedMessage(p, "anvils.not_an_anvil");
+                      }
+                    }
                 } else {
-                    MessageManager.sendPrefixedMessage(sender, "notfound");
+                    sender.sendMessage("§e§lDragon§6§lCraft§b§lCore " + plugin.getDescription().getVersion());
+                    MessageManager.sendMessageList(sender, "pluginhelp.contents");
                 }
             }
             return true;

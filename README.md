@@ -32,9 +32,11 @@ Main features:\
 • fully customizable messages\
 • full RGB colors support\
 • command aliases\
-• command blocking
+• command blocking\
+• ability to create unbreakable anvils
 
 ##### Sources which helped develop DragonCraftCore:
 [EssentialsX](https://github.com/EssentialsX/Essentials)\
 [CommandAliases](https://github.com/Kneesnap/CommandAliases)\
-[TreysCommandBlocker](https://github.com/TreyRuffy/CommandBlocker)
+[TreysCommandBlocker](https://github.com/TreyRuffy/CommandBlocker)\
+[InfiniAnvil](https://github.com/alegemaate/SpigotPlugins)

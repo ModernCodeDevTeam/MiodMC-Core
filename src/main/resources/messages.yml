@@ -188,6 +188,7 @@ pluginhelp:
   contents:
   - "§e» §6/dcc przeladuj§3 - przeładowuje config"
   - "§e» §6/dcc afk§3 - wyświetla konfigurację wyrzucania za AFK"
+  - "§e» §6/dcc anvil§3 - tworzy/usuwa niezniszczalne kowadło z kowadła, na które patrzysz"
   - "§e» §6/dcccast§3 - wyświetla ogłoszenie na publicznym czacie"
   - "§e» §6/pomoc§3 - wyświetla pomoc"
   - "§e» §6/sklepbroadcast§3 - ogłasza zakup ze sklepu"
@@ -202,7 +203,7 @@ pluginhelp:
   - "§e» §6/ac§3 - przełącza §c§lAdmin§4§lChat"
   - "§e» §6/stream§3 - przełącza tryb streamu"
   - "§e» §6/czat§3 - przełącza czat"
-  - "§e» §6/alias§3 - zarządzanie aliasami komend"
+  - "§e» §6/alias§3 - zarządza aliasami komend"
   afk:
     title: "§e» §a§lKonfiguracja §2§lAFK"
     kick_msg: "§e» §3Wiadomość przy wyrzuceniu §e»"
@@ -344,6 +345,10 @@ aliases:
     spacer: "§e»"
     from: "§e"
     to: "§e"
+anvils:
+  created: "§aUtworzono niezniszczalne kowadło."
+  deleted: "§cUsunięto nieznisczalne kowadło."
+  not_an_anvil: "§cBlok, na który patrzysz nie jest kowadłem!"
 errors:
   database:
     - "§e--------------------------------------------"
