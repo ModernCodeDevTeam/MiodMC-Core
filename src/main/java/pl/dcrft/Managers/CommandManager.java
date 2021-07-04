@@ -2,6 +2,11 @@ package pl.dcrft.Managers;
 
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.utils.Punishment;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.Node;
+import net.luckperms.api.node.NodeType;
+import net.luckperms.api.node.types.InheritanceNode;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -10,6 +15,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.Panel.PanelType;
 import pl.dcrft.Utils.ConfigUtil;
@@ -17,7 +23,10 @@ import pl.dcrft.Utils.ConfigUtil;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.LanguageManager.getMessage;
@@ -839,6 +848,36 @@ public class CommandManager implements CommandExecutor {
                 }
             } else {
                 sendPrefixedMessage(sender, "notfound");
+            }
+            return true;
+        }
+        else if (cmd.getName().equalsIgnoreCase("+")) {
+            if(!sender.hasPermission(plugin.getConfig().getString("timedpermission"))){
+                sendPrefixedMessage(sender, "timedpermission.no_permission");
+            }
+            else{
+                Player p = (Player) sender;
+                User user = plugin.luckPerms.getPlayerAdapter(Player.class).getUser(p);
+               List<InheritanceNode> nodes = user.getNodes(NodeType.INHERITANCE)
+                        .stream()
+                        .filter(Node::hasExpiry)
+                        .filter(node -> !node.hasExpired())
+                        .collect(Collectors.toList());
+                if(nodes.size() == 0){
+                    sendPrefixedMessage(sender, "timedpermission.no_permission");
+                }
+                else{
+                    Instant instant = nodes.get(0).getExpiry();
+
+                    Date date = Date.from(instant);
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy 'o' HH:mm");
+                    String formattedDate = formatter.format(date);
+
+                    String msg = getMessage("timedpermission.expires");
+                    msg = MessageFormat.format(msg, formattedDate);
+
+                    sender.sendMessage(prefix + msg);
+                }
             }
             return true;
         }

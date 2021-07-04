@@ -33,6 +33,7 @@ Main features:\
 • full RGB colors support\
 • command aliases\
 • command blocking\
+• /+ - check when a custom temporary permission expires\
 • ability to create unbreakable anvils
 
 ##### Sources which helped develop DragonCraftCore:

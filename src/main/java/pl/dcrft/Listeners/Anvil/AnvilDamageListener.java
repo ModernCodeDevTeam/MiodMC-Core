@@ -1,4 +1,4 @@
-package pl.dcrft.Listeners;
+package pl.dcrft.Listeners.Anvil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,25 +7,19 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.FaceAttachable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 import pl.dcrft.Managers.ConfigManager;
 
-import java.util.List;
 import java.util.Set;
 
-public class BlockBreakListener implements Listener {
+public class AnvilDamageListener implements Listener {
     private FileConfiguration data = ConfigManager.getDataFile();
     @EventHandler
-    public void breakAnvil(PlayerInteractEvent e) {
+    public void damageAnvil(PlayerInteractEvent e) {
         if (e.hasBlock() && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Block block = e.getClickedBlock();
             if (block.getType() == Material.ANVIL || block.getType() == Material.CHIPPED_ANVIL || block.getType() == Material.DAMAGED_ANVIL) {

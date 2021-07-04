@@ -84,4 +84,6 @@ commands:
     description: aa
   alias:
     description: aliasy
+  +:
+    description: dlugosc plusa
   

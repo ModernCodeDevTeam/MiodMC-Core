@@ -349,6 +349,9 @@ anvils:
   created: "§aUtworzono niezniszczalne kowadło."
   deleted: "§cUsunięto nieznisczalne kowadło."
   not_an_anvil: "§cBlok, na który patrzysz nie jest kowadłem!"
+timedpermission:
+  no_permission: "§cNie posiadasz rangi §e+§c."
+  expires: "§6Ranga §e+ §6wygasa §e{0}§6."
 errors:
   database:
     - "§e--------------------------------------------"
