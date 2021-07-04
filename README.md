@@ -39,4 +39,5 @@ Main features:\
 [EssentialsX](https://github.com/EssentialsX/Essentials)\
 [CommandAliases](https://github.com/Kneesnap/CommandAliases)\
 [TreysCommandBlocker](https://github.com/TreyRuffy/CommandBlocker)\
-[InfiniAnvil](https://github.com/alegemaate/SpigotPlugins)
+[InfiniAnvil](https://github.com/alegemaate/SpigotPlugins)\
+[IPWhitelist](https://github.com/CraftMinecraft/IPWhitelist)
