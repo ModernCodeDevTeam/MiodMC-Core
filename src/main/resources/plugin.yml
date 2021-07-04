@@ -2,9 +2,9 @@ main: pl.dcrft.DragonCraftCore
 name: ${project.name}
 version: ${project.version}-b${buildNumber}
 author: NickNickerYT
-loadbefore: [AdvancedBan]
-softdepend: [AdvancedBan, PlaceholderAPI, Vault, LuckPerms, Skript, SuperVanish]
-description: DragonCraftCore. Podstawowe elementy serwera DragonCraft w jednym pluginie. Teraz obsługuje również panel administracji, /gracz oraz AdminChat/ModChat. ${maven.build.timestamp}
+loadbefore: [AdvancedBan, Vault, PlaceholderAPI]
+softdepend: [LuckPerms]
+description: DragonCraftCore - the core which fits the DragonCraft needs. The core plugin created for DragonCraft Minecraft server that provides basic features for DragonCraft. Built on ${timestamp}
 api-version: 1.16
 commands:
   pomoc:
@@ -12,7 +12,7 @@ commands:
     usage: /pomoc
   dcc:
     description: Komenda główna DragonCraftCore.
-    usage: /dcc [<reload>]
+    usage: /dcc [<przeladuj>]
   cc:
     description: Czyszczenie czatu.
     usage: /cc

@@ -1,18 +1,39 @@
 package pl.dcrft.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import pl.dcrft.DragonCraftCore;
 
 import static pl.dcrft.Managers.LanguageManager.getMessage;
 
 
 public class PlayerLoginListener implements Listener {
+    private DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onLogin(PlayerLoginEvent event) {
+        if(event.getAddress().toString().equals("/" + plugin.getConfig().getString("bungee.ip"))){
+            if(plugin.getServer().hasWhitelist()){
+                if(event.getPlayer().isWhitelisted()){
+                    event.allow();
+                } else {
+                    event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, (ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("bungee.kick_message"))));
+                    return;
+                }
+            } else {
+                event.allow();
+                return;
+            }
+        } else {
+            event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, (ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("bungee.kick_message"))));
+            return;
+        }
+
+
         if (event.getResult() == PlayerLoginEvent.Result.KICK_FULL) {
             Player player = event.getPlayer();
 

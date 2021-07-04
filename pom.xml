@@ -11,6 +11,8 @@
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
     </properties>
 
     <repositories>
@@ -78,6 +80,7 @@
     <build>
         <finalName>${project.artifactId}-${project.version}-b${buildNumber}</finalName>
         <resources>
+
             <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
@@ -144,11 +147,20 @@
                     <items>
                         <item>buildNumber</item>
                     </items>
+                    <timestampFormat>{0,date,dd.MM.yyyy HH:mm:ss}</timestampFormat>
                     <doCheck>false</doCheck>
                     <doUpdate>false</doUpdate>
                     <revisionOnScmFailure>unknownbuild</revisionOnScmFailure>
                 </configuration>
-            </plugin><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>8</source><target>8</target></configuration></plugin>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

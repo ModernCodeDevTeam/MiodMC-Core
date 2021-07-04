@@ -40,6 +40,9 @@ public class StatisticManager {
     }
 
     public static HashMap<StatisticType, String> getStatistics(String p){
+
+        openConnection();
+
         boolean val;
 
         String kills;
