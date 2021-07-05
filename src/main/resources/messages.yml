@@ -352,6 +352,9 @@ anvils:
 timedpermission:
   no_permission: "§cNie posiadasz rangi §e+§c."
   expires: "§6Ranga §e+ §6wygasa §e{0}§6."
+chairs:
+  entry: "§aUsiadłeś!"
+  exit: "§cJuż nie siedzisz."
 errors:
   database:
     - "§e--------------------------------------------"

@@ -11,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.dcrft.Listeners.*;
 import pl.dcrft.Listeners.Anvil.AnvilBreakListener;
 import pl.dcrft.Listeners.Anvil.AnvilDamageListener;
+import pl.dcrft.Listeners.Chair.ChairEntryListener;
+import pl.dcrft.Listeners.Chair.ChairExitListener;
 import pl.dcrft.Managers.CommandManager;
 import pl.dcrft.Managers.LanguageManager;
 import pl.dcrft.Utils.Error.ErrorReason;
@@ -56,6 +58,8 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getServer().getPluginManager().registerEvents(new CommandPreprocessListener(), this);
         getServer().getPluginManager().registerEvents(new AnvilDamageListener(), this);
         getServer().getPluginManager().registerEvents(new AnvilBreakListener(), this);
+        getServer().getPluginManager().registerEvents(new ChairEntryListener(), this);
+        getServer().getPluginManager().registerEvents(new ChairExitListener(), this);
 
         getLogger().info(LanguageManager.getMessage("plugin.header"));
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");

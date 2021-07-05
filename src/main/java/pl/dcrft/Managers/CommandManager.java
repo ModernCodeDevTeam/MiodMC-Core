@@ -344,7 +344,6 @@ public class CommandManager implements CommandExecutor {
             return false;
         }
         if (cmd.getName().equalsIgnoreCase("pomoc")) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("help.title")));
             MessageManager.sendPrefixedMessage(sender, "help.title");
             MessageManager.sendMessageList(sender, "help.contents");
             return true;
