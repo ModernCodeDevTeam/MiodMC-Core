@@ -50,6 +50,7 @@ public class StatisticManager {
         String kdr;
         String rank;
         String blocks;
+        String timeplayed;
         String marry;
 
         String since;
@@ -77,7 +78,9 @@ public class StatisticManager {
                         kdr = rs.getString("kdr");
                         rank = rs.getString("ranga");
                         blocks = rs.getString("bloki");
+                        timeplayed = rs.getString("czasgry");
                         marry = rs.getString("slub");
+
                         if (server_online.equalsIgnoreCase("lobby")) {
                             server_online = "Lobby";
                         }
@@ -95,7 +98,9 @@ public class StatisticManager {
                     result.put(StatisticType.KDR, kdr);
                     result.put(StatisticType.RANK, rank);
                     result.put(StatisticType.BLOCKS, blocks);
+                    result.put(StatisticType.TIMEPLAYED, timeplayed);
                     result.put(StatisticType.MARRY, marry);
+
                     result.put(StatisticType.SINCE, since);
                     result.put(StatisticType.ONLINE, online);
                     result.put(StatisticType.SERVER_ONLINE, server_online);

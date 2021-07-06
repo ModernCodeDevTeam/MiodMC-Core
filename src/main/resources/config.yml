@@ -53,3 +53,4 @@ aliases:
   test: "/warp test"
 disabled_default_permission: "cb.adm"
 timedpermission: "essentials.kits.plus"
+death_head_chance: 0.25

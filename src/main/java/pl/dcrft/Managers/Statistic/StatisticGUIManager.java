@@ -38,6 +38,7 @@ public class StatisticGUIManager {
             String kdr = statistics.get(StatisticType.KDR);
             String rank = statistics.get(StatisticType.RANK);
             String blocks = statistics.get(StatisticType.BLOCKS);
+            String timeplayed = statistics.get(StatisticType.TIMEPLAYED);
             String marry = statistics.get(StatisticType.MARRY);
 
             String since = statistics.get(StatisticType.SINCE);
@@ -70,7 +71,6 @@ public class StatisticGUIManager {
             inv.setItem(27, yellow);
             inv.setItem(28, yellow);
 
-            inv.setItem(33, yellow);
             inv.setItem(34, yellow);
             inv.setItem(35, yellow);
 
@@ -184,6 +184,14 @@ public class StatisticGUIManager {
             meta8.setDisplayName(LanguageManager.getMessage("statistics.since") + " " + since);
             jablko.setItemMeta(meta8);
             inv.setItem(40, jablko);
+
+
+            ItemStack clock = new ItemStack(Material.CLOCK);
+            ItemMeta meta10 = clock.getItemMeta();
+            meta10.setDisplayName(LanguageManager.getMessage("statistics.timeplayed") + " " + timeplayed);
+            clock.setItemMeta(meta10);
+            inv.setItem(33, clock);
+
             ItemStack wersja = new ItemStack(Material.REDSTONE_TORCH, (short) 1);
 
             ItemMeta meta9 = wersja.getItemMeta();

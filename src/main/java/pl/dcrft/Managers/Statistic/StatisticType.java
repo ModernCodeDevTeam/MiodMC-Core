@@ -6,7 +6,9 @@ public enum StatisticType {
     KDR,
     RANK,
     BLOCKS,
+    TIMEPLAYED,
     MARRY,
+
     SINCE,
     ONLINE,
     SERVER_ONLINE

@@ -34,7 +34,8 @@ Main features:\
 • command aliases\
 • command blocking\
 • /+ - check when a custom temporary permission expires\
-• ability to create unbreakable anvils
+• ability to create unbreakable anvils\
+• custom chance for dropping a player head after killing them
 
 ##### Sources which helped develop DragonCraftCore:
 [EssentialsX](https://github.com/EssentialsX/Essentials)\

@@ -81,6 +81,7 @@ statistics:
     title: "§6Ślub §e»§e"
     none: "§ebrak"
   blocks: "§6Wykopane bloki §e»§e"
+  timeplayed: "§6Czas gry §e»"
   punishments:
     title: "§6Kary §e»"
     none: "§abrak"
@@ -143,47 +144,39 @@ chat:
   enabled: "§aCzat został włączony."
   disabled: "§cCzat został wyciszony."
   cleared: '&cCzat został wyczyszczony.'
+death_head: "§6Głowa §e» "
 help:
   title: '&aPomoc'
   contents:
-    - '&6--==[&9&lInformacje o serwerze&6]==--'
-    - '&6-==[&9&lOgólne&6]==-'
-    - '&eSerwer jest serwerem typu &9&lsurvival&e z możliwością stworzenia &9&ldziałki&e
-    za pomocą &9&lnoteblocka&e.'
-    - '&6-==[&b&lDziałki&6]==-'
-    - '&9&lDziałkę&e stworzysz za pomocą &9&lnoteblocka&e. Ma ona wymiary &9&l51x501x51&e.'
-    - '&eSzczegółowe informacje dotyczące &9&lkuboid&e znajdziesz na /info.'
-    - '&6-==[&e&lRangi&6]==-'
-    - '&eDostępne rangi to &9&lVIP&e,&5&l SVIP&e, &9&lMVIP&e, &6&lEVIP&e, oraz rangi z
-    &e"+"'
-    - '&eMożna je zakupić na stronie serwera &9&lDCRFT.PL&e.'
-    - '&6-==[&6&lSmocze jaja&6]==-'
-    - '&e&lSmocze jaja&e są walutą premium serwera. Można je zakupić na stronie, na /sklep
-    bądż wydropić z niektórych mobów.'
-    - '&eSzczegółowe informacje dotyczące &e&lSmoczych jaj &eznajdziesz na /info.'
-    - '&6-==[&2&lPomocnicy &9&li &2&lmoderatorzy&6]==-'
-    - '&eRekrutacja na &a&lpomocnika &ejest zapowiadana na czacie. Rangę &a&lpomocnik
-    &emożna jednak zdobyć postępując zgodnie z krokami na /info, tak samo jak rangę
-    &2&lmoderator&e.'
-    - '&eSzczegółowe informacje dotyczące pomocników i moderatorów znajdziesz na /info.'
-    - '&6-==[&4&lYou&f&lTuberzy&6]==-'
-    - '&eRangę &4&lYou&f&lTuber&e można otrzymać wrzucając na swój kanał reklamę naszego
-    serwera. Kanał ten musi mieć co najmniej &9&l500 subskrypcji&e.'
-    - '&6-==[&9&lInformacje o graczu&6]==-'
-    - '&eInformacje o graczu wyświetlisz poprzez wpisanie komendy &9&l/gracz [nick]&e.'
-    - '&6-==[&4&lRegulamin&6]==-'
-    - '&9&lRegulamin serwera &eznajduje się na /info&e, na /spawn&e oraz na stronie.'
-    - '&6-==[&f&lSkórki&6]==-'
-    - '&9&lSkórkę&e ustawisz za pomocą &9&l/skin [nick]&e.'
-    - '&6-==[&9&lDiscord&6]==-'
-    - '&eNasz serwer &9&lDiscord&e to: &9&ldiscord.gg/7pPNbUU&e. Aby połączyć konto Minecraft
-    z naszym serwerem &9&lDiscord&e, wpisz /dclink.'
-    - '&6-==[&7&lQuesty&6]==-'
-    - '&7&lQuesty &esą dodatkiem do serwera. Aby wykonać quest, należy kliknąć prawym
-    przyciskiem mysz na NPC. Jeśli quest nie wymaga przedmiotów, należy kliknąć drugi
-    raz na NPC, jeśli jednak wymaga on dostarczenia przedmiot u, należy kliknąć na NPC
-    trzymając przedmiot w ręce.'
-    - '&6-==[&a&lWięcej informacji znajduje się na /info&6]==-'
+    - '§e» &9Informacje o serwerze'
+    - ' §e» &f&nOgólne'
+    - '  &6Tryb podserwera to &7&nsurvival&r&6 z możliwością stworzenia &b&ndziałki&r&6 za pomocą &b&nbloku dźwiękowego&r&6.'
+    - ' &e» &b&nDziałki'
+    - '  &b&nDziałkę&r&6 stworzysz za pomocą &b&nbloku dźwiękowego&r&6. Chroni ona twój teren i ma wymiary &e51x501x51&6.'
+    - '  &6Więcej informacji w dziale &b&nDziałki&r&6 na &e/info&6.'
+    - ' &e» &6Rangi'
+    - '  &6Dostępne rangi to &bVIP&6, &5SVIP&6, &9MVIP&6, EVIP.'
+    - '  &6Kupisz je na stronie &eDCRFT.PL&6 lub u odpowiednich &eNPC&6.'
+    - ' §e» §6&nSmocze jaja'
+    - '  &6&nSmocze jaja&6 to waluta premium na &e&lDragon&6&lCraft&6. Można je kupić na stronie &eDCRFT.PL&6, na &e/sklep&6
+    lub uzyskać zabijając potwory - niekiedy z nich wypadają.'
+    - '  &6Więcej informacji w dziale &6&nSmocze jaja&r&6 na &e/info&6.'
+    - ' &e» &a&nPomocnicy'
+    - '  &6Rekrutacja na rangę &a&nPomocnik&r&6 jest ogłaszana na serwerze &eDiscord&6. Rangę &a&nPomocnik&r&6 można jednak zdobyć bez rekrutacji - postępując zgodnie z krokami na &e/info&6 w dziale &a&nPomocnicy&r&6.'
+    - ' &e» &4&nYou&f&nTuberzy'
+    - '  &6Jeśli nagrywasz regularnie lub streamujesz z naszego serwera, a twoje filmy wzbudzają zainteresowanie - możesz zgłosić nam chęć otrzymania rangi &4&nYou&f&nTuber&r&6. Daje ona specjalne przywileje, jak wysyłanie linków na czacie.'
+    - '  &6Jeśli nie posiadasz rangi &4&nYou&f&nTuber&r&6, a właśnie nagrywasz lub streamujesz z naszego serwera, możesz o tym poinformować i podać nazwę swojego kanału. Pamiętaj jednak, by nie tworzyć spamu.'
+    - ' &e» &f&nStatystyki'
+    - '  &f&nStatystyki&r&6 gracza sprawdzisz za pomocą &e/gracz <nick>&6.'
+    - ' &e» &4&nRegulamin'
+    - '  &4&nRegulamin&r&6 serwera znajduje się na &e/spawn&6, &e/info&6 oraz na stronie &eDCRFT.PL&6.'
+    - ' §e» &f&nSkórki'
+    - '  &f&nSkórkę&r&6 ustawisz za pomocą &e/skin <nick>&6,'
+    - ' &e» &9&nDiscord'
+    - '  &6Nasz serwer &9&nDiscord&r&6 to &ediscord.gg/7pPNbUU&6. Aby połączyć konto Minecraft z naszym serwerem &9&nDiscord&r&6, wpisz &e/dclink&6.'
+    - ' &e» &7&nQuesty'
+    - '  &7&nQuesty&r&6 są dodatkiem do serwera. Aby wykonać &7&nquest&r&6, należy podejść do &eNPC&6 oznaczonego symbolem &e✪ &6i kliknąć na niego prawym przyciskiem myszy. Jeśli &eNPC&6 wymaga dostarczenia przedmiotu, ważnym jest, by podając przedmiot mieć go w dłoni i kliknąć prawym przyciskiem myszy na &eNPC&6.'
+    - '&e» &6Więcej informacji na &e/info &e«'
 pluginhelp:
   contents:
   - "§e» §6/dcc przeladuj§3 - przeładowuje config"
@@ -343,8 +336,8 @@ aliases:
     deleted: "§cUsunięto alias."
   list:
     spacer: "§e»"
-    from: "§e"
-    to: "§e"
+    from: "§6"
+    to: "§6"
 anvils:
   created: "§aUtworzono niezniszczalne kowadło."
   deleted: "§cUsunięto nieznisczalne kowadło."
