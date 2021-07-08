@@ -13,35 +13,46 @@ commands:
   dcc:
     description: Komenda główna DragonCraftCore.
     usage: /dcc [<przeladuj>]
+    permission: dcc.adm
   cc:
     description: Czyszczenie czatu.
     usage: /cc
+    permission: panel.mod
   czat:
     description: Przełaczanie czatu.
+    permission: panel.mod
   losuj:
     description: Losowanie kolorków.
     usage: /losuj
+    permission: dcc.adm
   restart:
     description: Restartuje serwer za minutę.
     usage: /restart60
+    permission: dcc.adm
   reload:
     description: Przeładowuje serwer za minutę.
     usage: /reload60
+    permission: dcc.adm
   stop:
     description: Zatrzumuje serwer za minutę.
     usage: /stop60
+    permission: dcc.adm
   przerwa:
     description: Rozpoczyna przerwę techniczną za minutę.
     usage: /przerwa60
+    permission: dcc.adm
   sklepbroadcast:
     description: Ogłasza zakup ze sklepu.
     usage: /sklepbroadcast [gracz] [tekst]
+    permission: dcc.adm
   sklepbroadcastdonate:
     description: Ogłasza dotację ze sklepu.
     usage: /sklepbroadcastdonate [gracz] [tekst]
+    permission: dcc.adm
   dcccast:
     description: Czyszczenie czatu.
     usage: /cc
+    permission: dcc.adm
   vip:
     description: Alias do /warp vip lub pokazanie możliwości VIPa w zależności od rangi.
     usage: /vip
@@ -56,16 +67,21 @@ commands:
     usage: /evip
   ac:
     description: Włącz AdminChat.
+    permission: dcc.adm
   mc:
     description: Włącz ModChat.
+    permission: panel.mod
   stream:
     description: Włącza tryb streamu.
+    permission: panel.mod
   gracz:
     description: Wyświetl statystyki gracza.
   warn:
     description: Ostrzeż gracza.
+    permission: panel.mod
   checkwarn:
     description: Wyświetl ostrzeżenia gracza.
+    permission: panel.mod
   slub:
     description: slub
   sakceptuj:
@@ -84,6 +100,7 @@ commands:
     description: aa
   alias:
     description: aliasy
+    permission: dcc.adm
   +:
     description: dlugosc plusa
   
