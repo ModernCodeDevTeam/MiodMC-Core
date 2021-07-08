@@ -349,7 +349,6 @@ public class CommandManager implements CommandExecutor {
             return true;
         }
         if (cmd.getName().equalsIgnoreCase("vip")) {
-            sender.sendMessage("test3");
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
