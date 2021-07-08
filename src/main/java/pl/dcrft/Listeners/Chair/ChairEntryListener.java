@@ -6,14 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.type.Stairs;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.LanguageManager;
 

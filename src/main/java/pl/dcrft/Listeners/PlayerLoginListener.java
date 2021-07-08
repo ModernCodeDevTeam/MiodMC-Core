@@ -1,19 +1,12 @@
 package pl.dcrft.Listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import pl.dcrft.DragonCraftCore;
-
-import java.awt.*;
-import java.io.File;
 
 import static pl.dcrft.Managers.LanguageManager.getMessage;
 

@@ -2,7 +2,6 @@ package pl.dcrft.Managers;
 
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.utils.Punishment;
-import net.luckperms.api.LuckPerms;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
@@ -15,7 +14,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.Panel.PanelType;
 import pl.dcrft.Utils.ConfigUtil;
@@ -35,7 +33,6 @@ import static pl.dcrft.Managers.MessageManager.*;
 import static pl.dcrft.Managers.Panel.PanelManager.hidePanel;
 import static pl.dcrft.Managers.Panel.PanelManager.updatePanel;
 import static pl.dcrft.Managers.Statistic.StatisticGUIManager.showStatistics;
-import static pl.dcrft.Utils.ConfigUtil.initializeFiles;
 import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
 
 
@@ -474,8 +471,8 @@ public class CommandManager implements CommandExecutor {
                                             ConfigManager.saveData();
                                             return true;
                                         }
-                                        if (Integer.valueOf(i) > max) {
-                                            max = Integer.valueOf(i) + 1;
+                                        if (Integer.parseInt(i) > max) {
+                                            max = Integer.parseInt(i) + 1;
                                         }
                                     }
                                 }
@@ -564,7 +561,7 @@ public class CommandManager implements CommandExecutor {
                     if (args[0].contains("[0-9]+")) {
                         sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
-                        stopServer(Integer.valueOf(args[0]));
+                        stopServer(Integer.parseInt(args[0]));
                     }
                 }
             } else {
@@ -578,7 +575,7 @@ public class CommandManager implements CommandExecutor {
                     if (args[0].contains("[0-9]+")) {
                         sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
-                        reloadServer(Integer.valueOf(args[0]));
+                        reloadServer(Integer.parseInt(args[0]));
                     }
                 }
             } else {
@@ -593,7 +590,7 @@ public class CommandManager implements CommandExecutor {
                     if (args[0].contains("[0-9]+")) {
                         sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
-                        restartServer(Integer.valueOf(args[0]));
+                        restartServer(Integer.parseInt(args[0]));
                     }
                 }
             } else {
@@ -607,7 +604,7 @@ public class CommandManager implements CommandExecutor {
                     if (args[0].contains("[0-9]+")) {
                         sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
-                        maintenanceStart(Integer.valueOf(args[0]));
+                        maintenanceStart(Integer.parseInt(args[0]));
                     }
                 }
             } else {

@@ -2,7 +2,6 @@ package pl.dcrft.Listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -13,7 +12,6 @@ import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
 import pl.dcrft.Managers.LanguageManager;
 import pl.dcrft.Managers.SessionManager;
-import pl.dcrft.Utils.ColorUtil;
 import pl.dcrft.Utils.Error.ErrorReason;
 
 import java.sql.SQLException;

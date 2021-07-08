@@ -1,11 +1,9 @@
 package pl.dcrft.Managers.Statistic;
 
-import org.bukkit.Bukkit;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Utils.Error.ErrorReason;
 import pl.dcrft.Utils.Error.ErrorUtil;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;

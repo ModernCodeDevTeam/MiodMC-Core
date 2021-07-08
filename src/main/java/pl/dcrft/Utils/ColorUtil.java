@@ -2,9 +2,6 @@ package pl.dcrft.Utils;
 
 import org.bukkit.ChatColor;
 
-import java.awt.*;
-import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

@@ -1,10 +1,7 @@
 package pl.dcrft.Managers;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.MessageCommandSender;
 import org.bukkit.entity.Player;
 import pl.dcrft.Utils.ColorUtil;
 
