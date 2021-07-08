@@ -379,9 +379,9 @@ public class CommandManager implements CommandExecutor {
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
-                p.chat(plugin.getConfig().getString("commands.mvip"));
+                p.chat(plugin.getConfig().getString("commands.evip"));
             } else {
-                MessageManager.sendMessageList(p, "ranks.mvip");
+                MessageManager.sendMessageList(p, "ranks.evip");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("cc")) {
