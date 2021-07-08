@@ -1,4 +1,4 @@
-package pl.dcrft.Utils.Error;
+package pl.dcrft.Utils.ErrorUtils;
 
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.LanguageManager;

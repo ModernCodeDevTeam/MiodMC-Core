@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.dcrft.Managers.ConfigManager;
-import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 
 import static pl.dcrft.Managers.ConfigManager.getDataFile;
 import static pl.dcrft.Managers.DatabaseManager.*;
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
+import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 
 public class PlayerQuitListener implements Listener {
     @EventHandler

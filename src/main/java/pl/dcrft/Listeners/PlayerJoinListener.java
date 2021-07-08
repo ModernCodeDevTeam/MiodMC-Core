@@ -12,7 +12,7 @@ import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
 import pl.dcrft.Managers.LanguageManager;
 import pl.dcrft.Managers.SessionManager;
-import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,7 +22,7 @@ import static pl.dcrft.Managers.ConfigManager.getDataFile;
 import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 import static pl.dcrft.Managers.Panel.PanelManager.updatePanels;
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
+import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 import static pl.dcrft.Utils.RoundUtil.round;
 
 import static pl.dcrft.Managers.SessionManager.list;

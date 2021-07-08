@@ -1,12 +1,12 @@
 package pl.dcrft.Utils;
 
-import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 
 import java.sql.SQLException;
 
 import static pl.dcrft.Managers.DatabaseManager.connection;
 import static pl.dcrft.Managers.DatabaseManager.openConnection;
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
+import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 
 public class DatabaseUtil {
     public static void initializeTable(String table){

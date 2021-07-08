@@ -1,8 +1,8 @@
 package pl.dcrft.Managers.Statistic;
 
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Utils.Error.ErrorReason;
-import pl.dcrft.Utils.Error.ErrorUtil;
+import pl.dcrft.Utils.ErrorUtils.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

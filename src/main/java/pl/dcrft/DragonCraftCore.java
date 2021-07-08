@@ -5,8 +5,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommandYamlParser;
+import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.dcrft.Listeners.*;
 import pl.dcrft.Listeners.Anvil.AnvilBreakListener;
@@ -15,9 +17,13 @@ import pl.dcrft.Listeners.Chair.ChairEntryListener;
 import pl.dcrft.Listeners.Chair.ChairExitListener;
 import pl.dcrft.Managers.CommandManager;
 import pl.dcrft.Managers.LanguageManager;
-import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Utils.CommandUtils.CommandRegisterUtil;
+import pl.dcrft.Utils.CommandUtils.CommandRunUtil;
+import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +33,7 @@ import static pl.dcrft.Managers.DatabaseManager.*;
 import static pl.dcrft.Managers.Panel.PanelManager.updatePanels;
 import static pl.dcrft.Utils.ConfigUtil.initializeFiles;
 import static pl.dcrft.Utils.DatabaseUtil.initializeTable;
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
+import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 
 public class DragonCraftCore extends JavaPlugin implements Listener, CommandExecutor {
     private static DragonCraftCore instance;
@@ -44,6 +50,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
     }
 
     public void onEnable() {
+
         instance = this;
 
         initializeFiles();
@@ -84,6 +91,15 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
             luckPerms = provider.getProvider();
 
         }
+
+
+        for(String cmd : getConfig().getConfigurationSection("aliases").getKeys(false)){
+            Bukkit.getCommandMap().register(cmd, new CommandRunUtil(cmd));
+            CommandRegisterUtil exampleManager = new CommandRegisterUtil(cmd);
+            exampleManager.register(new CommandRunUtil(cmd).setDescription("/" + cmd));
+            Bukkit.getServer().getLogger().info("rejestracja");
+            Bukkit.getServer().getLogger().info(cmd);
+        }
     }
 
     public void onDisable() {
@@ -101,6 +117,5 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getLogger().info(LanguageManager.getMessage("plugin.footer"));
 
     }
-
 
 }

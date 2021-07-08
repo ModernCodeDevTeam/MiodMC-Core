@@ -2,13 +2,13 @@ package pl.dcrft.Managers;
 
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
+import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 import static pl.dcrft.Managers.ConfigManager.getDatabaseFile;
 
 public class DatabaseManager {

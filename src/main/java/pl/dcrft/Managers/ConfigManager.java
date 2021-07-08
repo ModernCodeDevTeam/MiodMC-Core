@@ -4,12 +4,12 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Utils.Error.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 
 import java.io.File;
 import java.io.IOException;
 
-import static pl.dcrft.Utils.Error.ErrorUtil.logError;
+import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 
 public class ConfigManager {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
