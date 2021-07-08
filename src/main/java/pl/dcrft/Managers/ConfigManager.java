@@ -143,7 +143,14 @@ public class ConfigManager {
             logError(ErrorReason.DISABLED);
             var2.printStackTrace();
         }
-
     }
+    public static void saveDisabledFile() {
+        try {
+            disabledConfig.save(disabledConfigFile);
 
+        } catch (Exception e) {
+            logError(ErrorReason.DISABLED);
+            e.printStackTrace();
+        }
+    }
 }

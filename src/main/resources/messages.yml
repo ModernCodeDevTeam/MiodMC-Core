@@ -179,24 +179,26 @@ help:
     - '&e» &6Więcej informacji na &e/info &e«'
 pluginhelp:
   contents:
-  - "§e» §6/dcc przeladuj§3 - przeładowuje config"
-  - "§e» §6/dcc afk§3 - wyświetla konfigurację wyrzucania za AFK"
-  - "§e» §6/dcc anvil§3 - tworzy/usuwa niezniszczalne kowadło z kowadła, na które patrzysz"
-  - "§e» §6/dcccast§3 - wyświetla ogłoszenie na publicznym czacie"
-  - "§e» §6/pomoc§3 - wyświetla pomoc"
-  - "§e» §6/sklepbroadcast§3 - ogłasza zakup ze sklepu"
-  - "§e» §6/sklepbroadcastdonate§3 - ogłasza donate"
-  - "§e» §6/cc§3 - czyści czat"
-  - "§e» §6/losuj§3 - losuje"
-  - "§e» §6/reload60§3 - przeładowuje serwer za minutę"
-  - "§e» §6/restart60§3 - restartuje serwer za minutę"
-  - "§e» §6/stop60§3 - zatrzymuje serwer za minutę"
-  - "§e» §6/przerwa60§3 - rozpoczyna przerwę techniczną za minutę"
-  - "§e» §6/mc§3 - przełącza §a§lMod§2§lChat"
-  - "§e» §6/ac§3 - przełącza §c§lAdmin§4§lChat"
-  - "§e» §6/stream§3 - przełącza tryb streamu"
-  - "§e» §6/czat§3 - przełącza czat"
-  - "§e» §6/alias§3 - zarządza aliasami komend"
+    - "§e» §6/dcc przeladuj§3 - przeładowuje config"
+    - "§e» §6/dcc afk§3 - wyświetla konfigurację wyrzucania za AFK"
+    - "§e» §6/dcc anvil§3 - tworzy/usuwa niezniszczalne kowadło z kowadła, na które patrzysz"
+    - "§e» §6/dcc block komenda [<wiadomość>]§3 - blokuje komendę"
+    - "§e» §6/dcc unblock komenda§3 - odblokowuje komendę"
+    - "§e» §6/dcccast§3 - wyświetla ogłoszenie na publicznym czacie"
+    - "§e» §6/pomoc§3 - wyświetla pomoc"
+    - "§e» §6/sklepbroadcast§3 - ogłasza zakup ze sklepu"
+    - "§e» §6/sklepbroadcastdonate§3 - ogłasza donate"
+    - "§e» §6/cc§3 - czyści czat"
+    - "§e» §6/losuj§3 - losuje"
+    - "§e» §6/reload60§3 - przeładowuje serwer za minutę"
+    - "§e» §6/restart60§3 - restartuje serwer za minutę"
+    - "§e» §6/stop60§3 - zatrzymuje serwer za minutę"
+    - "§e» §6/przerwa60§3 - rozpoczyna przerwę techniczną za minutę"
+    - "§e» §6/mc§3 - przełącza §a§lMod§2§lChat"
+    - "§e» §6/ac§3 - przełącza §c§lAdmin§4§lChat"
+    - "§e» §6/stream§3 - przełącza tryb streamu"
+    - "§e» §6/czat§3 - przełącza czat"
+    - "§e» §6/alias§3 - zarządza aliasami komend"
   afk:
     title: "§e» §a§lKonfiguracja §2§lAFK"
     kick_msg: "§e» §3Wiadomość przy wyrzuceniu §e»"
@@ -213,8 +215,8 @@ ranks:
     - '&e» &3Ranga &bVIP&3 jest na zawsze'
     - '&e» &3Ranga &bVIP &3daje:'
     - '&e» &3rezerwację slota'
-    - '&e» &b10 &3Kuboid'
-    - '&e» &b5x&3 /sethome'
+    - '&e» &b10 &3działek'
+    - '&e» &b5x&3 /ustawdom'
     - '&e» &3Dostęp do strefy &bVIP'
     - '&e» &3/kit &bVIP'
     - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
@@ -222,8 +224,8 @@ ranks:
     - '&e&lDragon&6&lCraft &e» &5SVIP'
     - '&e» &3Ranga &5SVIP&3 jest na zawsze'
     - '&e» &3Ranga &5SVIP &3daje wszystko to co &bVIP &3oraz:'
-    - '&e» &b20 &3Kuboid'
-    - '&e» &b10x&3 /sethome'
+    - '&e» &b20 &3działek'
+    - '&e» &b10x&3 /ustawdom'
     - '&e» &3Dostęp do strefy &bSVIP'
     - '&e» &3/kit &bSVIP'
     - '&e» &3/workbench'
@@ -233,8 +235,8 @@ ranks:
     - '&e&lDragon&6&lCraft &e» &9MVIP'
     - '&e» &3Ranga &9MVIP&3 jest na zawsze'
     - '&e» &3Ranga &9MVIP &3daje wszystko to co &5SVIP &3oraz:'
-    - '&e» &b30 &3Kuboid'
-    - '&e» &b15x&3 /sethome'
+    - '&e» &b30 &3działek'
+    - '&e» &b15x&3 /ustawdom'
     - '&e» &3Dostęp do strefy &bMVIP'
     - '&e» &3/kit &bMVIP'
     - '&e» &3pisanie kolorami na tabliczkach'
@@ -244,8 +246,8 @@ ranks:
     - '&e&lDragon&6&lCraft &e» &6EVIP'
     - '&e» &3Ranga &6EVIP&3 jest na zawsze'
     - '&e» &3Ranga &6EVIP &3daje wszystko to co &9MVIP &3oraz:'
-    - '&e» &b40 &3Kuboid'
-    - '&e» &b20x&3 /sethome'
+    - '&e» &b40 &3działek'
+    - '&e» &b20x&3 /ustawdom'
     - '&e» &3Dostęp do strefy &bEVIP'
     - '&e» &3/kit &bEVIP'
     - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
@@ -254,29 +256,36 @@ broadcast:
   - '&6Discord &e&lDragon&6&lCraft&6: &ediscord.gg/7pPNbUU&6. Więcej pod &e/discord&6.'
   - '&6Chcesz połączyć swoje konto na serwerze z kontem Discord &e&lDragon&6&lCraft&6?
   Dowiedz się więcej pod &e/discord&6.'
-  - '&6Witamy na nowej, &eV Edycji&6 &e&lDragon&6&lCraft &eSurvival&6!'
-  - '&6Chcesz przenieść &erangę&6 na &enowe konto&6? Użyj &e/przeniesrange&6!'
+  - '&6Witamy na nowej &e&lDragon&6&lCraft &eSurvival VI&6!'
+  - '&6Zmieniasz nick i chcesz przenieść rangę na nowe konto? Użyj &e/zmiennick&6!'
   - '&eSmocze jaja&6 zakupisz na &eDCRFT.PL &6i &e/sklep&6. &6Mogą one też wypaść z
   &eagresywnych mobów&6.'
   - '&6Strefę &b&lVIP&6 znajdziesz pod /&bvip&6, &5&lSVIP&6 pod /&5svip&6, &9&lMVIP&6
   pod /&9mvip&6, a &6&lEVIP&6 pod /&6evip&6.'
   - '&6Rangę &b&lVIP&6 zakupisz również na /spawn, a rangę + na /&bvip&6, /&5svip&6,
   /&9mvip&6 i /&6evip&6.'
+  - '&6Długość rangi &e+ &6sprawdzisz za pomocą &e/+&6.'
   - '&6Serwer zmienisz za pomocą &e/serwer&6.'
-  - '&6Jeśli potrzebujesz &epomocy&6 nieznajdującej się pod &e/pomoc&6, zgłoś się do
-  &eaktywnych &6osób z &eadministracji&6 na naszym serwerze &eDiscord&6.'
-  - '&6Problemy i zgłoszenia zgłaszaj administracji na serwerze &eDiscord &6bądź poprzez
-  &e/zglos treść zgłoszenia&6.'
-  - '&6Gracza łamiącego regulamin zgłosisz na naszym serwerze &eDiscord &6lub za pomocą
-  komendy &e/zglos treść zgłoszenia&6.'
-  - '&6Zapraszamy na naszego &eFacebooka&6: &ehttp://fb.com/dcrft.pl&6.'
+  - '&6Jeśli potrzebujesz &epomocy&6 nieznajdującej się pod &e/pomoc&6, utwórz zgłoszenie na naszym serwerze &eDiscord&6.'
+  - '&6Wszelkie problemy zgłaszaj administracji na serwerze &eDiscord &6bądź poprzez
+  &e/zglos&6.'
+  - '&6Gracza łamiącego regulamin zgłosisz na naszym serwerze &eDiscord &6lub poprzez &e/zglos&6.'
+  - '&6Polub naszego &eFacebooka&6: &ehttp://fb.com/dcrft.pl&6.'
   - '&6Polub nas na &ewww.topkamc.pl/server/grOWQQqb&6.'
-  - '&6Zapraszamy na naszego &eInstagrama&6: &e@dcrft.pl&6.'
+  - '&6Obserwuj nas na &eInstagramie&6: &e@dcrft.pl&6.'
 afk:
   kick_msg: "§cZostałeś wyrzucony za bycie nieaktywnym dłużej niż 15 minut."
   kick_warn_msg: "§cHej! Za chwilę zostaniesz wyrzucony za zbyt długą nieaktywność."
   kick_warn_msg_afk: "§e» §6Nie jestem AFK [kliknij]"
   kick_not_afk_msg: "§aUff. Potwierdziłeś, że nie jesteś AFK."
+block:
+  usage: "&cUżycie: &e/dcc block komenda [<wiadomość>]&c."
+  already: "&cTa komenda jest już zablokowana."
+  blocked: "&aKomenda zablokowana."
+unblock:
+  usage: "&cUżycie: &e/dcc unblock komenda."
+  notfound: "&cTa komenda nie jest zablokowana."
+  unblocked: "&aKomenda odblokowana"
 maintenance:
   reload_plugin: "§aPrzeładowano plik konfiguracyjny §e§lDragon§6§lCraft§b§lCore§a."
   saving: "§cZapisywanie plików świata..."
@@ -323,9 +332,9 @@ aliases:
   help:
     header: "&e&lAliasy"
     contents:
-    - "§e» §6/alias dodaj alias komenda§3 - dodaje nowy alias"
-    - "§e» §6/alias usun alias§3 - usuwa alias"
-    - "§e» §6/alias lista§3 - pokazuje aktywne aliasy"
+      - "§e» §6/alias dodaj alias komenda§3 - dodaje nowy alias"
+      - "§e» §6/alias usun alias§3 - usuwa alias"
+      - "§e» §6/alias lista§3 - pokazuje aktywne aliasy"
   add:
     exists: "§cTaki alias już istnieje!"
     usage: "§cUżycie§e: §e/alias dodaj <alias> <komenda>§c."

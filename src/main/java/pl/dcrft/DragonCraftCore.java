@@ -8,6 +8,7 @@ import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import pl.dcrft.Listeners.*;
 import pl.dcrft.Listeners.Anvil.AnvilBreakListener;
 import pl.dcrft.Listeners.Anvil.AnvilDamageListener;
@@ -87,15 +88,14 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
     }
 
     public void onDisable() {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            logError(ErrorReason.DATABASE);
-        }
-
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    logError(ErrorReason.DATABASE);
+                }
         getLogger().info(LanguageManager.getMessage("plugin.header"));
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");
         getLogger().info(LanguageManager.getMessage("plugin.disabled") + getDescription().getVersion());

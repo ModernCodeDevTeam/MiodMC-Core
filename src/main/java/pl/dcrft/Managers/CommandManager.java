@@ -444,61 +444,101 @@ public class CommandManager implements CommandExecutor {
                     sender.sendMessage(plugin.getConfig().getString("afk.kick_delay") + " " + kick_delay);
                     sender.sendMessage(plugin.getConfig().getString("afk.sound_on_get_warn") + " " + sound_on_get_warn);
                     sender.sendMessage(plugin.getConfig().getString("afk.sound_on_notafk") + " " + sound_on_notafk);
-                } else if(sub.equalsIgnoreCase("anvil")){
-                    if(!(sender instanceof Player)){
+                } else if (sub.equalsIgnoreCase("anvil")) {
+                    if (!(sender instanceof Player)) {
                         sendPrefixedMessage(sender, "console_error");
                     } else {
                         Player p = (Player) sender;
-                      if(p.getTargetBlock(null, 100) != null){
-                          Block block = p.getTargetBlock(null, 100);
+                        if (p.getTargetBlock(null, 100) != null) {
+                            Block block = p.getTargetBlock(null, 100);
 
-                          if(block.getType() == Material.ANVIL || block.getType() == Material.CHIPPED_ANVIL || block.getType() == Material.DAMAGED_ANVIL) {
+                            if (block.getType() == Material.ANVIL || block.getType() == Material.CHIPPED_ANVIL || block.getType() == Material.DAMAGED_ANVIL) {
 
-                              Location loc = block.getLocation();
+                                Location loc = block.getLocation();
 
-                              FileConfiguration data = ConfigManager.getDataFile();
+                                FileConfiguration data = ConfigManager.getDataFile();
 
-                              Set<String> anvils = data.getConfigurationSection("anvils").getKeys(false);
-                                
-                              int max = 0;
-                              if (anvils != null) {
-                                  for (String i : anvils) {
-                                      int x = data.getInt("anvils." + i + ".x");
-                                      int y = data.getInt("anvils." + i + ".y");
-                                      int z = data.getInt("anvils." + i + ".z");
-                                      String world = data.getString("anvils." + i + ".world");
-                                      Location al = new Location(Bukkit.getWorld(world), x, y, z);
-                                      if (loc.equals(al)) {
-                                          data.set("anvils." + i, null);
-                                          sendPrefixedMessage(p, "anvils.deleted");
-                                          ConfigManager.saveData();
-                                          return true;
-                                      }
-                                      if(Integer.valueOf(i) > max){
-                                          max = Integer.valueOf(i)+1;
-                                      }
-                                  }
-                              }
+                                Set<String> anvils = data.getConfigurationSection("anvils").getKeys(false);
 
-                              int x = loc.getBlockX();
-                              int y = loc.getBlockY();
-                              int z = loc.getBlockZ();
-                              String world = loc.getWorld().getName();
+                                int max = 0;
+                                if (anvils != null) {
+                                    for (String i : anvils) {
+                                        int x = data.getInt("anvils." + i + ".x");
+                                        int y = data.getInt("anvils." + i + ".y");
+                                        int z = data.getInt("anvils." + i + ".z");
+                                        String world = data.getString("anvils." + i + ".world");
+                                        Location al = new Location(Bukkit.getWorld(world), x, y, z);
+                                        if (loc.equals(al)) {
+                                            data.set("anvils." + i, null);
+                                            sendPrefixedMessage(p, "anvils.deleted");
+                                            ConfigManager.saveData();
+                                            return true;
+                                        }
+                                        if (Integer.valueOf(i) > max) {
+                                            max = Integer.valueOf(i) + 1;
+                                        }
+                                    }
+                                }
 
-                              ConfigManager.getDataFile().set("anvils." + max + ".x", x);
-                              ConfigManager.getDataFile().set("anvils." + max + ".y", y);
-                              ConfigManager.getDataFile().set("anvils." + max + ".z", z);
-                              ConfigManager.getDataFile().set("anvils." + max + ".world", world);
-                              sendPrefixedMessage(p, "anvils.created");
+                                int x = loc.getBlockX();
+                                int y = loc.getBlockY();
+                                int z = loc.getBlockZ();
+                                String world = loc.getWorld().getName();
 
-                              ConfigManager.saveData();
-                          } else {
-                              sendPrefixedMessage(p, "anvils.not_an_anvil");
-                          }
+                                ConfigManager.getDataFile().set("anvils." + max + ".x", x);
+                                ConfigManager.getDataFile().set("anvils." + max + ".y", y);
+                                ConfigManager.getDataFile().set("anvils." + max + ".z", z);
+                                ConfigManager.getDataFile().set("anvils." + max + ".world", world);
+                                sendPrefixedMessage(p, "anvils.created");
 
-                      } else {
-                          sendPrefixedMessage(p, "anvils.not_an_anvil");
-                      }
+                                ConfigManager.saveData();
+                            } else {
+                                sendPrefixedMessage(p, "anvils.not_an_anvil");
+                            }
+
+                        } else {
+                            sendPrefixedMessage(p, "anvils.not_an_anvil");
+                        }
+                    }
+                } else if (sub.equalsIgnoreCase("block")) {
+                    if (args.length < 2) {
+                        sendPrefixedMessage(sender, "block.usage");
+                    } else {
+                        String toblock = args[1].replace(":", "%colon%");
+                        if (ConfigManager.getDisabledFile().get(toblock) != null) {
+                            sendPrefixedMessage(sender, "block.already");
+                        } else {
+                            if (args.length == 2) {
+                                ConfigManager.getDisabledFile().set(toblock + ".Message", getMessage("prefix") + getMessage("notfound"));
+                                ConfigManager.saveDisabledFile();
+                                sendPrefixedMessage(sender, "block.blocked");
+                            }
+                            else if (args.length > 2) {
+
+                                final StringBuilder sb = new StringBuilder();
+                                for (int k = 2; k < args.length; ++k) {
+                                    sb.append(args[k]).append(" ");
+                                }
+                                final String message = sb.toString().trim();
+
+                                ConfigManager.getDisabledFile().set(toblock + ".Message", message);
+                                ConfigManager.saveDisabledFile();
+                                sendPrefixedMessage(sender, "block.blocked");
+                            }
+                        }
+                    }
+                } else if (sub.equalsIgnoreCase("unblock")) {
+                    if (args.length < 2) {
+                        sendPrefixedMessage(sender, "unblock.usage");
+                    } else {
+                        String tounblock = args[1].replace(":", "%colon%");
+                        if (ConfigManager.getDisabledFile().get(tounblock) == null) {
+                            sendPrefixedMessage(sender, "unblock.notfound");
+                        } else {
+                                ConfigManager.getDisabledFile().set(tounblock, null);
+                                ConfigManager.saveDisabledFile();
+                                sendPrefixedMessage(sender, "unblock.unblocked");
+                        }
                     }
                 } else {
                     sender.sendMessage("§e§lDragon§6§lCraft§b§lCore " + plugin.getDescription().getVersion());
@@ -833,7 +873,7 @@ public class CommandManager implements CommandExecutor {
                         for (String key : map.keySet()) {
                             String value = map.get(key).toString();
                             sender.sendMessage(
-                                        getMessage("aliases.list.spacer") +
+                                    getMessage("aliases.list.spacer") +
                                             " " + getMessage("aliases.list.from") +
                                             key +
                                             " " + getMessage("aliases.list.spacer") +
@@ -849,23 +889,20 @@ public class CommandManager implements CommandExecutor {
                 sendPrefixedMessage(sender, "notfound");
             }
             return true;
-        }
-        else if (cmd.getName().equalsIgnoreCase("+")) {
-            if(!sender.hasPermission(plugin.getConfig().getString("timedpermission"))){
+        } else if (cmd.getName().equalsIgnoreCase("+")) {
+            if (!sender.hasPermission(plugin.getConfig().getString("timedpermission"))) {
                 sendPrefixedMessage(sender, "timedpermission.no_permission");
-            }
-            else{
+            } else {
                 Player p = (Player) sender;
                 User user = plugin.luckPerms.getPlayerAdapter(Player.class).getUser(p);
-               List<InheritanceNode> nodes = user.getNodes(NodeType.INHERITANCE)
+                List<InheritanceNode> nodes = user.getNodes(NodeType.INHERITANCE)
                         .stream()
                         .filter(Node::hasExpiry)
                         .filter(node -> !node.hasExpired())
                         .collect(Collectors.toList());
-                if(nodes.size() == 0){
+                if (nodes.size() == 0) {
                     sendPrefixedMessage(sender, "timedpermission.no_permission");
-                }
-                else{
+                } else {
                     Instant instant = nodes.get(0).getExpiry();
 
                     Date date = Date.from(instant);

@@ -20,13 +20,17 @@ public class CommandPreprocessListener implements Listener {
         if (e.getMessage().length() > 1 && e.getMessage().startsWith("/")) {
             FileConfiguration disabledConfig = ConfigManager.getDisabledFile();
             String command = e.getMessage();
+
             Player p = e.getPlayer();
+            command = e.getMessage().substring(1);
+            command = command.split(" ")[0];
+
             if (disabledConfig.getKeys(false) != null) {
-                if (disabledConfig.getKeys(false).contains(e.getMessage().replace("/", ""))) {
+                if (disabledConfig.getKeys(false).contains(command)) {
                     for (String cmd : disabledConfig.getKeys(false)) {
                         cmd.replace("%colon%", ":");
                         String permission = disabledConfig.getString(cmd + ".Permission");
-                        if (command.startsWith("/" + cmd)) {
+                        if (command.equalsIgnoreCase(cmd)) {
                             if (permission == null) {
                                 permission = plugin.getConfig().getString("disabled_default_permission");
                             }
@@ -39,8 +43,6 @@ public class CommandPreprocessListener implements Listener {
                     }
                 }
             }
-            command = e.getMessage().substring(1);
-            command = command.split(" ")[0];
 
             String aliasResult = plugin.getConfig().getString("aliases." + command);
             if (aliasResult != null) {
