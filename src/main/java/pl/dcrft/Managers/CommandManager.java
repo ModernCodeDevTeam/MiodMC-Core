@@ -349,39 +349,40 @@ public class CommandManager implements CommandExecutor {
             return true;
         }
         if (cmd.getName().equalsIgnoreCase("vip")) {
+            sender.sendMessage("test3");
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
-                p.chat(plugin.getConfig().getString("commands." + cmd.getName()));
+                p.chat(plugin.getConfig().getString("commands.vip"));
             } else {
-                MessageManager.sendMessageList(p, "ranks." + cmd.getName());
+                MessageManager.sendMessageList(p, "ranks.vip");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("svip")) {
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
-                p.chat(plugin.getConfig().getString("commands." + cmd.getName()));
+                p.chat(plugin.getConfig().getString("commands.svip"));
             } else {
-                MessageManager.sendMessageList(p, "ranks." + cmd.getName());
+                MessageManager.sendMessageList(p, "ranks.svip");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("mvip")) {
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
-                p.chat(plugin.getConfig().getString("commands." + cmd.getName()));
+                p.chat(plugin.getConfig().getString("commands.mvip"));
             } else {
-                MessageManager.sendMessageList(p, "ranks." + cmd.getName());
+                MessageManager.sendMessageList(p, "ranks.mvip");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("evip")) {
             Player p = (Player) sender;
             final boolean grupa = isPlayerInGroup(p, cmd.getName());
             if (grupa) {
-                p.chat(plugin.getConfig().getString("commands." + cmd.getName()));
+                p.chat(plugin.getConfig().getString("commands.mvip"));
             } else {
-                MessageManager.sendMessageList(p, "ranks." + cmd.getName());
+                MessageManager.sendMessageList(p, "ranks.mvip");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("cc")) {

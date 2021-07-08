@@ -14,21 +14,28 @@ import pl.dcrft.Managers.LanguageManager;
 public class CommandPreprocessListener implements Listener {
     private static DragonCraftCore plugin = DragonCraftCore.getInstance();
     private String prefix = LanguageManager.getMessage("prefix");
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandPreProcess(PlayerCommandPreprocessEvent e) {
-        if (e.getMessage().length() > 1) {
+        if (e.getMessage().length() > 1 && e.getMessage().startsWith("/")) {
             FileConfiguration disabledConfig = ConfigManager.getDisabledFile();
             String command = e.getMessage();
             Player p = e.getPlayer();
-            if(disabledConfig.getKeys(false) != null){
-                for(String cmd : disabledConfig.getKeys(false)){
-                    cmd.replace("%colon%", ":");
-                    String permission = disabledConfig.getString(cmd + ".Permission");
-                    if(permission == null){permission=plugin.getConfig().getString("disabled_default_permission");}
-                    if(command.startsWith("/" + cmd) && !p.hasPermission(permission) && !p.isOp()){
-                        e.setCancelled(true);
-                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', disabledConfig.getString(cmd + ".Message")));
-                        return;
+            if (disabledConfig.getKeys(false) != null) {
+                if (disabledConfig.getKeys(false).contains(e.getMessage().replace("/", ""))) {
+                    for (String cmd : disabledConfig.getKeys(false)) {
+                        cmd.replace("%colon%", ":");
+                        String permission = disabledConfig.getString(cmd + ".Permission");
+                        if (command.startsWith("/" + cmd)) {
+                            if (permission == null) {
+                                permission = plugin.getConfig().getString("disabled_default_permission");
+                            }
+                            if (!p.hasPermission(permission) && !p.isOp()) {
+                                e.setCancelled(true);
+                                p.sendMessage(ChatColor.translateAlternateColorCodes('&', disabledConfig.getString(cmd + ".Message")));
+                                return;
+                            }
+                        }
                     }
                 }
             }

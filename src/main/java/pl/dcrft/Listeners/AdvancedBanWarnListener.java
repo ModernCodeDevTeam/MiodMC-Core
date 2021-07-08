@@ -14,10 +14,10 @@ public class AdvancedBanWarnListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandPreprocess(PlayerCommandPreprocessEvent e) {
-        Player p = e.getPlayer();
         if (e.getMessage().startsWith("/warn")) {
             e.setCancelled(true);
             String[] args = e.getMessage().split(" ");
+            Player p = e.getPlayer();
             if(!e.getPlayer().hasPermission("ab.warn.temp")) {
                 sendPrefixedMessage(e.getPlayer(), "notfound");
             }
