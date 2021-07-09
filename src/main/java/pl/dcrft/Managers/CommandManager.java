@@ -544,55 +544,12 @@ public class CommandManager implements CommandExecutor {
             }
             MessageManager.sendPrefixedMessage(sender, "notfound");
             return true;
-        } else if (cmd.getName().equalsIgnoreCase("stop")) {
-            if (sender.hasPermission("r.adm")) {
-                if (args.length == 0) {
-                    MaintenanceManager.stopServer();
-                } else {
-                    if (args[0].contains("[0-9]+")) {
-                        MessageManager.sendPrefixedMessage(sender, "maintenance.wrong_value");
-                    } else {
-                        MaintenanceManager.stopServer(Integer.parseInt(args[0]));
-                    }
-                }
-            } else {
-                MessageManager.sendPrefixedMessage(sender, "notfound");
-            }
-        } else if (cmd.getName().equalsIgnoreCase("reload")) {
-            if (sender.hasPermission("r.adm")) {
-                if (args.length == 0) {
-                    MaintenanceManager.reloadServer();
-                } else {
-                    if (args[0].contains("[0-9]+")) {
-                        MessageManager.sendPrefixedMessage(sender, "maintenance.wrong_value");
-                    } else {
-                        MaintenanceManager.reloadServer(Integer.parseInt(args[0]));
-                    }
-                }
-            } else {
-                MessageManager.sendPrefixedMessage(sender, "notfound");
-            }
-            return true;
-        } else if (cmd.getName().equalsIgnoreCase("restart")) {
-            if (sender.hasPermission("r.adm")) {
-                if (args.length == 0) {
-                    MaintenanceManager.restartServer();
-                } else {
-                    if (args[0].contains("[0-9]+")) {
-                        MessageManager.sendPrefixedMessage(sender, "maintenance.wrong_value");
-                    } else {
-                        MaintenanceManager.restartServer(Integer.parseInt(args[0]));
-                    }
-                }
-            } else {
-                MessageManager.sendPrefixedMessage(sender, "notfound");
-            }
         } else if (cmd.getName().equalsIgnoreCase("przerwa")) {
             if (sender.hasPermission("r.adm")) {
                 if (args.length == 0) {
                     MaintenanceManager.maintenanceStart();
                 } else {
-                    if (args[0].contains("[0-9]+")) {
+                    if (!args[0].chars().allMatch(Character::isDigit) || Integer.parseInt(args[0]) < 1) {
                         MessageManager.sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
                         MaintenanceManager.maintenanceStart(Integer.parseInt(args[0]));

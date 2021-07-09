@@ -59,7 +59,7 @@ marry:
       broadcast: "§e{0} §bi §e{1} §bwłaśnie zawarli ślub!"
     reject:
       rejected: "§aProśba o ślub została odrzucona."
-      broadcast: "§e{0} §bi §e{1} §bwłaśnie się zwiedli."
+      broadcast: "§e{0} §bi §e{1} §bwłaśnie się rozwiedli."
 stream:
   cant_write_turned_off: "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie. Wyłączono czat automatycznie."
 advancedban_warn_usage: "§cUżycie: §e/warn <nick> <powód> [-s]§c."
@@ -256,13 +256,13 @@ broadcast:
   - '&6Discord &e&lDragon&6&lCraft&6: &ediscord.gg/7pPNbUU&6. Więcej pod &e/discord&6.'
   - '&6Chcesz połączyć swoje konto na serwerze z kontem Discord &e&lDragon&6&lCraft&6?
   Dowiedz się więcej pod &e/discord&6.'
-  - '&6Witamy na nowej &e&lDragon&6&lCraft &eSurvival VI&6!'
-  - '&6Zmieniasz nick i chcesz przenieść rangę na nowe konto? Użyj &e/zmiennick&6!'
+  - '&6Witamy na &e&lDragon&6&lCraft &eSurvival VI&6!'
+  - '&6Zmieniasz nick i chcesz przenieść rangę na nowe konto? Użyj &e/przeniesrange&6!'
   - '&eSmocze jaja&6 zakupisz na &eDCRFT.PL &6i &e/sklep&6. &6Mogą one też wypaść z
   &eagresywnych mobów&6.'
   - '&6Strefę &b&lVIP&6 znajdziesz pod /&bvip&6, &5&lSVIP&6 pod /&5svip&6, &9&lMVIP&6
   pod /&9mvip&6, a &6&lEVIP&6 pod /&6evip&6.'
-  - '&6Rangę &b&lVIP&6 zakupisz również na /spawn, a rangę + na /&bvip&6, /&5svip&6,
+  - '&6Rangę &b&lVIP&6 zakupisz również na /spawn, a rangę &e+&6 na /&bvip&6, /&5svip&6,
   /&9mvip&6 i /&6evip&6.'
   - '&6Długość rangi &e+ &6sprawdzisz za pomocą &e/+&6.'
   - '&6Serwer zmienisz za pomocą &e/serwer&6.'
@@ -271,7 +271,7 @@ broadcast:
   &e/zglos&6.'
   - '&6Gracza łamiącego regulamin zgłosisz na naszym serwerze &eDiscord &6lub poprzez &e/zglos&6.'
   - '&6Polub naszego &eFacebooka&6: &ehttp://fb.com/dcrft.pl&6.'
-  - '&6Polub nas na &ewww.topkamc.pl/server/grOWQQqb&6.'
+  - '&6Polub nas na &ehttps://www.topkamc.pl/server/grOWQQqb&6.'
   - '&6Obserwuj nas na &eInstagramie&6: &e@dcrft.pl&6.'
 afk:
   kick_msg: "§cZostałeś wyrzucony za bycie nieaktywnym dłużej niż 15 minut."
@@ -287,25 +287,25 @@ unblock:
   notfound: "&cTa komenda nie jest zablokowana."
   unblocked: "&aKomenda odblokowana"
 maintenance:
-  reload_plugin: "§aPrzeładowano plik konfiguracyjny §e§lDragon§6§lCraft§b§lCore§a."
+  reload_plugin: "§aPrzeładowano pliki konfiguracyjne §e§lDragon§6§lCraft§b§lCore§a."
   saving: "§cZapisywanie plików świata..."
   timeformat:
     minute: "minutę"
     minutes: "minut"
     second: "sekundę"
     seconds: "sekund"
-  wrong_value: "§cWartość musi być liczbą nie mniejsza od 1."
+  wrong_value: "§cWartość musi być liczbą nie mniejszą od 1."
   stop:
     in_progress: "§cTrwa zatrzymywanie serwera..."
-    broadcast: "§cZa {0} zostanie zatrzymany."
+    broadcast: "§cZa {0} serwer zostanie zatrzymany."
   restart:
     in_progress: "§cTrwa ponowne uruchamianie serwera..."
-    broadcast: "§cZa {0} zostanie uruchomiony ponownie."
+    broadcast: "§cZa {0} serwer zostanie uruchomiony ponownie."
   reload:
     in_progress: "§cTrwa ponowne ładowanie plików serwera..."
     broadcast: "§cZa {0} pliki serwera zostaną przeładowane."
   maintenance:
-    in_progress: "Trwa przerwa techniczna..."
+    in_progress: "§cTrwa przerwa techniczna..."
     broadcast: "§cZa {0} odbędzie się przerwa techniczna."
 randomizer:
   broadcast: '&3Losuję...'

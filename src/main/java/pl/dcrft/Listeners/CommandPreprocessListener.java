@@ -9,6 +9,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
+import pl.dcrft.Managers.MaintenanceManager;
+import pl.dcrft.Managers.MessageManager;
+
+import java.util.Arrays;
 
 public class CommandPreprocessListener implements Listener {
     private static DragonCraftCore plugin = DragonCraftCore.getInstance();
@@ -16,6 +20,11 @@ public class CommandPreprocessListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandPreProcess(PlayerCommandPreprocessEvent e) {
         if (e.getMessage().length() > 1 && e.getMessage().startsWith("/")) {
+
+
+            String[] args = e.getMessage().split(" ");
+            args = Arrays.copyOfRange(args, 1, args.length);
+
             FileConfiguration disabledConfig = ConfigManager.getDisabledFile();
             String command = e.getMessage();
 
@@ -45,6 +54,38 @@ public class CommandPreprocessListener implements Listener {
             if (aliasResult != null) {
                 String userArguments = e.getMessage().substring(command.length() + 1);
                 e.setMessage(e.getMessage().substring(0, 1) + aliasResult + userArguments);
+            }
+
+            if(command.equalsIgnoreCase("restart")){
+                e.setCancelled(true);
+                if (p.hasPermission("r.adm")) {
+                    if (args.length == 0) {
+                        MaintenanceManager.restartServer();
+                    } else {
+                        if (!args[0].chars().allMatch(Character::isDigit) || Integer.parseInt(args[0]) < 1) {
+                            MessageManager.sendPrefixedMessage(p, "maintenance.wrong_value");
+                        } else {
+                            MaintenanceManager.restartServer(Integer.parseInt(args[0]));
+                        }
+                    }
+                } else {
+                    MessageManager.sendPrefixedMessage(p, "notfound");
+                }
+            }
+            else if (command.equalsIgnoreCase("stop")) {
+                if (p.hasPermission("r.adm")) {
+                    if (args.length == 0) {
+                        MaintenanceManager.stopServer();
+                    } else {
+                        if (!args[0].chars().allMatch(Character::isDigit) || Integer.parseInt(args[0]) < 1) {
+                            MessageManager.sendPrefixedMessage(p, "maintenance.wrong_value");
+                        } else {
+                            MaintenanceManager.stopServer(Integer.parseInt(args[0]));
+                        }
+                    }
+                } else {
+                    MessageManager.sendPrefixedMessage(p, "notfound");
+                }
             }
         }
     }
