@@ -21,12 +21,11 @@ public class CommandPreprocessListener implements Listener {
 
             Player p = e.getPlayer();
             command = e.getMessage().substring(1);
-            command = command.split(" ")[0];
+            command = command.split(" ")[0].replace(":", "%colon%");
 
             if (disabledConfig.getKeys(false) != null) {
                 if (disabledConfig.getKeys(false).contains(command)) {
                     for (String cmd : disabledConfig.getKeys(false)) {
-                        cmd.replace("%colon%", ":");
                         String permission = disabledConfig.getString(cmd + ".Permission");
                         if (command.equalsIgnoreCase(cmd)) {
                             if (permission == null) {
