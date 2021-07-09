@@ -13,22 +13,22 @@ import pl.dcrft.Listeners.Anvil.AnvilBreakListener;
 import pl.dcrft.Listeners.Anvil.AnvilDamageListener;
 import pl.dcrft.Listeners.Chair.ChairEntryListener;
 import pl.dcrft.Listeners.Chair.ChairExitListener;
+import pl.dcrft.Managers.BroadcasterManager;
 import pl.dcrft.Managers.CommandManager;
+import pl.dcrft.Managers.DatabaseManager;
 import pl.dcrft.Managers.LanguageManager;
+import pl.dcrft.Managers.Panel.PanelManager;
 import pl.dcrft.Utils.CommandUtils.CommandRunUtil;
+import pl.dcrft.Utils.ConfigUtil;
+import pl.dcrft.Utils.DatabaseUtil;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
 
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static pl.dcrft.Managers.BroadcasterManager.startBroadcast;
-import static pl.dcrft.Managers.DatabaseManager.*;
-import static pl.dcrft.Managers.Panel.PanelManager.updatePanels;
-import static pl.dcrft.Utils.ConfigUtil.initializeFiles;
-import static pl.dcrft.Utils.DatabaseUtil.initializeTable;
-import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 
 public class DragonCraftCore extends JavaPlugin implements Listener, CommandExecutor {
     private static DragonCraftCore instance;
@@ -48,7 +48,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
 
         instance = this;
 
-        initializeFiles();
+        ConfigUtil.initializeFiles();
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new AdvancedBanWarnListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
@@ -70,7 +70,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getLogger().info(LanguageManager.getMessage("plugin.enabled") + getDescription().getVersion());
         getLogger().info(LanguageManager.getMessage("plugin.footer"));
 
-        openConnection();
+        DatabaseManager.openConnection();
 
         this.filters = this.getConfig().getConfigurationSection("filters").getValues(true);
 
@@ -78,9 +78,9 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         for (Command command : commands) {
             getCommand(command.getName()).setExecutor(new CommandManager());
         }
-        startBroadcast();
-        initializeTable(table);
-        updatePanels();
+        BroadcasterManager.startBroadcast();
+        DatabaseUtil.initializeTable(DatabaseManager.table);
+        PanelManager.updatePanels();
 
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
         if (provider != null) {
@@ -96,12 +96,12 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
 
     public void onDisable() {
                 try {
-                    if (connection != null) {
-                        connection.close();
+                    if (DatabaseManager.connection != null) {
+                        DatabaseManager.connection.close();
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    logError(ErrorReason.DATABASE);
+                    ErrorUtil.logError(ErrorReason.DATABASE);
                 }
         getLogger().info(LanguageManager.getMessage("plugin.header"));
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");

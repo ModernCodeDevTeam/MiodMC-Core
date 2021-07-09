@@ -6,38 +6,40 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
+import pl.dcrft.Managers.DatabaseManager;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static pl.dcrft.Managers.ConfigManager.getDataFile;
-import static pl.dcrft.Managers.DatabaseManager.*;
-import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 
 public class PlayerQuitListener implements Listener {
+    private static DragonCraftCore plugin = DragonCraftCore.getInstance();
+
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {
         if (!event.getPlayer().hasPermission("panel.adm")) {
             Player p = event.getPlayer();
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy 'o' HH:mm");
             LocalDateTime now = LocalDateTime.now();
-            getDataFile().set("players." + p.getName() + ".online", dtf.format(now));
+            ConfigManager.getDataFile().set("players." + p.getName() + ".online", dtf.format(now));
             ConfigManager.saveData();
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                openConnection();
+                DatabaseManager.openConnection();
                 Statement statement;
                 try {
-                    statement = connection.createStatement();
-                    String update = PlaceholderAPI.setPlaceholders(event.getPlayer(), "UPDATE " + table_bungee + " SET online='"+ dtf.format(now) + "', serwer_online='null' WHERE nick = '" + event.getPlayer().getName() + "'");
+                    statement = DatabaseManager.connection.createStatement();
+                    String update = PlaceholderAPI.setPlaceholders(event.getPlayer(), "UPDATE " + DatabaseManager.table_bungee + " SET online='"+ dtf.format(now) + "', serwer_online='null' WHERE nick = '" + event.getPlayer().getName() + "'");
                     statement.executeUpdate(update);
                     statement.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
-                    logError(ErrorReason.DATABASE);
+                    ErrorUtil.logError(ErrorReason.DATABASE);
                 }
             });
         }

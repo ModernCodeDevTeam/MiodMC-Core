@@ -7,11 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.ConfigManager;
 import pl.dcrft.Managers.LanguageManager;
-
-import static pl.dcrft.Managers.ConfigManager.getDataFile;
-import static pl.dcrft.Managers.LanguageManager.getMessage;
-import static pl.dcrft.Utils.RoundUtil.round;
+import pl.dcrft.Utils.RoundUtil;
 
 
 public class PanelManager {
@@ -22,9 +20,9 @@ public class PanelManager {
     public static void sendPanel(Player p, PanelType type){
 
         if (type == PanelType.MOD) {
-            title = getMessage("prefix") + " " + getMessage("staffpanel.modpanel.title");
+            title = LanguageManager.getMessage("prefix") + " " + LanguageManager.getMessage("staffpanel.modpanel.title");
         } else {
-            title = getMessage("prefix") + " " + getMessage("staffpanel.adminpanel.title");
+            title = LanguageManager.getMessage("prefix") + " " + LanguageManager.getMessage("staffpanel.adminpanel.title");
         }
         String prefix = LanguageManager.getMessage("staffpanel.prefix");
         ScoreboardManager manager = Bukkit.getScoreboardManager();
@@ -38,13 +36,13 @@ public class PanelManager {
         Score nick = objective.getScore(LanguageManager.getMessage("staffpanel.nickname_prefix") + p.getName());
         nick.setScore(16);
         Score czat;
-        if (getDataFile().getBoolean("players." + p.getName() + ".adminchat")) {
-            if (getDataFile().getBoolean("players." + p.getName() + ".modchat")) {
+        if (ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".adminchat")) {
+            if (ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".modchat")) {
                 czat = objective.getScore(LanguageManager.getMessage("staffpanel.chat") + " " + LanguageManager.getMessage("staffchat.both"));
             } else {
                 czat = objective.getScore(LanguageManager.getMessage("staffpanel.chat") + " "  + LanguageManager.getMessage("staffchat.adminchat.title"));
             }
-        } else if (getDataFile().getBoolean("players." + p.getName() + ".modchat")) {
+        } else if (ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".modchat")) {
             czat = objective.getScore(LanguageManager.getMessage("staffpanel.chat") + " " + LanguageManager.getMessage("staffchat.modchat.title"));
         } else {
             czat = objective.getScore(LanguageManager.getMessage("staffpanel.chat") + " " + LanguageManager.getMessage("staffchat.public"));
@@ -99,7 +97,7 @@ public class PanelManager {
         }if (ms >= 70) {
             kolor2 = "§4";
         }
-        Score mss = objective.getScore(LanguageManager.getMessage("staffpanel.performance.mspt") + " " + kolor2 + round(ms, 2) + "§ems");
+        Score mss = objective.getScore(LanguageManager.getMessage("staffpanel.performance.mspt") + " " + kolor2 + RoundUtil.round(ms, 2) + "§ems");
         mss.setScore(10);
 
         Runtime r = Runtime.getRuntime();
@@ -131,13 +129,13 @@ public class PanelManager {
         uptime.setScore(8);
         Score newest_t = objective.getScore(prefix + " " + LanguageManager.getMessage("staffpanel.newest_player"));
         newest_t.setScore(7);
-        Score newest = objective.getScore(prefix + " "+ getMessage("staffpanel.no_newest"));
-        if (getDataFile().getString("najnowszy") != null){
-            newest = objective.getScore(prefix + " " + getDataFile().getString("najnowszy"));
+        Score newest = objective.getScore(prefix + " "+ LanguageManager.getMessage("staffpanel.no_newest"));
+        if (ConfigManager.getDataFile().getString("najnowszy") != null){
+            newest = objective.getScore(prefix + " " + ConfigManager.getDataFile().getString("najnowszy"));
         }
         newest.setScore(6);
         p.setScoreboard(admpanel);
-        if (getDataFile().getBoolean("players." + p.getName() + ".stream")) {
+        if (ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".stream")) {
             //do not set a new scoreboard if there is already the empty one
             if (!p.getScoreboard().equals(emptyBoard)) {
                 p.setScoreboard(emptyBoard);

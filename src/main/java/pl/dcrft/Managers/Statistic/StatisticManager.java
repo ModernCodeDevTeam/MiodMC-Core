@@ -1,6 +1,7 @@
 package pl.dcrft.Managers.Statistic;
 
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.DatabaseManager;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
 
@@ -9,22 +10,20 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 
-import static pl.dcrft.Managers.DatabaseManager.*;
-
 public class StatisticManager {
 
     public static boolean checkPlayer(String p){
         boolean val = false, val1 = false;
                 try {
-                    openConnection();
+                    DatabaseManager.openConnection();
                     ResultSet ogol;
-                    Statement o = connection.createStatement();
-                    ogol = o.executeQuery("SELECT * FROM `" + table_bungee + "` WHERE nick = '" + p + "'");
+                    Statement o = DatabaseManager.connection.createStatement();
+                    ogol = o.executeQuery("SELECT * FROM `" + DatabaseManager.table_bungee + "` WHERE nick = '" + p + "'");
                     val = ogol.next();
 
                     ResultSet server;
-                    Statement s = connection.createStatement();
-                    server = s.executeQuery("SELECT * FROM `" + table + "` WHERE nick = '" + p + "'");
+                    Statement s = DatabaseManager.connection.createStatement();
+                    server = s.executeQuery("SELECT * FROM `" + DatabaseManager.table + "` WHERE nick = '" + p + "'");
                     val1 = server.next();
                     s.close();
                     o.close();
@@ -38,7 +37,7 @@ public class StatisticManager {
 
     public static HashMap<StatisticType, String> getStatistics(String p){
 
-        openConnection();
+        DatabaseManager.openConnection();
 
         boolean val;
 
@@ -57,8 +56,8 @@ public class StatisticManager {
             try {
 
                 ResultSet rs;
-                Statement statement = connection.createStatement();
-                rs = statement.executeQuery("SELECT * FROM `" + table + "` INNER JOIN `" + table_bungee + "` ON " + table + ".nick = " + table_bungee + ".nick WHERE " + table +  ".nick = '" + p + "'");
+                Statement statement = DatabaseManager.connection.createStatement();
+                rs = statement.executeQuery("SELECT * FROM `" + DatabaseManager.table + "` INNER JOIN `" + DatabaseManager.table_bungee + "` ON " + DatabaseManager.table + ".nick = " + DatabaseManager.table_bungee + ".nick WHERE " + DatabaseManager.table +  ".nick = '" + p + "'");
                 val=rs.next();
                 while(val){
                     online = rs.getString("online");

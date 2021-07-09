@@ -6,7 +6,6 @@ import pl.dcrft.DragonCraftCore;
 
 import java.text.MessageFormat;
 
-import static pl.dcrft.Managers.LanguageManager.getMessage;
 
 public class MaintenanceManager {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
@@ -42,27 +41,27 @@ public class MaintenanceManager {
         }
         if (minutes > 1){
             saveAll();
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), + minutes + " " + getMessage("maintenance.timeformat.minutes")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.stop.broadcast"), + minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
         }
         saveAll();
-        MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), "1 " + getMessage("maintenance.timeformat.minute")));
+        MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.stop.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
         saveAll();
         Bukkit.getServer().setWhitelist(true);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), "30 " + getMessage("maintenance.timeformat.seconds")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.stop.broadcast"), "30 " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
             saveAll();
         }, 600L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), "15 " + getMessage("maintenance.timeformat.seconds")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.stop.broadcast"), "15 " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
             saveAll();
         }, 900L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             int i = 10;
             while (i>0){
                 if(i==1){
-                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), i + " " + getMessage("maintenance.timeformat.second")));
+                    MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.stop.broadcast"), i + " " + LanguageManager.getMessage("maintenance.timeformat.second")));
                 }else {
-                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.stop.broadcast"), i + " " + getMessage("maintenance.timeformat.seconds")));
+                    MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.stop.broadcast"), i + " " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
                 }
                 saveAll();
                 try {
@@ -97,26 +96,26 @@ public class MaintenanceManager {
         }
         if (minutes > 1) {
             saveAll();
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), +minutes + " " + getMessage("maintenance.timeformat.minutes")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), +minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
         }
-        MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), "1 " + getMessage("maintenance.timeformat.minute")));
+        MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
         saveAll();
         Bukkit.getServer().setWhitelist(true);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), "30 " + getMessage("maintenance.timeformat.seconds")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), "30 " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
             saveAll();
         }, 600L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), "15 " + getMessage("maintenance.timeformat.seconds")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), "15 " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
             saveAll();
         }, 900L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             int i = 10;
             while (i > 0) {
                 if (i == 1) {
-                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), i + " " + getMessage("maintenance.timeformat.second")));
+                    MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), i + " " + LanguageManager.getMessage("maintenance.timeformat.second")));
                 } else {
-                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.restart.broadcast"), i + " " + getMessage("maintenance.timeformat.seconds")));
+                    MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), i + " " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
                 }
                 saveAll();
                 try {
@@ -152,26 +151,26 @@ public class MaintenanceManager {
         }
         if (minutes > 1){
             saveAll();
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), + minutes + " " + getMessage("maintenance.timeformat.minutes")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.reload.broadcast"), + minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
         }
-        MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
+        MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.reload.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
         saveAll();
         Bukkit.getServer().setWhitelist(true);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), "30 " + getMessage("maintenance.timeformat.seconds")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.reload.broadcast"), "30 " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
             saveAll();
         }, 600L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), "15 " + getMessage("maintenance.timeformat.seconds")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.reload.broadcast"), "15 " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
             saveAll();
         }, 900L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             int i = 10;
             while (i>0){
                 if(i == 1){
-                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), i + " " + getMessage("maintenance.timeformat.second")));
+                    MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.reload.broadcast"), i + " " + LanguageManager.getMessage("maintenance.timeformat.second")));
                 }else {
-                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.reload.broadcast"), i + " " + getMessage("maintenance.timeformat.seconds")));
+                    MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.reload.broadcast"), i + " " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
                 }
                 saveAll();
                 try {
@@ -207,26 +206,26 @@ public class MaintenanceManager {
         }
         if (minutes > 1){
             saveAll();
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), + minutes + " " + getMessage("maintenance.timeformat.minutes")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), + minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
         }
-        MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
+        MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
         saveAll();
         Bukkit.getServer().setWhitelist(true);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), "30 " + getMessage("maintenance.timeformat.seconds")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), "30 " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
             saveAll();
         }, 600L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-            MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), "15 " + getMessage("maintenance.timeformat.seconds")));
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), "15 " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
             saveAll();
         }, 900L);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             int i = 10;
             while (i>0){
                 if(i == 1){
-                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), i + " " + getMessage("maintenance.timeformat.second")));
+                    MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), i + " " + LanguageManager.getMessage("maintenance.timeformat.second")));
                 }else {
-                    MessageManager.broadcastPrefixed(MessageFormat.format(getMessage("maintenance.maintenance.broadcast"), i + " " + getMessage("maintenance.timeformat.seconds")));
+                    MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), i + " " + LanguageManager.getMessage("maintenance.timeformat.seconds")));
                 }
                 saveAll();
                 try {
@@ -243,7 +242,7 @@ public class MaintenanceManager {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Bukkit.getServer().broadcastMessage(getMessage("prefix") + " §cTrwa przerwa techniczna...");
+            Bukkit.getServer().broadcastMessage(LanguageManager.getMessage("prefix") + " §cTrwa przerwa techniczna...");
             saveAll();
             try {
                 Thread.sleep(1000L);

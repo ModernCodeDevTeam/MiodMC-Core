@@ -1,18 +1,17 @@
 package pl.dcrft.Utils;
 
+import pl.dcrft.Managers.DatabaseManager;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
 
 import java.sql.SQLException;
 
-import static pl.dcrft.Managers.DatabaseManager.connection;
-import static pl.dcrft.Managers.DatabaseManager.openConnection;
-import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 
 public class DatabaseUtil {
     public static void initializeTable(String table){
-        openConnection();
+        DatabaseManager.openConnection();
         try {
-            connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `" + table + "` (\n" +
+            DatabaseManager.connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `" + table + "` (\n" +
                     "  `nick` text COLLATE utf8mb4_polish_ci NOT NULL,\n" +
                     "  `kille` int(11) NOT NULL,\n" +
                     "  `dedy` int(11) NOT NULL,\n" +
@@ -24,7 +23,7 @@ public class DatabaseUtil {
                     ")  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;");
         } catch (SQLException e) {
             e.printStackTrace();
-            logError(ErrorReason.DATABASE);
+            ErrorUtil.logError(ErrorReason.DATABASE);
         }
     }
 }

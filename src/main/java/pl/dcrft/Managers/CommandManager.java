@@ -2,6 +2,7 @@ package pl.dcrft.Managers;
 
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.utils.Punishment;
+import net.kyori.adventure.text.TextComponent;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
@@ -14,9 +15,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
+import pl.dcrft.Managers.Panel.PanelManager;
 import pl.dcrft.Managers.Panel.PanelType;
+import pl.dcrft.Managers.Statistic.StatisticGUIManager;
 import pl.dcrft.Utils.ConfigUtil;
+import pl.dcrft.Utils.GroupUtil;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,23 +31,13 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static pl.dcrft.Managers.DatabaseManager.*;
-import static pl.dcrft.Managers.LanguageManager.getMessage;
-import static pl.dcrft.Managers.MaintenanceManager.*;
-import static pl.dcrft.Managers.MessageManager.*;
-import static pl.dcrft.Managers.Panel.PanelManager.hidePanel;
-import static pl.dcrft.Managers.Panel.PanelManager.updatePanel;
-import static pl.dcrft.Managers.Statistic.StatisticGUIManager.showStatistics;
-import static pl.dcrft.Utils.GroupUtil.isPlayerInGroup;
-
-
 public class CommandManager implements CommandExecutor {
     private static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     public final ArrayList<SessionManager> list = new ArrayList<>();
     final String prefix = LanguageManager.getMessage("prefix");
 
-    public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
+    public boolean onCommand(final @NotNull CommandSender sender, final Command cmd, final @NotNull String label, final String[] args) {
         if (cmd.getName().equalsIgnoreCase("nieafk")) {
             Player p = (Player) sender;
             boolean sound_on_notafk = Boolean.parseBoolean(plugin.getConfig().getString("afk.sound_on_notafk"));
@@ -67,14 +62,14 @@ public class CommandManager implements CommandExecutor {
             Player p = (Player) sender;
             if (args.length == 0) {
                 MessageManager.sendPrefixedMessage(p, "friends.help.title");
-                sendMessageList(p, "friends.help.contents");
+                MessageManager.sendMessageList(p, "friends.help.contents");
                 return false;
             }
             if (args[0].equalsIgnoreCase("lista") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l") || args[0].equalsIgnoreCase("info")) {
                 MessageManager.sendPrefixedMessage(p, "friends.list.title");
                 List<String> znajomi = ConfigManager.getDataFile().getStringList("players." + p.getName() + ".znajomi");
                 if (znajomi.size() == 0) {
-                    sendMessage(p, "friends.list.none");
+                    MessageManager.sendMessage(p, "friends.list.none");
                 } else {
                     for (String s : znajomi) {
                         String online = ConfigManager.getDataFile().getString("players." + s + ".online");
@@ -115,11 +110,7 @@ public class CommandManager implements CommandExecutor {
                     MessageManager.sendPrefixedMessage(p, "friends.add.self");
                     return false;
                 }
-                if (Bukkit.getPlayer(args[1]) == null) {
-                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-                    return false;
-                }
-                if (!Bukkit.getPlayer(args[1]).isOnline()) {
+                if (Bukkit.getPlayer(args[1]) == null || !Bukkit.getPlayer(args[1]).isOnline()) {
                     MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                     return false;
                 }
@@ -185,7 +176,7 @@ public class CommandManager implements CommandExecutor {
                 }
             } else {
                 MessageManager.sendPrefixedMessage(p, "friends.help.title");
-                sendMessageList(p, "friends.help.contents");
+                MessageManager.sendMessageList(p, "friends.help.contents");
                 return false;
             }
         }
@@ -260,11 +251,11 @@ public class CommandManager implements CommandExecutor {
                     ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
                     ConfigManager.getDataFile().set("players." + p.getName() + ".slubprosba", null);
                     ConfigManager.saveData();
-                    openConnection();
+                    DatabaseManager.openConnection();
                     try {
-                        Statement statement = connection.createStatement();
-                        String updatep = "UPDATE `" + table + "` SET slub = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "' WHERE nick = '" + p.getName() + "'";
-                        String updateo = "UPDATE `" + table + "` SET slub = '" + p.getName() + "' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
+                        Statement statement = DatabaseManager.connection.createStatement();
+                        String updatep = "UPDATE `" + DatabaseManager.table + "` SET slub = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "' WHERE nick = '" + p.getName() + "'";
+                        String updateo = "UPDATE `" + DatabaseManager.table + "` SET slub = '" + p.getName() + "' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
                         statement.executeUpdate(updatep);
                         statement.executeUpdate(updateo);
                         statement.close();
@@ -308,11 +299,11 @@ public class CommandManager implements CommandExecutor {
                 ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
                 ConfigManager.getDataFile().set("players." + p.getName() + ".slubprosba", null);
                 ConfigManager.saveData();
-                openConnection();
+                DatabaseManager.openConnection();
                 try {
-                    Statement statement = connection.createStatement();
-                    String updatep = "UPDATE `" + table + "` SET slub = 'NULL' WHERE nick = '" + p.getName() + "'";
-                    String updateo = "UPDATE `" + table + "` SET slub = 'NULL' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
+                    Statement statement = DatabaseManager.connection.createStatement();
+                    String updatep = "UPDATE `" + DatabaseManager.table + "` SET slub = 'NULL' WHERE nick = '" + p.getName() + "'";
+                    String updateo = "UPDATE `" + DatabaseManager.table + "` SET slub = 'NULL' WHERE nick = '" + Bukkit.getOfflinePlayer(args[0]).getName() + "'";
                     statement.executeUpdate(updatep);
                     statement.executeUpdate(updateo);
                     statement.close();
@@ -347,7 +338,7 @@ public class CommandManager implements CommandExecutor {
         }
         if (cmd.getName().equalsIgnoreCase("vip")) {
             Player p = (Player) sender;
-            final boolean grupa = isPlayerInGroup(p, cmd.getName());
+            final boolean grupa = GroupUtil.isPlayerInGroup(p, cmd.getName());
             if (grupa) {
                 p.chat(plugin.getConfig().getString("commands.vip"));
             } else {
@@ -356,7 +347,7 @@ public class CommandManager implements CommandExecutor {
             return true;
         } else if (cmd.getName().equalsIgnoreCase("svip")) {
             Player p = (Player) sender;
-            final boolean grupa = isPlayerInGroup(p, cmd.getName());
+            final boolean grupa = GroupUtil.isPlayerInGroup(p, cmd.getName());
             if (grupa) {
                 p.chat(plugin.getConfig().getString("commands.svip"));
             } else {
@@ -365,7 +356,7 @@ public class CommandManager implements CommandExecutor {
             return true;
         } else if (cmd.getName().equalsIgnoreCase("mvip")) {
             Player p = (Player) sender;
-            final boolean grupa = isPlayerInGroup(p, cmd.getName());
+            final boolean grupa = GroupUtil.isPlayerInGroup(p, cmd.getName());
             if (grupa) {
                 p.chat(plugin.getConfig().getString("commands.mvip"));
             } else {
@@ -374,7 +365,7 @@ public class CommandManager implements CommandExecutor {
             return true;
         } else if (cmd.getName().equalsIgnoreCase("evip")) {
             Player p = (Player) sender;
-            final boolean grupa = isPlayerInGroup(p, cmd.getName());
+            final boolean grupa = GroupUtil.isPlayerInGroup(p, cmd.getName());
             if (grupa) {
                 p.chat(plugin.getConfig().getString("commands.evip"));
             } else {
@@ -386,11 +377,11 @@ public class CommandManager implements CommandExecutor {
                 for (int i = 0; i < 100; ++i) {
                     Bukkit.getServer().broadcastMessage("");
                 }
-                Bukkit.getServer().broadcastMessage(prefix + getMessage("chat.cleared"));
+                Bukkit.getServer().broadcastMessage(prefix + LanguageManager.getMessage("chat.cleared"));
                 return true;
             }
             if (!sender.hasPermission("cc.adm")) {
-                sendPrefixedMessage(sender, "notfound");
+                MessageManager.sendPrefixedMessage(sender, "notfound");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("dcccast") && args.length != 0) {
@@ -402,7 +393,7 @@ public class CommandManager implements CommandExecutor {
                 final String allArgs = sb.toString().trim();
                 Bukkit.getServer().broadcastMessage(prefix + ChatColor.translateAlternateColorCodes('&', allArgs));
             } else {
-                sendPrefixedMessage(sender, "notfound");
+                MessageManager.sendPrefixedMessage(sender, "notfound");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("dcc")) {
@@ -411,7 +402,7 @@ public class CommandManager implements CommandExecutor {
                     sender.sendMessage("§e§lDragon§6§lCraft§b§lCore " + plugin.getDescription().getVersion());
                     MessageManager.sendMessageList(sender, "pluginhelp.contents");
                 } else {
-                    sendPrefixedMessage(sender, "notfound");
+                    MessageManager.sendPrefixedMessage(sender, "notfound");
                 }
             } else {
                 if (!sender.hasPermission("dcc.adm")) {
@@ -433,17 +424,17 @@ public class CommandManager implements CommandExecutor {
 
                     sender.sendMessage("§e§lDragon§6§lCraft§b§lCore " + plugin.getDescription().getVersion());
                     MessageManager.sendMessage(sender, "pluginhelp.afk.title");
-                    sender.sendMessage(getMessage("pluginhelp.afk.kick_msg") + " " + kick_msg);
+                    sender.sendMessage(LanguageManager.getMessage("pluginhelp.afk.kick_msg") + " " + kick_msg);
                     sender.sendMessage(plugin.getConfig().getString("afk.kick_warn_delay") + " " + kick_warn_delay);
-                    sender.sendMessage(getMessage("pluginhelp.afk.kick_warn_msg") + " " + kick_warn_msg);
-                    sender.sendMessage(getMessage("pluginhelp.afk.kick_warn_msg_afk") + " " + kick_warn_msg_afk);
-                    sender.sendMessage(getMessage("pluginhelp.afk.notafkmsg") + " " + notafkmsg);
+                    sender.sendMessage(LanguageManager.getMessage("pluginhelp.afk.kick_warn_msg") + " " + kick_warn_msg);
+                    sender.sendMessage(LanguageManager.getMessage("pluginhelp.afk.kick_warn_msg_afk") + " " + kick_warn_msg_afk);
+                    sender.sendMessage(LanguageManager.getMessage("pluginhelp.afk.notafkmsg") + " " + notafkmsg);
                     sender.sendMessage(plugin.getConfig().getString("afk.kick_delay") + " " + kick_delay);
                     sender.sendMessage(plugin.getConfig().getString("afk.sound_on_get_warn") + " " + sound_on_get_warn);
                     sender.sendMessage(plugin.getConfig().getString("afk.sound_on_notafk") + " " + sound_on_notafk);
                 } else if (sub.equalsIgnoreCase("anvil")) {
                     if (!(sender instanceof Player)) {
-                        sendPrefixedMessage(sender, "console_error");
+                        MessageManager.sendPrefixedMessage(sender, "console_error");
                     } else {
                         Player p = (Player) sender;
                         if (p.getTargetBlock(null, 100) != null) {
@@ -467,7 +458,7 @@ public class CommandManager implements CommandExecutor {
                                         Location al = new Location(Bukkit.getWorld(world), x, y, z);
                                         if (loc.equals(al)) {
                                             data.set("anvils." + i, null);
-                                            sendPrefixedMessage(p, "anvils.deleted");
+                                            MessageManager.sendPrefixedMessage(p, "anvils.deleted");
                                             ConfigManager.saveData();
                                             return true;
                                         }
@@ -486,29 +477,29 @@ public class CommandManager implements CommandExecutor {
                                 ConfigManager.getDataFile().set("anvils." + max + ".y", y);
                                 ConfigManager.getDataFile().set("anvils." + max + ".z", z);
                                 ConfigManager.getDataFile().set("anvils." + max + ".world", world);
-                                sendPrefixedMessage(p, "anvils.created");
+                                MessageManager.sendPrefixedMessage(p, "anvils.created");
 
                                 ConfigManager.saveData();
                             } else {
-                                sendPrefixedMessage(p, "anvils.not_an_anvil");
+                                MessageManager.sendPrefixedMessage(p, "anvils.not_an_anvil");
                             }
 
                         } else {
-                            sendPrefixedMessage(p, "anvils.not_an_anvil");
+                            MessageManager.sendPrefixedMessage(p, "anvils.not_an_anvil");
                         }
                     }
                 } else if (sub.equalsIgnoreCase("block")) {
                     if (args.length < 2) {
-                        sendPrefixedMessage(sender, "block.usage");
+                        MessageManager.sendPrefixedMessage(sender, "block.usage");
                     } else {
                         String toblock = args[1].replace(":", "%colon%");
                         if (ConfigManager.getDisabledFile().get(toblock) != null) {
-                            sendPrefixedMessage(sender, "block.already");
+                            MessageManager.sendPrefixedMessage(sender, "block.already");
                         } else {
                             if (args.length == 2) {
-                                ConfigManager.getDisabledFile().set(toblock + ".Message", getMessage("prefix") + getMessage("notfound"));
+                                ConfigManager.getDisabledFile().set(toblock + ".Message", LanguageManager.getMessage("prefix") + LanguageManager.getMessage("notfound"));
                                 ConfigManager.saveDisabledFile();
-                                sendPrefixedMessage(sender, "block.blocked");
+                                MessageManager.sendPrefixedMessage(sender, "block.blocked");
                             }
                             else if (args.length > 2) {
 
@@ -520,21 +511,21 @@ public class CommandManager implements CommandExecutor {
 
                                 ConfigManager.getDisabledFile().set(toblock + ".Message", message);
                                 ConfigManager.saveDisabledFile();
-                                sendPrefixedMessage(sender, "block.blocked");
+                                MessageManager.sendPrefixedMessage(sender, "block.blocked");
                             }
                         }
                     }
                 } else if (sub.equalsIgnoreCase("unblock")) {
                     if (args.length < 2) {
-                        sendPrefixedMessage(sender, "unblock.usage");
+                        MessageManager.sendPrefixedMessage(sender, "unblock.usage");
                     } else {
                         String tounblock = args[1].replace(":", "%colon%");
                         if (ConfigManager.getDisabledFile().get(tounblock) == null) {
-                            sendPrefixedMessage(sender, "unblock.notfound");
+                            MessageManager.sendPrefixedMessage(sender, "unblock.notfound");
                         } else {
                                 ConfigManager.getDisabledFile().set(tounblock, null);
                                 ConfigManager.saveDisabledFile();
-                                sendPrefixedMessage(sender, "unblock.unblocked");
+                                MessageManager.sendPrefixedMessage(sender, "unblock.unblocked");
                         }
                     }
                 } else {
@@ -556,12 +547,12 @@ public class CommandManager implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("stop")) {
             if (sender.hasPermission("r.adm")) {
                 if (args.length == 0) {
-                    stopServer();
+                    MaintenanceManager.stopServer();
                 } else {
                     if (args[0].contains("[0-9]+")) {
-                        sendPrefixedMessage(sender, "maintenance.wrong_value");
+                        MessageManager.sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
-                        stopServer(Integer.parseInt(args[0]));
+                        MaintenanceManager.stopServer(Integer.parseInt(args[0]));
                     }
                 }
             } else {
@@ -570,12 +561,12 @@ public class CommandManager implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("reload")) {
             if (sender.hasPermission("r.adm")) {
                 if (args.length == 0) {
-                    reloadServer();
+                    MaintenanceManager.reloadServer();
                 } else {
                     if (args[0].contains("[0-9]+")) {
-                        sendPrefixedMessage(sender, "maintenance.wrong_value");
+                        MessageManager.sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
-                        reloadServer(Integer.parseInt(args[0]));
+                        MaintenanceManager.reloadServer(Integer.parseInt(args[0]));
                     }
                 }
             } else {
@@ -585,12 +576,12 @@ public class CommandManager implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("restart")) {
             if (sender.hasPermission("r.adm")) {
                 if (args.length == 0) {
-                    restartServer();
+                    MaintenanceManager.restartServer();
                 } else {
                     if (args[0].contains("[0-9]+")) {
-                        sendPrefixedMessage(sender, "maintenance.wrong_value");
+                        MessageManager.sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
-                        restartServer(Integer.parseInt(args[0]));
+                        MaintenanceManager.restartServer(Integer.parseInt(args[0]));
                     }
                 }
             } else {
@@ -599,12 +590,12 @@ public class CommandManager implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("przerwa")) {
             if (sender.hasPermission("r.adm")) {
                 if (args.length == 0) {
-                    maintenanceStart();
+                    MaintenanceManager.maintenanceStart();
                 } else {
                     if (args[0].contains("[0-9]+")) {
-                        sendPrefixedMessage(sender, "maintenance.wrong_value");
+                        MessageManager.sendPrefixedMessage(sender, "maintenance.wrong_value");
                     } else {
-                        maintenanceStart(Integer.parseInt(args[0]));
+                        MaintenanceManager.maintenanceStart(Integer.parseInt(args[0]));
                     }
                 }
             } else {
@@ -627,9 +618,9 @@ public class CommandManager implements CommandExecutor {
                     sender.sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.enabled"));
 
                     if (sender.hasPermission("panel.adm")) {
-                        updatePanel(p, PanelType.ADMIN);
+                        PanelManager.updatePanel(p, PanelType.ADMIN);
                     } else if (sender.hasPermission("panel.mod")) {
-                        updatePanel(p, PanelType.MOD);
+                        PanelManager.updatePanel(p, PanelType.MOD);
                     }
                     ConfigManager.saveData();
                     return true;
@@ -644,9 +635,9 @@ public class CommandManager implements CommandExecutor {
 
 
                     if (p.hasPermission("panel.adm")) {
-                        updatePanel(p, PanelType.ADMIN);
+                        PanelManager.updatePanel(p, PanelType.ADMIN);
                     } else if (p.hasPermission("panel.mod")) {
-                        updatePanel(p, PanelType.MOD);
+                        PanelManager.updatePanel(p, PanelType.MOD);
                     }
 
                     ConfigManager.saveData();
@@ -655,9 +646,9 @@ public class CommandManager implements CommandExecutor {
                     ConfigManager.getDataFile().set("players." + sender.getName() + ".adminchat", true);
                     sender.sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.modchat.spacer") + LanguageManager.getMessage("staffchat.enabled"));
                     if (p.hasPermission("panel.adm")) {
-                        updatePanel(p, PanelType.ADMIN);
+                        PanelManager.updatePanel(p, PanelType.ADMIN);
                     } else if (p.hasPermission("panel.mod")) {
-                        updatePanel(p, PanelType.MOD);
+                        PanelManager.updatePanel(p, PanelType.MOD);
                     }
                     ConfigManager.saveData();
                     return true;
@@ -671,9 +662,9 @@ public class CommandManager implements CommandExecutor {
                 return false;
             } else {
                 if (p.hasPermission("panel.adm")) {
-                    updatePanel(p, PanelType.ADMIN);
+                    PanelManager.updatePanel(p, PanelType.ADMIN);
                 } else if (p.hasPermission("panel.mod")) {
-                    updatePanel(p, PanelType.MOD);
+                    PanelManager.updatePanel(p, PanelType.MOD);
                 }
                 if (!ConfigManager.getDataFile().contains("players." + sender.getName())) {
                     ConfigManager.getDataFile().set("players." + sender.getName() + ":", null);
@@ -711,27 +702,27 @@ public class CommandManager implements CommandExecutor {
                     ConfigManager.getDataFile().set("players." + sender.getName() + ".modchat", false);
                     ConfigManager.getDataFile().set("players." + sender.getName() + ".adminchat", false);
                     ConfigManager.getDataFile().set("players." + sender.getName() + ".stream", true);
-                    sendPrefixedMessage(sender, "staffchat.stream.enabled");
-                    hidePanel(p);
+                    MessageManager.sendPrefixedMessage(sender, "staffchat.stream.enabled");
+                    PanelManager.hidePanel(p);
                     ConfigManager.saveData();
                     return true;
                 }
                 if (ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".stream")) {
                     ConfigManager.getDataFile().set("players." + sender.getName() + ".stream", false);
-                    sendPrefixedMessage(sender, "staffchat.stream.disabled");
+                    MessageManager.sendPrefixedMessage(sender, "staffchat.stream.disabled");
 
                     if (p.hasPermission("panel.adm")) {
-                        updatePanel(p, PanelType.ADMIN);
+                        PanelManager.updatePanel(p, PanelType.ADMIN);
                     } else if (p.hasPermission("panel.mod")) {
-                        updatePanel(p, PanelType.MOD);
+                        PanelManager.updatePanel(p, PanelType.MOD);
                     }
 
                     ConfigManager.saveData();
                     return true;
                 } else if (!ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".stream")) {
                     ConfigManager.getDataFile().set("players." + sender.getName() + ".stream", true);
-                    sendPrefixedMessage(sender, "staffchat.stream.enabled");
-                    hidePanel(p);
+                    MessageManager.sendPrefixedMessage(sender, "staffchat.stream.enabled");
+                    PanelManager.hidePanel(p);
                     ConfigManager.saveData();
                     return true;
                 }
@@ -742,7 +733,7 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(sender, "notfound");
                 return false;
             } else if (args.length == 0) {
-                sendPrefixedMessage(sender, "checkwarn.usage");
+                MessageManager.sendPrefixedMessage(sender, "checkwarn.usage");
             } else {
                 List<Punishment> pun = PunishmentManager.get().getPunishments(args[0], null, true);
                 sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("checkwarn.title"), args[0]));
@@ -770,9 +761,9 @@ public class CommandManager implements CommandExecutor {
                 if (args.length == 0) {
                     p.chat("/gracz " + p.getName());
                 } else if (plugin.getConfig().getStringList("staff").contains(args[0])) {
-                    sendPrefixedMessage(sender, "wrong_player_nickname");
+                    MessageManager.sendPrefixedMessage(sender, "wrong_player_nickname");
                 } else {
-                    showStatistics(p, args[0]);
+                    StatisticGUIManager.showStatistics(p, args[0]);
                 }
             }
             return false;
@@ -790,7 +781,7 @@ public class CommandManager implements CommandExecutor {
                 }
                 final String allArgs = sb.toString().trim();
                 Bukkit.getServer().broadcastMessage(prefix + "" + LanguageManager.getMessage("shopbroadcast.title"));
-                Bukkit.getServer().broadcastMessage(MessageFormat.format(getMessage("shopbroadcast.purchase"), args[0], allArgs));
+                Bukkit.getServer().broadcastMessage(MessageFormat.format(LanguageManager.getMessage("shopbroadcast.purchase"), args[0], allArgs));
                 for (String msg : LanguageManager.getMessageList("shopbroadcast.other")) {
                     Bukkit.getServer().broadcastMessage(msg);
                 }
@@ -814,7 +805,7 @@ public class CommandManager implements CommandExecutor {
                 }
                 final String allArgs = sb.toString().trim();
                 Bukkit.getServer().broadcastMessage(prefix + "" + LanguageManager.getMessage("shopbroadcast.title"));
-                Bukkit.getServer().broadcastMessage(MessageFormat.format(getMessage("shopbroadcast.donate"), args[0], allArgs));
+                Bukkit.getServer().broadcastMessage(MessageFormat.format(LanguageManager.getMessage("shopbroadcast.donate"), args[0], allArgs));
                 for (String msg : LanguageManager.getMessageList("shopbroadcast.other")) {
                     Bukkit.getServer().broadcastMessage(msg);
                 }
@@ -827,8 +818,8 @@ public class CommandManager implements CommandExecutor {
         } else if (cmd.getName().equalsIgnoreCase("alias")) {
             if (sender.hasPermission("dcc.adm")) {
                 if (args.length == 0) {
-                    sendPrefixedMessage(sender, "aliases.help.header");
-                    sendMessageList(sender, "aliases.help.contents");
+                    MessageManager.sendPrefixedMessage(sender, "aliases.help.header");
+                    MessageManager.sendMessageList(sender, "aliases.help.contents");
                     return true;
                 }
                 String subCommand = args[0].toLowerCase();
@@ -848,47 +839,47 @@ public class CommandManager implements CommandExecutor {
                                 String msg = MessageFormat.format(LanguageManager.getMessage("aliases.add.added"), name, allArgs);
                                 sender.sendMessage(prefix + msg);
                             } else {
-                                sendPrefixedMessage(sender, "aliases.add.exists");
+                                MessageManager.sendPrefixedMessage(sender, "aliases.add.exists");
                             }
                         } else {
-                            sendPrefixedMessage(sender, "aliases.add.usage");
+                            MessageManager.sendPrefixedMessage(sender, "aliases.add.usage");
                         }
                     } else if (subCommand.equals("usun")) {
                         if (args.length > 1) {
                             if (map.get(args[1]) == null) {
-                                sendPrefixedMessage(sender, "aliases.delete.notfound");
+                                MessageManager.sendPrefixedMessage(sender, "aliases.delete.notfound");
                             } else {
                                 plugin.getConfig().set("aliases." + args[1], null);
                                 plugin.saveConfig();
-                                sendPrefixedMessage(sender, "aliases.delete.deleted");
+                                MessageManager.sendPrefixedMessage(sender, "aliases.delete.deleted");
                             }
                         } else {
-                            sendPrefixedMessage(sender, "aliases.delete.usage");
+                            MessageManager.sendPrefixedMessage(sender, "aliases.delete.usage");
                         }
                     } else if (subCommand.equals("lista")) {
-                        sendPrefixedMessage(sender, "aliases.help.header");
+                        MessageManager.sendPrefixedMessage(sender, "aliases.help.header");
                         for (String key : map.keySet()) {
                             String value = map.get(key).toString();
                             sender.sendMessage(
-                                    getMessage("aliases.list.spacer") +
-                                            " " + getMessage("aliases.list.from") +
+                                    LanguageManager.getMessage("aliases.list.spacer") +
+                                            " " + LanguageManager.getMessage("aliases.list.from") +
                                             key +
-                                            " " + getMessage("aliases.list.spacer") +
-                                            " " + getMessage("aliases.list.to") +
+                                            " " + LanguageManager.getMessage("aliases.list.spacer") +
+                                            " " + LanguageManager.getMessage("aliases.list.to") +
                                             value);
                         }
                     }
                 } else {
-                    sendPrefixedMessage(sender, "aliases.help.header");
-                    sendMessageList(sender, "aliases.help.contents");
+                    MessageManager.sendPrefixedMessage(sender, "aliases.help.header");
+                    MessageManager.sendMessageList(sender, "aliases.help.contents");
                 }
             } else {
-                sendPrefixedMessage(sender, "notfound");
+                MessageManager.sendPrefixedMessage(sender, "notfound");
             }
             return true;
         } else if (cmd.getName().equalsIgnoreCase("+")) {
             if (!sender.hasPermission(plugin.getConfig().getString("timedpermission"))) {
-                sendPrefixedMessage(sender, "timedpermission.no_permission");
+                MessageManager.sendPrefixedMessage(sender, "timedpermission.no_permission");
             } else {
                 Player p = (Player) sender;
                 User user = plugin.luckPerms.getPlayerAdapter(Player.class).getUser(p);
@@ -898,7 +889,7 @@ public class CommandManager implements CommandExecutor {
                         .filter(node -> !node.hasExpired())
                         .collect(Collectors.toList());
                 if (nodes.size() == 0) {
-                    sendPrefixedMessage(sender, "timedpermission.no_permission");
+                    MessageManager.sendPrefixedMessage(sender, "timedpermission.no_permission");
                 } else {
                     Instant instant = nodes.get(0).getExpiry();
 
@@ -906,7 +897,7 @@ public class CommandManager implements CommandExecutor {
                     SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy 'o' HH:mm");
                     String formattedDate = formatter.format(date);
 
-                    String msg = getMessage("timedpermission.expires");
+                    String msg = LanguageManager.getMessage("timedpermission.expires");
                     msg = MessageFormat.format(msg, formattedDate);
 
                     sender.sendMessage(prefix + msg);

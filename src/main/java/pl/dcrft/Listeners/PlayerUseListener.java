@@ -9,11 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
+import pl.dcrft.Managers.MessageManager;
+import pl.dcrft.Managers.SessionManager;
 
-import static pl.dcrft.Managers.ConfigManager.getDataFile;
-
-import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
-import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerUseListener implements Listener {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
@@ -21,22 +19,22 @@ public class PlayerUseListener implements Listener {
     @EventHandler(priority= EventPriority.HIGH)
     public void onPlayerUse(PlayerInteractEvent e){
         Player p = e.getPlayer();
-        for (pl.dcrft.Managers.SessionManager sessionManager : list) {
+        for (pl.dcrft.Managers.SessionManager sessionManager : SessionManager.list) {
             if (p.getUniqueId() == sessionManager.getPlayer().getUniqueId()) {
                 sessionManager.resetMinute();
                 break;
             }
         }
         if(e.getClickedBlock() != null && e.getClickedBlock().getType() != null && e.getClickedBlock().getType().isBlock() && e.getClickedBlock().getType() == Material.LEVER) {
-            if(Integer.parseInt(getDataFile().getString("cooldown_lever")) > 0){
+            if(Integer.parseInt(ConfigManager.getDataFile().getString("cooldown_lever")) > 0){
                 e.setCancelled(true);
-                sendPrefixedMessage(p, "lever_cooldown");
+                MessageManager.sendPrefixedMessage(p, "lever_cooldown");
             }
             else {
-                getDataFile().set("cooldown_lever", 1);
+                ConfigManager.getDataFile().set("cooldown_lever", 1);
                 ConfigManager.saveData();
                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                    getDataFile().set("cooldown_lever", 0);
+                    ConfigManager.getDataFile().set("cooldown_lever", 0);
                     ConfigManager.saveData();
                 }, 10L);
             }

@@ -9,23 +9,17 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.EventHandler;
 import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
-import pl.dcrft.Managers.ConfigManager;
-import pl.dcrft.Managers.LanguageManager;
-import pl.dcrft.Managers.SessionManager;
+import pl.dcrft.Managers.*;
+import pl.dcrft.Managers.Panel.PanelManager;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
+import pl.dcrft.Utils.RoundUtil;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-import static pl.dcrft.Managers.ConfigManager.getDataFile;
-import static pl.dcrft.Managers.DatabaseManager.*;
-import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
-import static pl.dcrft.Managers.Panel.PanelManager.updatePanels;
-import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
-import static pl.dcrft.Utils.RoundUtil.round;
 
-import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerJoinListener implements Listener {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
@@ -35,53 +29,53 @@ public class PlayerJoinListener implements Listener {
 
         Player p = e.getPlayer();
         SessionManager newSession = new SessionManager(e.getPlayer());
-        list.add(newSession);
+        SessionManager.list.add(newSession);
         @NotNull List<Integer> sver = plugin.getConfig().getIntegerList("server.supported_versions");
         int pver = e.getPlayer().getProtocolVersion();
         if (!sver.contains(pver)) {
-            sendPrefixedMessage(p, "version_warning");
+            MessageManager.sendPrefixedMessage(p, "version_warning");
         }
-        updatePanels();
+        PanelManager.updatePanels();
 
         if (!e.getPlayer().hasPlayedBefore()) {
-            getDataFile().set("najnowszy", e.getPlayer().getName());
+            ConfigManager.getDataFile().set("najnowszy", e.getPlayer().getName());
             ConfigManager.saveData();
         }
         if (e.getPlayer().hasPermission("mod.chat")) {
-            if (!getDataFile().contains("players." + e.getPlayer().getName())) {
-                getDataFile().set("players." + e.getPlayer().getName() + ":", null);
-                getDataFile().set("players." + e.getPlayer().getName() + ".modchat", false);
-                getDataFile().set("players." + e.getPlayer().getName() + ".adminchat", false);
+            if (!ConfigManager.getDataFile().contains("players." + e.getPlayer().getName())) {
+                ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ":", null);
+                ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ".modchat", false);
+                ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ".adminchat", false);
                 ConfigManager.saveData();
             }
-            if (getDataFile().getBoolean("players." + e.getPlayer().getName() + ".modchat")) {
-                getDataFile().set("players." + e.getPlayer().getName() + ".modchat", false);
+            if (ConfigManager.getDataFile().getBoolean("players." + e.getPlayer().getName() + ".modchat")) {
+                ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ".modchat", false);
                 ConfigManager.saveData();
                 return;
             }
         }
         if (e.getPlayer().hasPermission("admin.chat")) {
-            if (!getDataFile().contains("players." + e.getPlayer().getName())) {
-                getDataFile().set("players." + e.getPlayer().getName() + ":", null);
-                getDataFile().set("players." + e.getPlayer().getName() + ".modchat", false);
-                getDataFile().set("players." + e.getPlayer().getName() + ".adminchat", false);
+            if (!ConfigManager.getDataFile().contains("players." + e.getPlayer().getName())) {
+                ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ":", null);
+                ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ".modchat", false);
+                ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ".adminchat", false);
                 ConfigManager.saveData();
             }
-            if (!getDataFile().getBoolean("players." + e.getPlayer().getName() + ".adminchat")) {
-                getDataFile().set("players." + e.getPlayer().getName() + ".adminchat", true);
+            if (!ConfigManager.getDataFile().getBoolean("players." + e.getPlayer().getName() + ".adminchat")) {
+                ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ".adminchat", true);
                 e.getPlayer().sendMessage(LanguageManager.getMessage("staffchat.adminchat.title") + LanguageManager.getMessage("staffchat.adminchat.spacer") + LanguageManager.getMessage("staffchat.auto_enabled"));
                 ConfigManager.saveData();
                 return;
             }
         }
         if (!e.getPlayer().hasPermission("pt.adm")) {
-            getDataFile().set("players." + e.getPlayer().getName() + ".online", null);
+            ConfigManager.getDataFile().set("players." + e.getPlayer().getName() + ".online", null);
             ConfigManager.saveData();
             Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                 try {
-                    openConnection();
-                    Statement statement = connection.createStatement();
-                    statement.executeUpdate("UPDATE " + table_bungee + " SET online='teraz', serwer_online='" + plugin.getConfig().getString("server.name") + "' WHERE nick = '" + e.getPlayer().getName() + "'");
+                    DatabaseManager.openConnection();
+                    Statement statement = DatabaseManager.connection.createStatement();
+                    statement.executeUpdate("UPDATE " + DatabaseManager.table_bungee + " SET online='teraz', serwer_online='" + plugin.getConfig().getString("server.name") + "' WHERE nick = '" + e.getPlayer().getName() + "'");
 
                     int kille = p.getStatistic(Statistic.PLAYER_KILLS);
                     int dedy = p.getStatistic(Statistic.DEATHS);
@@ -95,7 +89,7 @@ public class PlayerJoinListener implements Listener {
                     } else {
                         kdr = (float) kille / (float) dedy;
                     }
-                    kdr = round(kdr, 2);
+                    kdr = RoundUtil.round(kdr, 2);
                     ranga = PlaceholderAPI.setPlaceholders(e.getPlayer(), "%vault_rank%");
 
                     if (ranga.equalsIgnoreCase("vip") || ranga.equalsIgnoreCase("vip+") || ranga.equalsIgnoreCase("svip") || ranga.equalsIgnoreCase("svip+") || ranga.equalsIgnoreCase("mvip") || ranga.equalsIgnoreCase("mvip+") || ranga.equalsIgnoreCase("evip") || ranga.equalsIgnoreCase("evip+")) {
@@ -117,13 +111,13 @@ public class PlayerJoinListener implements Listener {
                     String timeplayed =  PlaceholderAPI.setPlaceholders(p, "%statistic_time_played%");
 
 
-                    update = "UPDATE `" + table + "` SET kille = '" + kills + "', dedy = '" + deaths + "', kdr = '" + kdr + "', ranga = '" + ranga + "', bloki = '" + blocks + "', czasgry = '" + timeplayed + "' WHERE nick = '" + e.getPlayer().getName() + "'";
+                    update = "UPDATE `" + DatabaseManager.table + "` SET kille = '" + kills + "', dedy = '" + deaths + "', kdr = '" + kdr + "', ranga = '" + ranga + "', bloki = '" + blocks + "', czasgry = '" + timeplayed + "' WHERE nick = '" + e.getPlayer().getName() + "'";
                     statement.executeUpdate(update);
 
                     statement.close();
                 } catch (SQLException e1) {
                     e1.printStackTrace();
-                    logError(ErrorReason.DATABASE);
+                    ErrorUtil.logError(ErrorReason.DATABASE);
                 }
 
             });

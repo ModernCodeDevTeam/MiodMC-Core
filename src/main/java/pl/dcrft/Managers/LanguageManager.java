@@ -6,13 +6,12 @@ import pl.dcrft.DragonCraftCore;
 import java.io.File;
 import java.util.*;
 
-import static pl.dcrft.Managers.ConfigManager.getMessagesFile;
 
 public class LanguageManager {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     public static String getMessage(String key){
-            String message = getMessagesFile().getString(key);
+            String message = ConfigManager.getMessagesFile().getString(key);
             if(message != null){
                 return ChatColor.translateAlternateColorCodes('&', message);
             }
@@ -21,7 +20,7 @@ public class LanguageManager {
     public static List<String> getMessageList(String key){
         List<String> message = new ArrayList<>();
         if(message != null){
-            for(String s : getMessagesFile().getStringList(key)) {
+            for(String s : ConfigManager.getMessagesFile().getStringList(key)) {
                 message.add(ChatColor.translateAlternateColorCodes('&', s));
             }
             return message;

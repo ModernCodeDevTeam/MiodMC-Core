@@ -5,11 +5,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
+import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
 
 import java.io.File;
 import java.io.IOException;
 
-import static pl.dcrft.Utils.ErrorUtils.ErrorUtil.logError;
 
 public class ConfigManager {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
@@ -48,7 +48,7 @@ public class ConfigManager {
         try {
             databaseConfig.load(databaseConfigFile);
         } catch (InvalidConfigurationException | IOException var2) {
-            logError(ErrorReason.DATA);
+             ErrorUtil.logError(ErrorReason.DATA);
             var2.printStackTrace();
         }
 
@@ -58,7 +58,7 @@ public class ConfigManager {
             databaseConfig.save(databaseConfigFile);
 
         } catch (Exception e) {
-            logError(ErrorReason.CONFIG);
+             ErrorUtil.logError(ErrorReason.CONFIG);
             e.printStackTrace();
         }
     }
@@ -79,7 +79,7 @@ public class ConfigManager {
         try {
             data.load(dataFile);
         } catch (InvalidConfigurationException | IOException var2) {
-            logError(ErrorReason.DATA);
+             ErrorUtil.logError(ErrorReason.DATA);
             var2.printStackTrace();
         }
 
@@ -88,7 +88,7 @@ public class ConfigManager {
         try {
             data.save(dataFile);
         } catch (Exception e) {
-            logError(ErrorReason.DATA);
+             ErrorUtil.logError(ErrorReason.DATA);
             e.printStackTrace();
         }
     }
@@ -109,7 +109,7 @@ public class ConfigManager {
         try {
             messagesConfig.load(messagesConfigFile);
         } catch (InvalidConfigurationException | IOException var2) {
-            logError(ErrorReason.MESSAGES);
+             ErrorUtil.logError(ErrorReason.MESSAGES);
             var2.printStackTrace();
         }
 
@@ -119,7 +119,7 @@ public class ConfigManager {
             messagesConfig.save(messagesConfigFile);
 
         } catch (Exception e) {
-            logError(ErrorReason.MESSAGES);
+             ErrorUtil.logError(ErrorReason.MESSAGES);
             e.printStackTrace();
         }
     }
@@ -140,7 +140,7 @@ public class ConfigManager {
         try {
             disabledConfig.load(disabledConfigFile);
         } catch (InvalidConfigurationException | IOException var2) {
-            logError(ErrorReason.DISABLED);
+             ErrorUtil.logError(ErrorReason.DISABLED);
             var2.printStackTrace();
         }
     }
@@ -149,7 +149,7 @@ public class ConfigManager {
             disabledConfig.save(disabledConfigFile);
 
         } catch (Exception e) {
-            logError(ErrorReason.DISABLED);
+             ErrorUtil.logError(ErrorReason.DISABLED);
             e.printStackTrace();
         }
     }

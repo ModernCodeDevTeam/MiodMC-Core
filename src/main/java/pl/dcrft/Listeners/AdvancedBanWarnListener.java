@@ -5,8 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
-import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
+import pl.dcrft.Managers.MessageManager;
 
 
 //this is such a garbage, dont look here >;c
@@ -19,10 +18,10 @@ public class AdvancedBanWarnListener implements Listener {
             String[] args = e.getMessage().split(" ");
             Player p = e.getPlayer();
             if(!e.getPlayer().hasPermission("ab.warn.temp")) {
-                sendPrefixedMessage(e.getPlayer(), "notfound");
+                MessageManager.sendPrefixedMessage(e.getPlayer(), "notfound");
             }
             else if (args.length <3) {
-                sendPrefixedMessage(p, "advancedban_warn_usage");
+                MessageManager.sendPrefixedMessage(p, "advancedban_warn_usage");
             }
             else {
                 final StringBuilder sb = new StringBuilder();

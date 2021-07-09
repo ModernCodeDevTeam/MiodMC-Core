@@ -6,17 +6,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import pl.dcrft.Managers.SessionManager;
 
-import static pl.dcrft.Managers.SessionManager.list;
 
 public class PlayerDisconnectListener implements Listener {
 
     @EventHandler
     public void onPlayerDisconnect(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        for (int i = 0; i < list.size(); i++) {
-            SessionManager session = list.get(i);
+        for (int i = 0; i < SessionManager.list.size(); i++) {
+            SessionManager session = SessionManager.list.get(i);
             if (session.getPlayer().getName().equalsIgnoreCase(p.getName()))
-                list.remove(session);
+                SessionManager.list.remove(session);
         }
     }
 }
