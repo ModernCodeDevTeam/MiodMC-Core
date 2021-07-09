@@ -56,10 +56,10 @@ marry:
     accept:
       missing_diamond: "§cNie posiadasz 1 diamentu potrzebnego do zawarcia ślubu."
       accepted: "§aŚlub został zawarty!"
-      broadcast: " §e{0} §bi §e{1} §bwłaśnie zawarli ślub!"
+      broadcast: "§e{0} §bi §e{1} §bwłaśnie zawarli ślub!"
     reject:
       rejected: "§aProśba o ślub została odrzucona."
-      broadcast: " §e{0} §bi §e{1} §bwłaśnie się rozwiedli."
+      broadcast: "§e{0} §bi §e{1} §bwłaśnie się zwiedli."
 stream:
   cant_write_turned_off: "§cPodczas trybu §estreamowania§c nie można pisać na tym czacie. Wyłączono czat automatycznie."
 advancedban_warn_usage: "§cUżycie: §e/warn <nick> <powód> [-s]§c."

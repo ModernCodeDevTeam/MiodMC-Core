@@ -135,9 +135,9 @@ public class CommandManager implements CommandExecutor {
                     }
                     ConfigManager.getDataFile().set("players." + sender.getName() + ".znajprosba." + Bukkit.getOfflinePlayer(args[1]).getName(), true);
                     ConfigManager.saveData();
-                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.title"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.accept"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.cancel"), Bukkit.getOfflinePlayer(args[1]).getName()));
+                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.title"), p.getName()));
+                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.accept"), p.getName()));
+                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.cancel"), p.getName()));
                     sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.invited"), Bukkit.getOfflinePlayer(args[1]).getName()));
                     return false;
                 }
@@ -197,12 +197,12 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
-            if (!Bukkit.getPlayer(args[0]).isOnline()) {
+            if (Bukkit.getPlayer(args[0]) == null || !Bukkit.getPlayer(args[0]).isOnline()) {
                 MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
             Player other = Bukkit.getPlayer(args[0]);
-            if (plugin.getConfig().getStringList("staff").contains(args[1])) {
+            if (plugin.getConfig().getStringList("staff").contains(args[0])) {
                 MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
@@ -238,7 +238,7 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(p, "marry.already");
                 return false;
             }
-            if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
+            if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
                 MessageManager.sendPrefixedMessage(p, "marry.no_ivite_send");
                 return false;
             } else {
@@ -247,14 +247,14 @@ public class CommandManager implements CommandExecutor {
                     return false;
                 }
                 if (!p.getInventory().contains(Material.DIAMOND)) {
-                    MessageManager.sendPrefixedMessage(p, "marry.accept.missing_diamond");
+                    MessageManager.sendPrefixedMessage(p, "marry.send.accept.missing_diamond");
                     return false;
                 } else {
                     p.getInventory().removeItem(new ItemStack(Material.DIAMOND, 1));
                     if (Bukkit.getPlayer(args[0]).isOnline()) {
-                        MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.accept.accepted");
+                        MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.send.accept.accepted");
                     }
-                    MessageManager.sendPrefixedMessage(p, "marry.accept.accepted");
+                    MessageManager.sendPrefixedMessage(p, "marry.send.accept.accepted");
                     ConfigManager.getDataFile().set("players." + p.getName() + ".slub", Bukkit.getOfflinePlayer(args[0]).getName());
                     ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slub", p.getName());
                     ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
@@ -271,7 +271,7 @@ public class CommandManager implements CommandExecutor {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                    plugin.getServer().broadcastMessage(prefix + MessageFormat.format(LanguageManager.getMessage("marry.accept.broadcast"), p.getName(), Bukkit.getOfflinePlayer(args[0]).getName()));
+                    plugin.getServer().broadcastMessage(prefix + MessageFormat.format(LanguageManager.getMessage("marry.send.accept.broadcast"), p.getName(), Bukkit.getOfflinePlayer(args[0]).getName()));
                     return false;
                 }
             }
@@ -280,12 +280,12 @@ public class CommandManager implements CommandExecutor {
             Player p = (Player) sender;
             if (args.length == 0) {
                 MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-            } else if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
+            } else if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba") == null || !ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba").equalsIgnoreCase(p.getName())) {
                 MessageManager.sendPrefixedMessage(p, "marry.no_ivite_send");
             } else {
-                MessageManager.sendPrefixedMessage(p, "marry.reject.rejected");
+                MessageManager.sendPrefixedMessage(p, "marry.send.reject.rejected");
                 if (Bukkit.getPlayer(args[0]).isOnline()) {
-                    MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.reject.rejected");
+                    MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.send.reject.rejected");
                 }
                 ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);
                 ConfigManager.saveData();
@@ -300,7 +300,7 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(p, "marry.self");
             } else if (ConfigManager.getDataFile().getString("players." + p.getName() + ".slub") == null) {
                 MessageManager.sendPrefixedMessage(p, "marry.not_in");
-            } else if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slub") == null || !ConfigManager.getDataFile().getString(Bukkit.getOfflinePlayer(args[0]).getName() + ".slub").equalsIgnoreCase(p.getName()) || !ConfigManager.getDataFile().getString(p.getName() + ".slub").equalsIgnoreCase(Bukkit.getOfflinePlayer(args[0]).getName())) {
+            } else if (ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slub") == null || !ConfigManager.getDataFile().getString("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slub").equalsIgnoreCase(p.getName()) || !ConfigManager.getDataFile().getString("players." + p.getName() + ".slub").equalsIgnoreCase(Bukkit.getOfflinePlayer(args[0]).getName())) {
                 MessageManager.sendPrefixedMessage(p, "marry.not_with_target");
             } else {
                 ConfigManager.getDataFile().set("players." + p.getName() + ".slub", null);
@@ -319,7 +319,7 @@ public class CommandManager implements CommandExecutor {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                plugin.getServer().broadcastMessage(prefix + MessageFormat.format(LanguageManager.getMessage("marry.reject.broadcast"), p.getName(), Bukkit.getOfflinePlayer(args[0]).getName()));
+                plugin.getServer().broadcastMessage(prefix + MessageFormat.format(LanguageManager.getMessage("marry.send.reject.broadcast"), p.getName(), Bukkit.getOfflinePlayer(args[0]).getName()));
 
             }
             return true;

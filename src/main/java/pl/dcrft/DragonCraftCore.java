@@ -95,10 +95,6 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
 
         for(String cmd : getConfig().getConfigurationSection("aliases").getKeys(false)){
             Bukkit.getCommandMap().register(cmd, new CommandRunUtil(cmd));
-            CommandRegisterUtil exampleManager = new CommandRegisterUtil(cmd);
-            exampleManager.register(new CommandRunUtil(cmd).setDescription("/" + cmd));
-            Bukkit.getServer().getLogger().info("rejestracja");
-            Bukkit.getServer().getLogger().info(cmd);
         }
     }
 
