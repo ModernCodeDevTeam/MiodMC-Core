@@ -9,11 +9,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
-import pl.dcrft.Managers.LanguageManager;
 
 public class CommandPreprocessListener implements Listener {
     private static DragonCraftCore plugin = DragonCraftCore.getInstance();
-    private String prefix = LanguageManager.getMessage("prefix");
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandPreProcess(PlayerCommandPreprocessEvent e) {

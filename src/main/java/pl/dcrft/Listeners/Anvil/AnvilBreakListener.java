@@ -17,7 +17,7 @@ import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 public class AnvilBreakListener implements Listener {
     private FileConfiguration data = ConfigManager.getDataFile();
     @EventHandler
-    public void breakAnvil(BlockBreakEvent e) {
+    public void onAnvilBreak(BlockBreakEvent e) {
             Block block = e.getBlock();
             if (block.getType() == Material.ANVIL || block.getType() == Material.CHIPPED_ANVIL || block.getType() == Material.DAMAGED_ANVIL) {
 

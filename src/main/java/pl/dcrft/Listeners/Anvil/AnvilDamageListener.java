@@ -19,7 +19,7 @@ import java.util.Set;
 public class AnvilDamageListener implements Listener {
     private FileConfiguration data = ConfigManager.getDataFile();
     @EventHandler
-    public void damageAnvil(PlayerInteractEvent e) {
+    public void onAnvilDamage(PlayerInteractEvent e) {
         if (e.hasBlock() && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Block block = e.getClickedBlock();
             if (block.getType() == Material.ANVIL || block.getType() == Material.CHIPPED_ANVIL || block.getType() == Material.DAMAGED_ANVIL) {

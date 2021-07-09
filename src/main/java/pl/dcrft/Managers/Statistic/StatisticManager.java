@@ -12,7 +12,6 @@ import java.util.HashMap;
 import static pl.dcrft.Managers.DatabaseManager.*;
 
 public class StatisticManager {
-    public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     public static boolean checkPlayer(String p){
         boolean val = false, val1 = false;

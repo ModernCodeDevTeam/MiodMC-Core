@@ -24,7 +24,7 @@ public class ChairEntryListener implements Listener {
     final String prefix = LanguageManager.getMessage("prefix");
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.hasBlock() && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getItemInHand().getType() == Material.AIR) {
+        if (event.hasBlock() && event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getPlayer().getInventory().getItemInMainHand().getType() == Material.AIR) {
             Block block = event.getClickedBlock();
             if(Tag.STAIRS.isTagged(block.getType())){
                 Stairs stairs = (Stairs) block.getBlockData();

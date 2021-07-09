@@ -36,9 +36,9 @@ public class MaintenanceManager {
         }
     }
 
-    public static boolean stopServer(int minutes){
+    public static void stopServer(int minutes){
         if(minutes < 1){
-            return false;
+            return;
         }
         if (minutes > 1){
             saveAll();
@@ -90,11 +90,10 @@ public class MaintenanceManager {
             Bukkit.getServer().setWhitelist(false);
             Bukkit.getServer().shutdown();
         }, 1000L);
-        return true;
     }
-    public static boolean restartServer(int minutes) {
+    public static void restartServer(int minutes) {
         if (minutes < 1) {
-            return false;
+            return;
         }
         if (minutes > 1) {
             saveAll();
@@ -146,11 +145,10 @@ public class MaintenanceManager {
             Bukkit.getServer().setWhitelist(false);
             Bukkit.spigot().restart();
         }, 1000L);
-        return true;
     }
-    public static boolean reloadServer(int minutes){
+    public static void reloadServer(int minutes){
         if(minutes < 1){
-            return false;
+            return;
         }
         if (minutes > 1){
             saveAll();
@@ -202,11 +200,10 @@ public class MaintenanceManager {
             Bukkit.getServer().setWhitelist(false);
             Bukkit.reload();
         }, 1000L);
-        return true;
     }
-    public static boolean maintenanceStart(int minutes){
+    public static void maintenanceStart(int minutes){
         if(minutes < 1){
-            return false;
+            return;
         }
         if (minutes > 1){
             saveAll();
@@ -260,7 +257,6 @@ public class MaintenanceManager {
                 }
             }
         }, 1000L);
-        return true;
     }
 
 }

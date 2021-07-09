@@ -12,7 +12,7 @@ import pl.dcrft.Managers.LanguageManager;
 public class ChairExitListener implements Listener {
     final String prefix = LanguageManager.getMessage("prefix");
     @EventHandler
-    public void onVehicle(EntityDismountEvent event) {
+    public void onChairExit(EntityDismountEvent event) {
         if (event.getEntity() instanceof Player) {
             Player p = (Player) event.getEntity();
             if (event.getDismounted() instanceof ArmorStand) {
