@@ -253,7 +253,7 @@ ranks:
     - '&e» &3Zakup rangę już dziś na &bDCRFT.PL'
 broadcast:
   - '&6Wszelkie informacje znajdują się na &e/info&6 i &e/pomoc&6.'
-  - '&6Discord &e&lDragon&6&lCraft&6: &ediscord.gg/7pPNbUU&6. Więcej pod &e/discord&6.'
+  - '&6Discord &e&lDragon&6&lCraft&6: &ehttps://discord.gg/7pPNbUU&6. Więcej pod &e/discord&6.'
   - '&6Chcesz połączyć swoje konto na serwerze z kontem Discord &e&lDragon&6&lCraft&6?
   Dowiedz się więcej pod &e/discord&6.'
   - '&6Witamy na &e&lDragon&6&lCraft &eSurvival VI&6!'
@@ -326,7 +326,7 @@ shopbroadcast:
   donate: "&e» &3Gracz &b{0}&3 wpłacił &b{1} &3na rozwój serwera!"
   other:
     - "&e» &3Dziękujemy za wsparcie!"
-    - "&e» &6Smocze jaja&b dostępne już od &61.23zł!"
+    - "&e» &6Smocze jaja&b dostępne już od &61zł!"
     - "&e» &bSprawdź ofertę na &6DCRFT.PL"
 aliases:
   help:
