@@ -97,7 +97,7 @@ public class MaintenanceManager {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                MessageManager.broadcastPrefixed("maintenance.stop.in_progress");
+                MessageManager.broadcastPrefixed(LanguageManager.getMessage("maintenance.stop.in_progress"));
                 saveAll();
                 try {
                     Thread.sleep(1000L);
@@ -152,7 +152,7 @@ public class MaintenanceManager {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                MessageManager.broadcastPrefixed("maintenance.restart.in_progress");
+                MessageManager.broadcastPrefixed(LanguageManager.getMessage("maintenance.restart.in_progress"));
                 saveAll();
                 try {
                     Thread.sleep(1000L);
@@ -220,7 +220,7 @@ public class MaintenanceManager {
                 saveAll();
                 for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
                     if (!p.isOp() && !p.isWhitelisted()) {
-                        MessageManager.broadcastPrefixed("maintenance.maintenance.in_progress");
+                        MessageManager.broadcastPrefixed(LanguageManager.getMessage("maintenance.maintenance.in_progress"));
                     }
                 }
             }, 1000L);
