@@ -58,8 +58,9 @@ public class MaintenanceManager {
         setWhitelist(true);
         saveAll();
 
-        MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.stop.broadcast"), +minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
-
+        if(minutes > 1) {
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.stop.broadcast"), +minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
+        }
         Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
 
             saveAll();
@@ -113,8 +114,10 @@ public class MaintenanceManager {
     public static void restartServer(int minutes) {
         setWhitelist(true);
         saveAll();
-        MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), +minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
 
+        if(minutes > 1) {
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), +minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
+        }
         Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
             MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.restart.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));
             saveAll();
@@ -167,8 +170,10 @@ public class MaintenanceManager {
     public static void maintenanceStart(int minutes) {
         setWhitelist(true);
         saveAll();
-        MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), +minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
 
+        if(minutes > 1) {
+            MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), +minutes + " " + LanguageManager.getMessage("maintenance.timeformat.minutes")));
+        }
         Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
 
             MessageManager.broadcastPrefixed(MessageFormat.format(LanguageManager.getMessage("maintenance.maintenance.broadcast"), "1 " + LanguageManager.getMessage("maintenance.timeformat.minute")));

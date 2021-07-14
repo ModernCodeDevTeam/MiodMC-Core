@@ -544,7 +544,7 @@ public class CommandManager implements CommandExecutor {
             }
             MessageManager.sendPrefixedMessage(sender, "notfound");
             return true;
-        } else if (cmd.getName().equalsIgnoreCase("przerwa")) {
+        }   else if (cmd.getName().equalsIgnoreCase("przerwa")) {
             if (sender.hasPermission("r.adm")) {
                 if (args.length == 0) {
                     MaintenanceManager.maintenanceStart();

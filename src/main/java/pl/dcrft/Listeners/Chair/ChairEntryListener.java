@@ -1,5 +1,8 @@
 package pl.dcrft.Listeners.Chair;
 
+import me.NoChance.PvPManager.Managers.PlayerHandler;
+import me.NoChance.PvPManager.PvPManager;
+import me.NoChance.PvPManager.PvPlayer;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -33,6 +36,13 @@ public class ChairEntryListener implements Listener {
                 if(block.getRelative(BlockFace.UP).getType().equals(Material.AIR) && stairs.getShape().equals(Stairs.Shape.STRAIGHT) && stairs.getHalf().equals(Bisected.Half.BOTTOM)) {
 
                     Player p = event.getPlayer();
+
+                    PvPManager pvpmanager = PvPManager.getInstance();
+                    PlayerHandler playerHandler = pvpmanager.getPlayerHandler();
+                    PvPlayer pvplayer = playerHandler.get(p);
+                    if(pvplayer.isInCombat()){
+                        return;
+                    }
 
                     Location loc = block.getLocation();
                     loc.setX(loc.getBlockX() + 0.5);
