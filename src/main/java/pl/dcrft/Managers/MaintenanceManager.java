@@ -41,7 +41,7 @@ public class MaintenanceManager {
         setWhitelist(true);
         for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (!p.isOp() && !p.isWhitelisted()) {
-                MessageManager.broadcastPrefixed("maintenance.maintenance.in_progress");
+                MessageManager.broadcastPrefixed(LanguageManager.getMessage("maintenance.maintenance.in_progress"));
             }
         }
     }
