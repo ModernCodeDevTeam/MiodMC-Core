@@ -166,10 +166,10 @@ public class PanelManager {
     public static void updatePanels(){
         for(Player o : Bukkit.getOnlinePlayers()) {
             if (o.hasPermission("panel.adm")) {
-                showRepeatingPanel(o, PanelType.ADMIN);
+                updatePanel(o, PanelType.ADMIN);
             }
             else if (o.hasPermission("panel.mod")) {
-                showRepeatingPanel(o, PanelType.MOD);
+                updatePanel(o, PanelType.MOD);
             }
         }
     }

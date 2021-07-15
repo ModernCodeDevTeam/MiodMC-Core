@@ -1,8 +1,9 @@
 package pl.dcrft.Managers;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.utils.Punishment;
-import net.kyori.adventure.text.TextComponent;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
@@ -13,6 +14,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +24,8 @@ import pl.dcrft.Managers.Panel.PanelType;
 import pl.dcrft.Managers.Statistic.StatisticGUIManager;
 import pl.dcrft.Utils.ConfigUtil;
 import pl.dcrft.Utils.GroupUtil;
+import pl.dcrft.Utils.URLUtil;
+import sun.jvm.hotspot.debugger.Page;
 
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -862,6 +866,27 @@ public class CommandManager implements CommandExecutor {
             }
             return true;
         }
+        //TODO
+        /*
+        else if (cmd.getName().equalsIgnoreCase("vote")) {
+            if (!(sender instanceof Player)) {
+                MessageManager.sendPrefixedMessage(sender, "console_error");
+            } else {
+                Player p = (Player) sender;
+                if (ConfigManager.getDataFile().get("players." + sender.getName() + ".vote") == null) {
+                    try {
+
+                        JsonObject json = URLUtil.queryJson("https://mcpc.pl/api/server/checkvote/" + plugin.getConfig().getString("vote_ip") + "/" + p.getAddress().getHostString());
+                        Bukkit.getServer().getLogger().info("https://mcpc.pl/api/server/checkvote/" + plugin.getConfig().getString("vote_ip") + "/" + p.getAddress().getHostString());
+                        Bukkit.getServer().getLogger().info(json.getAsString());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    MessageManager.sendPrefixedMessage(sender, "vote.already");
+                }
+            }
+        }*/
         return true;
     }
 }

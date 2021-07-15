@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.*;
 import pl.dcrft.Managers.Panel.PanelManager;
+import pl.dcrft.Managers.Panel.PanelType;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
 import pl.dcrft.Utils.RoundUtil;
@@ -30,12 +31,21 @@ public class PlayerJoinListener implements Listener {
         Player p = e.getPlayer();
         SessionManager newSession = new SessionManager(e.getPlayer());
         SessionManager.list.add(newSession);
-        @NotNull List<Integer> sver = plugin.getConfig().getIntegerList("server.supported_versions");
+        List<Integer> sver = plugin.getConfig().getIntegerList("server.supported_versions");
         int pver = e.getPlayer().getProtocolVersion();
         if (!sver.contains(pver)) {
             MessageManager.sendPrefixedMessage(p, "version_warning");
         }
+
         PanelManager.updatePanels();
+
+        if(p.hasPermission("panel.adm")){
+            PanelManager.showRepeatingPanel(p, PanelType.ADMIN);
+        }
+        else if(p.hasPermission("panel.mod")) {
+            PanelManager.showRepeatingPanel(p, PanelType.MOD);
+        }
+
 
         if (!e.getPlayer().hasPlayedBefore()) {
             ConfigManager.getDataFile().set("najnowszy", e.getPlayer().getName());

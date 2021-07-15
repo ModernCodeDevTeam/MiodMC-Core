@@ -103,4 +103,5 @@ commands:
     permission: dcc.adm
   +:
     description: dlugosc plusa
-  
+  vote:
+    description: glosowanie na mcpc
