@@ -54,7 +54,7 @@ marry:
       self: "§aWysłano prośbę o ślub."
       target: " §e{0} §aprosi cię o ślub! Wpisz §e/sakceptuj {0} §alub §e/sodrzuc {0}§a, aby odpowiedzieć na prośbę."
     accept:
-      missing_diamond: "§cNie posiadasz 1 diamentu potrzebnego do zawarcia ślubu."
+      missing_item: "§cNie posiadasz &e1 &6Smoczego jaja&c potrzebnego do zawarcia ślubu."
       accepted: "§aŚlub został zawarty!"
       broadcast: "§e{0} §bi §e{1} §bwłaśnie zawarli ślub!"
     reject:

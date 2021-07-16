@@ -55,3 +55,12 @@ disabled_default_permission: "cb.adm"
 timedpermission: "essentials.kits.plus"
 death_head_chance: 0.25
 vote_ip: "dcrft.pl"
+marry_item:
+  material: DRAGON_EGG
+  amount: 1
+  name: "§6§nSmocze jajo"
+  enchantment:
+    enchantment: THORNS
+    level: 10
+  lore:
+  - "§aCenna waluta poszukiwana przez wiele osób."

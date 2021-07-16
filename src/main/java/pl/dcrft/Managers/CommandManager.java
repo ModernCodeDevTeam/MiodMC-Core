@@ -14,9 +14,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.Panel.PanelManager;
@@ -241,11 +243,20 @@ public class CommandManager implements CommandExecutor {
                     MessageManager.sendPrefixedMessage(p, "marry.target_already");
                     return false;
                 }
-                if (!p.getInventory().contains(Material.DIAMOND)) {
-                    MessageManager.sendPrefixedMessage(p, "marry.send.accept.missing_diamond");
+
+                ItemStack item = new ItemStack(Material.getMaterial(plugin.getConfig().getString("marry_item.material")));
+                item.setAmount(plugin.getConfig().getInt("marry_item.amount"));
+                ItemMeta itemMeta = item.getItemMeta();
+                itemMeta.setDisplayName(plugin.getConfig().getString("marry_item.name"));
+                itemMeta.setLore(plugin.getConfig().getStringList("marry_item.lore"));
+                itemMeta.addEnchant(Enchantment.getByName(plugin.getConfig().getString("marry_item.enchantment.enchantment")), plugin.getConfig().getInt("marry_item.enchantment.level"), true);
+                item.setItemMeta(itemMeta);
+
+                if (!p.getInventory().containsAtLeast(item, plugin.getConfig().getInt("marry_item.amount"))) {
+                    MessageManager.sendPrefixedMessage(p, "marry.send.accept.missing_item");
                     return false;
                 } else {
-                    p.getInventory().removeItem(new ItemStack(Material.DIAMOND, 1));
+                    p.getInventory().removeItem(item);
                     if (Bukkit.getPlayer(args[0]).isOnline()) {
                         MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.send.accept.accepted");
                     }
