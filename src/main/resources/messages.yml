@@ -41,6 +41,8 @@ friends:
     invitation_not_send: "§cPodaj nick gracza, który wysłał do ciebie zaproszenie do znajomych."
     rejected_target: "§aOdrzucono zaprosznie do znajomych od §e{0}§a."
     rejected_self: "§e{0} §codrzucił twoje zaproszenie do znajomych."
+  leave: "&e{0} &copuścił serwer."
+  join: "&e{0} &adołączył do serwera."
 marry:
   already: "§cJuż jesteś w związku."
   target_already: "§cTen gracz już jest w związku."
@@ -387,7 +389,3 @@ plugin:
   footer: "§e--------------------------------------------"
   enabled: "§aWłączono wersję §2"
   disabled: "§cWyłączono wersję §2"
-vote:
-  already: "&cJuż odebrałeś nagrodę za zagłosowanie."
-  not_voted: "&aGłosując na nasz serwer na stronie &ehttps://mcpc.pl/server/dcrft.pl&a otrzymasz &e5 diamentów&a w grze! Zagłosuj na nas i kliknij na NPC ponownie, aby odebrać nagrodę."
-  success: "&aDziękujemy, oto twoja nagroda."

@@ -18,6 +18,7 @@ import pl.dcrft.Utils.RoundUtil;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.List;
 
 
@@ -29,6 +30,14 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent e) {
 
         Player p = e.getPlayer();
+
+        for (String s : ConfigManager.getDataFile().getStringList("players." + p.getName() + ".znajomi")) {
+            if(Bukkit.getPlayer(s) != null && Bukkit.getPlayer(s).isOnline()) {
+                Bukkit.getPlayer(s).sendMessage(LanguageManager.getMessage("prefix") + MessageFormat.format(LanguageManager.getMessage("friends.join"), p.getName()));
+            }
+        }
+
+
         SessionManager newSession = new SessionManager(e.getPlayer());
         SessionManager.list.add(newSession);
         List<Integer> sver = plugin.getConfig().getIntegerList("server.supported_versions");

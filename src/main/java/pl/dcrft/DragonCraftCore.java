@@ -95,14 +95,19 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
     }
 
     public void onDisable() {
-                try {
-                    if (DatabaseManager.connection != null) {
+        if (DatabaseManager.connection != null) {
+            Bukkit.getScheduler().runTaskAsynchronously(this, new Runnable() {
+                @Override
+                public void run() {
+                    try {
                         DatabaseManager.connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                        ErrorUtil.logError(ErrorReason.DATABASE);
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    ErrorUtil.logError(ErrorReason.DATABASE);
                 }
+            });
+        }
         getLogger().info(LanguageManager.getMessage("plugin.header"));
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");
         getLogger().info(LanguageManager.getMessage("plugin.disabled") + getDescription().getVersion());

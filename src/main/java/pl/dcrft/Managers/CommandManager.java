@@ -108,27 +108,20 @@ public class CommandManager implements CommandExecutor {
                 return false;
             }
             if (args[0].equalsIgnoreCase("dodaj") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("d")) {
-                if (args.length == 1) {
+                if (args.length == 1 || Bukkit.getPlayer(args[1]) == null || !Bukkit.getPlayer(args[1]).isOnline()) {
                     MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-                    return false;
                 }
-                if (args[1].equalsIgnoreCase(sender.getName())) {
+                else if (args[1].equalsIgnoreCase(sender.getName())) {
                     MessageManager.sendPrefixedMessage(p, "friends.add.self");
-                    return false;
                 }
-                if (Bukkit.getPlayer(args[1]) == null || !Bukkit.getPlayer(args[1]).isOnline()) {
-                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-                    return false;
-                }
-                if (plugin.getConfig().getStringList("staff").contains(args[1])) {
+                else if (plugin.getConfig().getStringList("staff").contains(Bukkit.getPlayer(args[1]).getName())) {
                     MessageManager.sendPrefixedMessage(p, "friends.add.staff");
-                    return false;
                 } else {
                     Player o = Bukkit.getPlayer(args[1]);
                     List<String> znajomip = ConfigManager.getDataFile().getStringList("players." + sender.getName() + ".znajomi");
                     if (znajomip.contains(o.getName())) {
                         MessageManager.sendPrefixedMessage(p, "friends.add.already_friend");
-                        return false;
+                        return true;
                     }
                     ConfigManager.getDataFile().set("players." + sender.getName() + ".znajprosba." + Bukkit.getOfflinePlayer(args[1]).getName(), true);
                     ConfigManager.saveData();
@@ -136,7 +129,7 @@ public class CommandManager implements CommandExecutor {
                     o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.accept"), p.getName()));
                     o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.cancel"), p.getName()));
                     sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.invited"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    return false;
+                    return true;
                 }
             }
             if (args[0].equalsIgnoreCase("akceptuj") || args[0].equalsIgnoreCase("a")) {
@@ -199,7 +192,7 @@ public class CommandManager implements CommandExecutor {
                 return false;
             }
             Player other = Bukkit.getPlayer(args[0]);
-            if (plugin.getConfig().getStringList("staff").contains(args[0])) {
+            if (plugin.getConfig().getStringList("staff").contains(Bukkit.getPlayer(args[0]).getName())) {
                 MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
                 return false;
             }
