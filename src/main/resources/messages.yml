@@ -96,7 +96,7 @@ statistics:
   deaths: "§6Śmierci §e»"
   kdr: "§6Stosunek Z/ś §e»"
   since: "§6Gra od §e»"
-  plugin_version: "§6Wersja §e»"
+  plugin_version: "§e§lDragon§6§lCraft§b§lCore&e"
 staffchat:
   enabled: "§aWłączono czat."
   disabled: "§cWyłączono czat."

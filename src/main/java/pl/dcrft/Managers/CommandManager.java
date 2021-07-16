@@ -110,12 +110,15 @@ public class CommandManager implements CommandExecutor {
             if (args[0].equalsIgnoreCase("dodaj") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("d")) {
                 if (args.length == 1 || Bukkit.getPlayer(args[1]) == null || !Bukkit.getPlayer(args[1]).isOnline()) {
                     MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
+                    return true;
                 }
                 else if (args[1].equalsIgnoreCase(sender.getName())) {
                     MessageManager.sendPrefixedMessage(p, "friends.add.self");
+                    return true;
                 }
                 else if (plugin.getConfig().getStringList("staff").contains(Bukkit.getPlayer(args[1]).getName())) {
                     MessageManager.sendPrefixedMessage(p, "friends.add.staff");
+                    return true;
                 } else {
                     Player o = Bukkit.getPlayer(args[1]);
                     List<String> znajomip = ConfigManager.getDataFile().getStringList("players." + sender.getName() + ".znajomi");
