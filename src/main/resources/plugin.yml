@@ -25,17 +25,9 @@ commands:
     description: Losowanie kolorków.
     usage: /losuj
     permission: dcc.adm
-  restart:
-    description: Restartuje serwer za minutę.
-    usage: /restart60
-    permission: dcc.adm
   reload:
     description: Przeładowuje serwer za minutę.
     usage: /reload60
-    permission: dcc.adm
-  stop:
-    description: Zatrzumuje serwer za minutę.
-    usage: /stop60
     permission: dcc.adm
   przerwa:
     description: Rozpoczyna przerwę techniczną za minutę.
@@ -67,10 +59,10 @@ commands:
     usage: /evip
   ac:
     description: Włącz AdminChat.
-    permission: dcc.adm
+    permission: admin.chat
   mc:
     description: Włącz ModChat.
-    permission: panel.mod
+    permission: mod.chat
   stream:
     description: Włącza tryb streamu.
     permission: panel.mod

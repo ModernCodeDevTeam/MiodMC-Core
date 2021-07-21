@@ -102,6 +102,7 @@ public class StatisticManager {
                     result.put(StatisticType.SERVER_ONLINE, server_online);
                     return result;
                 }
+                statement.close();
 
             } catch (SQLException e) {
                 e.printStackTrace();

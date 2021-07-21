@@ -448,9 +448,8 @@ public class CommandManager implements CommandExecutor {
                         MessageManager.sendPrefixedMessage(sender, "console_error");
                     } else {
                         Player p = (Player) sender;
-                        if (p.getTargetBlock(null, 100) != null) {
-                            Block block = p.getTargetBlock(null, 100);
-
+                        if (p.getTargetBlock(null, 1) != null) {
+                            Block block = p.getTargetBlock(null, 1);
                             if (block.getType() == Material.ANVIL || block.getType() == Material.CHIPPED_ANVIL || block.getType() == Material.DAMAGED_ANVIL) {
 
                                 Location loc = block.getLocation();
@@ -473,7 +472,7 @@ public class CommandManager implements CommandExecutor {
                                             ConfigManager.saveData();
                                             return true;
                                         }
-                                        if (Integer.parseInt(i) > max) {
+                                        if (Integer.parseInt(i) >= max) {
                                             max = Integer.parseInt(i) + 1;
                                         }
                                     }

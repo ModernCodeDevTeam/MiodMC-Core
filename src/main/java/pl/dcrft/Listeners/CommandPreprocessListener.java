@@ -1,5 +1,6 @@
 package pl.dcrft.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -20,7 +21,6 @@ public class CommandPreprocessListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandPreProcess(PlayerCommandPreprocessEvent e) {
         if (e.getMessage().length() > 1 && e.getMessage().startsWith("/")) {
-
 
             String[] args = e.getMessage().split(" ");
             args = Arrays.copyOfRange(args, 1, args.length);

@@ -26,14 +26,14 @@ public class PlayerUseListener implements Listener {
             }
         }
         if(e.getClickedBlock() != null && e.getClickedBlock().getType() != null && e.getClickedBlock().getType().isBlock() && e.getClickedBlock().getType() == Material.LEVER) {
-            if(Integer.parseInt(ConfigManager.getDataFile().getString("cooldown_lever")) > 0){
+            if(ConfigManager.getDataFile().getInt("cooldown_lever") > 0){
                 e.setCancelled(true);
                 MessageManager.sendPrefixedMessage(p, "lever_cooldown");
             }
             else {
                 ConfigManager.getDataFile().set("cooldown_lever", 1);
                 ConfigManager.saveData();
-                Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, () -> {
                     ConfigManager.getDataFile().set("cooldown_lever", 0);
                     ConfigManager.saveData();
                 }, 10L);
