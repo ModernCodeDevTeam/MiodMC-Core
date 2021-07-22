@@ -26,7 +26,7 @@ public class PlayerUseListener implements Listener {
             }
         }
         if(e.getClickedBlock() != null && e.getClickedBlock().getType() != null && e.getClickedBlock().getType().isBlock() && e.getClickedBlock().getType() == Material.LEVER) {
-            if(ConfigManager.getDataFile().getInt("cooldown_lever") > 0){
+            if(ConfigManager.getDataFile().get("cooldown_lever") != null && ConfigManager.getDataFile().getInt("cooldown_lever") > 0){
                 e.setCancelled(true);
                 MessageManager.sendPrefixedMessage(p, "lever_cooldown");
             }
