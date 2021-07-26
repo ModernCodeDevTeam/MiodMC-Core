@@ -25,7 +25,7 @@ import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.LanguageManager;
 
 public class ChairEntryListener implements Listener {
-    private static DragonCraftCore plugin = DragonCraftCore.getInstance();
+    private static final DragonCraftCore plugin = DragonCraftCore.getInstance();
     final String prefix = LanguageManager.getMessage("prefix");
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -66,11 +66,7 @@ public class ChairEntryListener implements Listener {
                     p.teleport(ploc);
 
                     armorStand.addPassenger(p);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                        public void run() {
-                            p.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(prefix + LanguageManager.getMessage("chairs.entry")));
-                        }
-                    }, 2);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> p.sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(prefix + LanguageManager.getMessage("chairs.entry"))), 2);
                 }
             }
         }

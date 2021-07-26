@@ -13,7 +13,7 @@ import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.LanguageManager;
 
 public class PlayerDeathListener implements Listener {
-    private static DragonCraftCore plugin = DragonCraftCore.getInstance();
+    private static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event){

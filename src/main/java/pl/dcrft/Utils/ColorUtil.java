@@ -30,7 +30,7 @@ public class ColorUtil {
         // Translate RGB codes
         message = message.replaceAll("(?i)\\&(x|#)([0-9A-F])([0-9A-F])([0-9A-F])([0-9A-F])([0-9A-F])([0-9A-F])", "&x&$2&$3&$4&$5&$6&$7");
 
-        String transformedMessage = "";
+        StringBuilder transformedMessage = new StringBuilder();
         char lastChar = 'a';
 
         // Transform codes to lowercase for better compatibility with Essentials etc.
@@ -42,11 +42,11 @@ public class ColorUtil {
                 }
             }
 
-            transformedMessage = transformedMessage + c;
+            transformedMessage.append(c);
             lastChar = c;
         }
 
-        return transformedMessage;
+        return transformedMessage.toString();
 
     }
     public static String colorize (String toColorize){

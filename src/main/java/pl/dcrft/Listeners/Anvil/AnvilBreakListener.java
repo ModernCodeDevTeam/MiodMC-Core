@@ -15,7 +15,7 @@ import java.util.Set;
 import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 
 public class AnvilBreakListener implements Listener {
-    private FileConfiguration data = ConfigManager.getDataFile();
+    private final FileConfiguration data = ConfigManager.getDataFile();
     @EventHandler
     public void onAnvilBreak(BlockBreakEvent e) {
             Block block = e.getBlock();

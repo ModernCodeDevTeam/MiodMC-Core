@@ -9,7 +9,7 @@ import java.net.URL;
 public class URLUtil {
     public static JsonObject queryJson(String urlString) throws Exception{
 
-        HttpURLConnection conn = null;
+        HttpURLConnection conn;
         StringBuilder jsonResults = new StringBuilder();
         URL url = new URL(urlString);
         conn = (HttpURLConnection) url.openConnection();
@@ -24,7 +24,6 @@ public class URLUtil {
             conn.disconnect();
         }
 
-        JsonObject object = new JsonObject().getAsJsonObject(jsonResults.toString());
-        return object;
+        return new JsonObject().getAsJsonObject(jsonResults.toString());
     }
 }

@@ -1,5 +1,4 @@
 package pl.dcrft.Listeners;
-
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
@@ -7,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.EventHandler;
-import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.*;
 import pl.dcrft.Managers.Panel.PanelManager;
@@ -19,7 +17,6 @@ import pl.dcrft.Utils.RoundUtil;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
-import java.util.List;
 
 
 
@@ -40,11 +37,6 @@ public class PlayerJoinListener implements Listener {
 
         SessionManager newSession = new SessionManager(e.getPlayer());
         SessionManager.list.add(newSession);
-        List<Integer> sver = plugin.getConfig().getIntegerList("server.supported_versions");
-        int pver = e.getPlayer().getProtocolVersion();
-        if (!sver.contains(pver)) {
-            MessageManager.sendPrefixedMessage(p, "version_warning");
-        }
 
         PanelManager.updatePanels();
 

@@ -1,7 +1,5 @@
 package pl.dcrft.Managers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import me.leoko.advancedban.manager.PunishmentManager;
 import me.leoko.advancedban.utils.Punishment;
 import net.luckperms.api.model.user.User;
@@ -15,7 +13,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,8 +23,6 @@ import pl.dcrft.Managers.Panel.PanelType;
 import pl.dcrft.Managers.Statistic.StatisticGUIManager;
 import pl.dcrft.Utils.ConfigUtil;
 import pl.dcrft.Utils.GroupUtil;
-import pl.dcrft.Utils.URLUtil;
-import sun.jvm.hotspot.debugger.Page;
 
 import java.sql.SQLException;
 import java.sql.Statement;

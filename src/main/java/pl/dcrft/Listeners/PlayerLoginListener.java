@@ -12,7 +12,7 @@ import static pl.dcrft.Managers.LanguageManager.getMessage;
 
 
 public class PlayerLoginListener implements Listener {
-    private DragonCraftCore plugin = DragonCraftCore.getInstance();
+    private final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onLogin(PlayerLoginEvent event) {

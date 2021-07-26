@@ -34,20 +34,20 @@ public class PlayerChatListener implements Listener {
         List<String> green = plugin.getConfig().getStringList("greenchat");
         String message = e.getMessage();
 
-        for(int i = 0; i < green.size(); i++){
-            if(GroupUtil.isPlayerInGroup(p, green.get(i))){
+        for (String s : green) {
+            if (GroupUtil.isPlayerInGroup(p, s)) {
                 e.setMessage("§a" + message);
             }
         }
-        for(int i = 0; i < red.size(); i++){
-            if(GroupUtil.isPlayerInGroup(p, red.get(i))){
+        for (String s : red) {
+            if (GroupUtil.isPlayerInGroup(p, s)) {
                 e.setMessage("§c" + message);
             }
 
         }
         String niezmieniona = message;
         for (final Map.Entry<String, Object> filter : plugin.filters.entrySet()) {
-            if(ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".modchat") != true && ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".adminchat") != true) {
+            if(ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".modchat") != true && !ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".adminchat")) {
                 message = message.toLowerCase().replaceAll(filter.getKey().toLowerCase(), filter.getValue().toString());
             }
         }

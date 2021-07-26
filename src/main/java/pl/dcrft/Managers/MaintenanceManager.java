@@ -11,29 +11,17 @@ public class MaintenanceManager {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     public static void saveAll() {
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "save-all");
-            }
-        });
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "save-all"));
     }
 
     public static void stopServer() {
         saveAll();
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                Bukkit.getServer().shutdown();
-            }
-        });
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Bukkit.getServer().shutdown());
     }
 
     public static void restartServer() {
         saveAll();
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                Bukkit.spigot().restart();
-            }
-        });
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Bukkit.spigot().restart());
     }
 
     public static void maintenanceStart() {
@@ -47,11 +35,7 @@ public class MaintenanceManager {
     }
 
     public static void setWhitelist(boolean state) {
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                Bukkit.setWhitelist(state);
-            }
-        });
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> Bukkit.setWhitelist(state));
     }
 
     public static void stopServer(int minutes) {

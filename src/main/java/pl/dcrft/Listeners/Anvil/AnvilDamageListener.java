@@ -17,7 +17,7 @@ import pl.dcrft.Managers.ConfigManager;
 import java.util.Set;
 
 public class AnvilDamageListener implements Listener {
-    private FileConfiguration data = ConfigManager.getDataFile();
+    private final FileConfiguration data = ConfigManager.getDataFile();
     @EventHandler
     public void onAnvilDamage(PlayerInteractEvent e) {
         if (e.hasBlock() && e.getAction() == Action.RIGHT_CLICK_BLOCK) {

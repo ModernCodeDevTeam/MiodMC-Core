@@ -1,6 +1,5 @@
 package pl.dcrft.Listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +14,7 @@ import java.util.List;
 
 
 public class TabCompleteListener implements Listener {
-    private static DragonCraftCore plugin = DragonCraftCore.getInstance();
+    private static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerCommandSendEvent(PlayerCommandSendEvent e) {

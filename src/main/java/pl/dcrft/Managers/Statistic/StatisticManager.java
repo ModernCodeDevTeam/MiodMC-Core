@@ -1,6 +1,5 @@
 package pl.dcrft.Managers.Statistic;
 
-import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.DatabaseManager;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 import pl.dcrft.Utils.ErrorUtils.ErrorUtil;

@@ -1,6 +1,5 @@
 package pl.dcrft.Listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -16,7 +15,7 @@ import pl.dcrft.Managers.MessageManager;
 import java.util.Arrays;
 
 public class CommandPreprocessListener implements Listener {
-    private static DragonCraftCore plugin = DragonCraftCore.getInstance();
+    private static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandPreProcess(PlayerCommandPreprocessEvent e) {
@@ -26,10 +25,9 @@ public class CommandPreprocessListener implements Listener {
             args = Arrays.copyOfRange(args, 1, args.length);
 
             FileConfiguration disabledConfig = ConfigManager.getDisabledFile();
-            String command = e.getMessage();
 
             Player p = e.getPlayer();
-            command = e.getMessage().substring(1);
+            String command = e.getMessage().substring(1);
             command = command.split(" ")[0].replace(":", "%colon%");
 
             if (disabledConfig.getKeys(false) != null) {

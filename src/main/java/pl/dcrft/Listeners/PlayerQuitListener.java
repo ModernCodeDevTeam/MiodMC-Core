@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 
 
 public class PlayerQuitListener implements Listener {
-    private static DragonCraftCore plugin = DragonCraftCore.getInstance();
+    private static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent event) {

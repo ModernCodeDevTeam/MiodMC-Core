@@ -11,8 +11,7 @@ public class CommandRunUtil extends Command {
     public CommandRunUtil(String name) {
         super(name);
         try {
-            Field f = null;
-            f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             f.setAccessible(true);
             CommandMap commandMap = (CommandMap) f.get(Bukkit.getServer());
             commandMap.register(name, this);

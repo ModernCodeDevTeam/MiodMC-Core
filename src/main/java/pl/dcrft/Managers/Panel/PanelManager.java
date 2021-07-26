@@ -145,12 +145,7 @@ public class PanelManager {
 
     public static void showRepeatingPanel(Player p, PanelType type) {
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                sendPanel(p, type);
-            }
-        }, 0, 100);
+        scheduler.scheduleSyncRepeatingTask(plugin, () -> sendPanel(p, type), 0, 100);
     }
 
     public static void updatePanel(Player p, PanelType type) {
