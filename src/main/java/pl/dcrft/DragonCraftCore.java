@@ -8,7 +8,6 @@ import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import pl.dcrft.Listeners.*;
 import pl.dcrft.Listeners.Anvil.AnvilBreakListener;
 import pl.dcrft.Listeners.Anvil.AnvilDamageListener;
@@ -50,7 +49,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         instance = this;
 
         ConfigUtil.initializeFiles();
-        getServer().getPluginManager().registerEvents(this, this);
+        getServer().getPluginManager().registerEvents(new TabCompleteListener(), this);
         getServer().getPluginManager().registerEvents(new AdvancedBanWarnListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
@@ -65,6 +64,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getServer().getPluginManager().registerEvents(new ChairEntryListener(), this);
         getServer().getPluginManager().registerEvents(new ChairExitListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+
 
         getLogger().info(LanguageManager.getMessage("plugin.header"));
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");
@@ -88,8 +88,6 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
             luckPerms = provider.getProvider();
 
         }
-
-
         for(String cmd : getConfig().getConfigurationSection("aliases").getKeys(false)){
             Bukkit.getCommandMap().register(cmd, new CommandRunUtil(cmd));
         }
@@ -110,5 +108,4 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getLogger().info(LanguageManager.getMessage("plugin.footer"));
 
     }
-
 }

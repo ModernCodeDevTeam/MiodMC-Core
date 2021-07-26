@@ -25,10 +25,10 @@ public class StatisticManager {
                     Statement s = DatabaseManager.connection.createStatement();
                     server = s.executeQuery("SELECT * FROM `" + DatabaseManager.table + "` WHERE nick = '" + p + "'");
                     val1 = server.next();
-                    s.close();
-                    o.close();
                     ogol.close();
                     server.close();
+                    o.close();
+                    s.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -102,6 +102,7 @@ public class StatisticManager {
                     result.put(StatisticType.SERVER_ONLINE, server_online);
                     return result;
                 }
+                rs.close();
                 statement.close();
 
             } catch (SQLException e) {

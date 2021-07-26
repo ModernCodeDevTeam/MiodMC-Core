@@ -34,12 +34,12 @@ public class PlayerChatListener implements Listener {
         List<String> green = plugin.getConfig().getStringList("greenchat");
         String message = e.getMessage();
 
-        for(int i = 0; i<green.size(); i++){
+        for(int i = 0; i < green.size(); i++){
             if(GroupUtil.isPlayerInGroup(p, green.get(i))){
                 e.setMessage("§a" + message);
             }
         }
-        for(int i = 0; i<red.size(); i++){
+        for(int i = 0; i < red.size(); i++){
             if(GroupUtil.isPlayerInGroup(p, red.get(i))){
                 e.setMessage("§c" + message);
             }

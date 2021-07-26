@@ -5,13 +5,15 @@ import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class DatabaseUtil {
     public static void initializeTable(String table){
         DatabaseManager.openConnection();
         try {
-            DatabaseManager.connection.createStatement().executeUpdate("CREATE TABLE IF NOT EXISTS `" + table + "` (\n" +
+            Statement statement = DatabaseManager.connection.createStatement();
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + table + "` (\n" +
                     "  `nick` text COLLATE utf8mb4_polish_ci NOT NULL,\n" +
                     "  `kille` int(11) NOT NULL,\n" +
                     "  `dedy` int(11) NOT NULL,\n" +
@@ -21,6 +23,7 @@ public class DatabaseUtil {
                     "  `slub` text COLLATE utf8mb4_polish_ci,\n" +
                     "  `ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY\n" +
                     ")  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;");
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
             ErrorUtil.logError(ErrorReason.DATABASE);

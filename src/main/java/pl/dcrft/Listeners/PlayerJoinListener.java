@@ -96,6 +96,7 @@ public class PlayerJoinListener implements Listener {
                     Statement statement = DatabaseManager.connection.createStatement();
                     statement.executeUpdate("UPDATE " + DatabaseManager.table_bungee + " SET online='teraz', serwer_online='" + plugin.getConfig().getString("server.name") + "' WHERE nick = '" + e.getPlayer().getName() + "'");
 
+                    statement.close();
                     int kille = p.getStatistic(Statistic.PLAYER_KILLS);
                     int dedy = p.getStatistic(Statistic.DEATHS);
                     float kdr;
@@ -129,11 +130,12 @@ public class PlayerJoinListener implements Listener {
 
                     String timeplayed =  PlaceholderAPI.setPlaceholders(p, "%statistic_time_played%");
 
+                    Statement statement1 = DatabaseManager.connection.createStatement();
 
                     update = "UPDATE `" + DatabaseManager.table + "` SET kille = '" + kills + "', dedy = '" + deaths + "', kdr = '" + kdr + "', ranga = '" + ranga + "', bloki = '" + blocks + "', czasgry = '" + timeplayed + "' WHERE nick = '" + e.getPlayer().getName() + "'";
-                    statement.executeUpdate(update);
+                    statement1.executeUpdate(update);
 
-                    statement.close();
+                    statement1.close();
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                     ErrorUtil.logError(ErrorReason.DATABASE);
