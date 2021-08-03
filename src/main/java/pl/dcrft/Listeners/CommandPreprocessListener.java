@@ -67,7 +67,7 @@ public class CommandPreprocessListener implements Listener {
                         }
                     }
                 } else {
-                    MessageManager.sendPrefixedMessage(p, "notfound");
+                    return;
                 }
             }
             else if (command.equalsIgnoreCase("stop")) {
@@ -82,7 +82,7 @@ public class CommandPreprocessListener implements Listener {
                         }
                     }
                 } else {
-                    MessageManager.sendPrefixedMessage(p, "notfound");
+                    return;
                 }
             }
         }

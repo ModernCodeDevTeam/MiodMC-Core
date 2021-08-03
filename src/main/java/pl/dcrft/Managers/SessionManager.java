@@ -6,11 +6,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import pl.dcrft.DragonCraftCore;
 
 import java.util.ArrayList;
 
 public class SessionManager {
+
+    private static SessionManager instance;
+
+    public static SessionManager getInstance() {
+        return instance;
+    }
+    private static DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     public static final ArrayList<SessionManager> list = new ArrayList<>();
     private final Player p;
@@ -18,10 +26,10 @@ public class SessionManager {
     private Location lastLoc;
 
     private int afkMinutes;
-    private static final DragonCraftCore plugin = DragonCraftCore.getInstance();
     private static final String prefix = LanguageManager.getMessage("prefix");
 
     public SessionManager(Player p) {
+        instance = this;
         this.p = p;
         this.lastLoc = p.getLocation();
         this.afkMinutes = 0;
@@ -35,7 +43,18 @@ public class SessionManager {
             }
     }
 
-    public void increaseMinute() {
+    public static BukkitRunnable getRunnable() {
+        return new BukkitRunnable() {
+            public void run() {
+                for (int i = 0; i < SessionManager.list.size(); i++) {
+                    SessionManager session = SessionManager.list.get(i);
+                    session.initializeSessionManager();
+                }
+
+            }
+        };
+    }
+    public void initializeSessionManager() {
         int kick_warn_delay = plugin.getConfig().getInt("afk.kick_warn_delay");
         int kick_delay = plugin.getConfig().getInt("afk.kick_delay");
         if (this.p != null && this.p.isOnline())

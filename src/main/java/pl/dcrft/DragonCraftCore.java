@@ -13,10 +13,7 @@ import pl.dcrft.Listeners.Anvil.AnvilBreakListener;
 import pl.dcrft.Listeners.Anvil.AnvilDamageListener;
 import pl.dcrft.Listeners.Chair.ChairEntryListener;
 import pl.dcrft.Listeners.Chair.ChairExitListener;
-import pl.dcrft.Managers.BroadcasterManager;
-import pl.dcrft.Managers.CommandManager;
-import pl.dcrft.Managers.DatabaseManager;
-import pl.dcrft.Managers.LanguageManager;
+import pl.dcrft.Managers.*;
 import pl.dcrft.Managers.Panel.PanelManager;
 import pl.dcrft.Utils.CommandUtils.CommandRunUtil;
 import pl.dcrft.Utils.ConfigUtil;
@@ -91,6 +88,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         for(String cmd : getConfig().getConfigurationSection("aliases").getKeys(false)){
             Bukkit.getCommandMap().register(cmd, new CommandRunUtil(cmd));
         }
+        SessionManager.getRunnable().runTaskTimer(this, 0L, 1200L);
     }
 
     public void onDisable() {

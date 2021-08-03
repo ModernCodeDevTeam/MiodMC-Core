@@ -34,12 +34,10 @@ public class PlayerJoinListener implements Listener {
             }
         }
 
-
         SessionManager newSession = new SessionManager(e.getPlayer());
         SessionManager.list.add(newSession);
 
         PanelManager.updatePanels();
-
         if(p.hasPermission("panel.adm")){
             PanelManager.showRepeatingPanel(p, PanelType.ADMIN);
         }

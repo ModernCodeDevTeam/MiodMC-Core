@@ -36,12 +36,14 @@ public class PlayerChatListener implements Listener {
 
         for (String s : green) {
             if (GroupUtil.isPlayerInGroup(p, s)) {
-                e.setMessage("§a" + message);
+                message = "§a" + message;
+                e.setMessage(message);
             }
         }
         for (String s : red) {
             if (GroupUtil.isPlayerInGroup(p, s)) {
-                e.setMessage("§c" + message);
+                message = "§c" + message;
+                e.setMessage(message);
             }
 
         }

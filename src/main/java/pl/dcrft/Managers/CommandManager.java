@@ -419,14 +419,14 @@ public class CommandManager implements CommandExecutor {
                     ConfigUtil.reloadFiles();
                     MessageManager.sendPrefixedMessage(sender, "maintenance.reload_plugin");
                 } else if (sub.equalsIgnoreCase("afk")) {
-                    String kick_msg = plugin.getConfig().getString("afk.kick_msg");
+                    String kick_msg = LanguageManager.getMessage("afk.kick_msg");
                     int kick_warn_delay = plugin.getConfig().getInt("afk.kick_warn_delay");
-                    String kick_warn_msg = plugin.getConfig().getString("afk.kick_warn_msg");
-                    String kick_warn_msg_afk = plugin.getConfig().getString("afk.kick_warn_msg_afk");
+                    String kick_warn_msg =  LanguageManager.getMessage("afk.kick_warn_msg");
+                    String kick_warn_msg_afk =  LanguageManager.getMessage("afk.kick_warn_msg_afk");
                     int kick_delay = plugin.getConfig().getInt("afk.kick_delay");
                     String sound_on_get_warn = plugin.getConfig().getString("afk.sound_on_get_warn");
                     String sound_on_notafk = plugin.getConfig().getString("afk.sond_on_notafk");
-                    String notafkmsg = plugin.getConfig().getString("afk.kick_not_afk_msg");
+                    String notafkmsg =  LanguageManager.getMessage("afk.kick_not_afk_msg");
 
                     sender.sendMessage("§e§lDragon§6§lCraft§b§lCore " + plugin.getDescription().getVersion());
                     MessageManager.sendMessage(sender, "pluginhelp.afk.title");
