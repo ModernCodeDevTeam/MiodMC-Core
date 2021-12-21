@@ -9,9 +9,6 @@
 #╱╱╱╱╱╱╱╱╱╰━━╯
 
 #Pomoc
-bungee:
-  ip: 127.0.0.1
-  kick_message: "&e&lDragon&6&lCraft &e» &cWejdź przez IP: DCRFT.PL"
 server:
   name: "s16"
 redchat:

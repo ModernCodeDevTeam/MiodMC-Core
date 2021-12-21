@@ -45,9 +45,11 @@ public class CommandManager implements CommandExecutor {
             if (sound_on_notafk) {
                 p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 3);
             }
-            for (SessionManager sessionManager : list) {
+
+            SessionManager sessionManager = SessionManager.getInstance();
+            for (int i = 0; i < list.size(); i++) {
                 if (p.getUniqueId() == sessionManager.getPlayer().getUniqueId()) {
-                    sessionManager.resetMinute();
+                    list.get(i).resetMinute();
                     break;
                 }
             }

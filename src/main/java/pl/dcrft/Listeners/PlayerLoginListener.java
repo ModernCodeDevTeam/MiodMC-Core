@@ -1,6 +1,5 @@
 package pl.dcrft.Listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -16,11 +15,6 @@ public class PlayerLoginListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onLogin(PlayerLoginEvent event) {
-        if(!event.getAddress().toString().equals("/" + plugin.getConfig().getString("bungee.ip"))){
-            event.setResult(PlayerLoginEvent.Result.KICK_WHITELIST);
-            event.setKickMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("bungee.kick_message")));
-            return;
-        }
 
         if (event.getResult() == PlayerLoginEvent.Result.KICK_FULL) {
             Player player = event.getPlayer();

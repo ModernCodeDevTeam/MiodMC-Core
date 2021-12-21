@@ -14,8 +14,11 @@
         <timestamp>${maven.build.timestamp}</timestamp>
         <maven.build.timestamp.format>dd.MM.yyyy HH:mm</maven.build.timestamp.format>
     </properties>
-
     <repositories>
+        <repository>
+            <id>elMakers-repo</id>
+            <url>http://maven.elmakers.com/repository/</url>
+        </repository>
         <repository>
             <id>viaversion-repo</id>
             <url>https://repo.viaversion.com</url>
@@ -45,15 +48,20 @@
 
     <dependencies>
         <dependency>
+            <groupId>net.sacredlabyrinth.Phaed</groupId>
+            <artifactId>PreciousStones</artifactId>
+            <version>1.16.1.9</version>
+        </dependency>
+        <dependency>
             <groupId>me.NoChance.PvPManager</groupId>
             <artifactId>PvPManager</artifactId>
             <version>3.8</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

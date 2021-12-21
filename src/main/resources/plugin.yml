@@ -3,7 +3,7 @@ name: ${project.name}
 version: ${project.version}-b${buildNumber}
 author: NickNickerYT
 loadbefore: [AdvancedBan, Vault, PlaceholderAPI]
-depend: [AdvancedBan, Vault, PlaceholderAPI, SuperVanish, LuckPerms, PvPManager]
+depend: [AdvancedBan, Vault, PlaceholderAPI, SuperVanish, LuckPerms, PvPManager, PreciousStones]
 description: DragonCraftCore - the core which fits the DragonCraft needs. The core plugin created for DragonCraft Minecraft server that provides basic features for DragonCraft. Built on ${timestamp}
 api-version: 1.16
 commands:

@@ -23,7 +23,8 @@ public class PlayerDeathListener implements Listener {
         }
         else {
             double d = Math.random();
-            if(d<=plugin.getConfig().getInt("death_head_chance")){
+
+            if(d<=plugin.getConfig().getDouble("death_head_chance")){
 
                 ItemStack glowa = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta meta = (SkullMeta) glowa.getItemMeta();
