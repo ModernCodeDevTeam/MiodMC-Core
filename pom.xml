@@ -17,7 +17,7 @@
     <repositories>
         <repository>
             <id>elMakers-repo</id>
-            <url>http://maven.elmakers.com/repository/</url>
+            <url>https://maven.elmakers.com/repository/</url>
         </repository>
         <repository>
             <id>viaversion-repo</id>
