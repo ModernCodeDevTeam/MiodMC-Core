@@ -27,9 +27,10 @@ public class MaintenanceManager {
     public static void maintenanceStart() {
         saveAll();
         setWhitelist(true);
+        MessageManager.broadcastPrefixed(LanguageManager.getMessage("maintenance.maintenance.in_progress"));
         for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (!p.isOp() && !p.isWhitelisted()) {
-                MessageManager.broadcastPrefixed(LanguageManager.getMessage("maintenance.maintenance.in_progress"));
+                p.kickPlayer(LanguageManager.getMessage("maintenance.maintenance.in_progress"));
             }
         }
     }
@@ -202,9 +203,10 @@ public class MaintenanceManager {
                     e.printStackTrace();
                 }
                 saveAll();
+                MessageManager.broadcastPrefixed(LanguageManager.getMessage("maintenance.maintenance.in_progress"));
                 for (final Player p : Bukkit.getServer().getOnlinePlayers()) {
                     if (!p.isOp() && !p.isWhitelisted()) {
-                        MessageManager.broadcastPrefixed(LanguageManager.getMessage("maintenance.maintenance.in_progress"));
+                        p.kickPlayer(LanguageManager.getMessage("maintenance.maintenance.in_progress"));
                     }
                 }
             }, 1000L);
