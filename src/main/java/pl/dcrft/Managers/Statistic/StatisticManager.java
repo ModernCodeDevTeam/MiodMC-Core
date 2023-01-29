@@ -50,7 +50,6 @@ public class StatisticManager {
 
         String since;
         String online;
-        String server_online;
         HashMap<StatisticType, String> result = new HashMap<>();
             try {
 
@@ -61,7 +60,7 @@ public class StatisticManager {
                 while(val){
                     online = rs.getString("online");
                     since = rs.getString("since");
-                    server_online = rs.getString("serwer_online");
+                    rank = rs.getString("ranga");
                     if (online == null) {
                         online = "?";
                     }
@@ -71,23 +70,10 @@ public class StatisticManager {
                         kills = rs.getString("kille");
                         deaths = rs.getString("dedy");
                         kdr = rs.getString("kdr");
-                        rank = rs.getString("ranga");
                         blocks = rs.getString("bloki");
                         timeplayed = rs.getString("czasgry");
                         marry = rs.getString("slub");
 
-                        if (server_online.equalsIgnoreCase("lobby")) {
-                            server_online = "Lobby";
-                        }
-                        if (server_online.equalsIgnoreCase("s12")) {
-                            server_online = "Survival 1.12";
-                        }
-                        if (server_online.equalsIgnoreCase("s16")) {
-                            server_online = "Survival 1.16";
-                        }
-                        if (server_online.equalsIgnoreCase("pvp")) {
-                            server_online = "PvP";
-                        }
                     result.put(StatisticType.KILLS, kills);
                     result.put(StatisticType.DEATHS, deaths);
                     result.put(StatisticType.KDR, kdr);
@@ -98,7 +84,6 @@ public class StatisticManager {
 
                     result.put(StatisticType.SINCE, since);
                     result.put(StatisticType.ONLINE, online);
-                    result.put(StatisticType.SERVER_ONLINE, server_online);
                     return result;
                 }
                 rs.close();

@@ -1,5 +1,6 @@
 package pl.dcrft;
 
+import net.ess3.api.IEssentials;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -8,12 +9,12 @@ import org.bukkit.command.PluginCommandYamlParser;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import pl.dcrft.Listeners.*;
 import pl.dcrft.Listeners.Anvil.AnvilBreakListener;
 import pl.dcrft.Listeners.Anvil.AnvilDamageListener;
 import pl.dcrft.Listeners.Chair.ChairBreakListener;
 import pl.dcrft.Listeners.Chair.ChairEntryListener;
 import pl.dcrft.Listeners.Chair.ChairExitListener;
+import pl.dcrft.Listeners.*;
 import pl.dcrft.Managers.*;
 import pl.dcrft.Managers.Panel.PanelManager;
 import pl.dcrft.Utils.CommandUtils.CommandRunUtil;
@@ -32,9 +33,13 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
     private static DragonCraftCore instance;
     public static LuckPerms luckPerms;
 
+    public static boolean isSkyblock;
+
     public static DragonCraftCore getInstance() {
         return instance;
     }
+
+    public static IEssentials es = (IEssentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
 
     public Map<String, Object> filters;
 
@@ -48,11 +53,10 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
 
         ConfigUtil.initializeFiles();
         getServer().getPluginManager().registerEvents(new TabCompleteListener(), this);
-        getServer().getPluginManager().registerEvents(new AdvancedBanWarnListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerChatListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(), this);
-        getServer().getPluginManager().registerEvents(new InvetoryClickListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClickListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerLoginListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDisconnectListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerUseListener(), this);
@@ -63,6 +67,8 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getServer().getPluginManager().registerEvents(new ChairExitListener(), this);
         getServer().getPluginManager().registerEvents(new ChairBreakListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new UnknownCommandEvent(), this);
+
 
 
         getLogger().info(LanguageManager.getMessage("plugin.header"));
@@ -71,6 +77,8 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getLogger().info(LanguageManager.getMessage("plugin.footer"));
 
         DatabaseManager.openConnection();
+
+        if(this.getConfig().getString("server.type").equalsIgnoreCase("skyblock")) isSkyblock = true;
 
         this.filters = this.getConfig().getConfigurationSection("filters").getValues(true);
 

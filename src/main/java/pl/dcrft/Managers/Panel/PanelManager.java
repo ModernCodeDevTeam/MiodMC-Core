@@ -4,7 +4,6 @@ import de.myzelyam.api.vanish.VanishAPI;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.*;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.ConfigManager;
@@ -13,6 +12,7 @@ import pl.dcrft.Utils.RoundUtil;
 
 
 public class PanelManager {
+
 
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
     public static String title;
@@ -143,9 +143,16 @@ public class PanelManager {
         }
     }
 
-    public static void showRepeatingPanel(Player p, PanelType type) {
-        BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(plugin, () -> sendPanel(p, type), 0, 100);
+    int taskID;
+    public void showRepeatingPanel(Player p, PanelType panelType) {
+        taskID = Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
+            if(p == null || !p.isOnline()) {
+                plugin.getLogger().warning("is not online!");
+                Bukkit.getScheduler().cancelTask(taskID);
+            } else {
+                sendPanel(p, panelType);
+            }
+        }, 0, 100).getTaskId();
     }
 
     public static void updatePanel(Player p, PanelType type) {

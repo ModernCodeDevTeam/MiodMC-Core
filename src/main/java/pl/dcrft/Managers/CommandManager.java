@@ -1,7 +1,7 @@
 package pl.dcrft.Managers;
 
-import me.leoko.advancedban.manager.PunishmentManager;
-import me.leoko.advancedban.utils.Punishment;
+import com.earth2me.essentials.commands.WarpNotFoundException;
+import net.ess3.api.InvalidWorldException;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
@@ -32,6 +32,8 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static pl.dcrft.DragonCraftCore.es;
+
 public class CommandManager implements CommandExecutor {
     private static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
@@ -39,148 +41,6 @@ public class CommandManager implements CommandExecutor {
     final String prefix = LanguageManager.getMessage("prefix");
 
     public boolean onCommand(final @NotNull CommandSender sender, final Command cmd, final @NotNull String label, final String[] args) {
-        if (cmd.getName().equalsIgnoreCase("nieafk")) {
-            Player p = (Player) sender;
-            boolean sound_on_notafk = Boolean.parseBoolean(plugin.getConfig().getString("afk.sound_on_notafk"));
-            if (sound_on_notafk) {
-                p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 3);
-            }
-
-            SessionManager sessionManager = SessionManager.getInstance();
-            for (int i = 0; i < list.size(); i++) {
-                if (p.getUniqueId() == sessionManager.getPlayer().getUniqueId()) {
-                    list.get(i).resetMinute();
-                    break;
-                }
-            }
-            MessageManager.sendPrefixedMessage(p, "afk.kick_not_afk_msg");
-
-            return true;
-        }
-        if (cmd.getName().equalsIgnoreCase("z") || cmd.getName().equalsIgnoreCase("znajomi") || cmd.getName().equalsIgnoreCase("f")) {
-            if (!(sender instanceof Player)) {
-                sender.sendMessage(LanguageManager.getMessage("console_error"));
-                return false;
-            }
-            Player p = (Player) sender;
-            if (args.length == 0) {
-                MessageManager.sendPrefixedMessage(p, "friends.help.title");
-                MessageManager.sendMessageList(p, "friends.help.contents");
-                return false;
-            }
-            if (args[0].equalsIgnoreCase("lista") || args[0].equalsIgnoreCase("list") || args[0].equalsIgnoreCase("l") || args[0].equalsIgnoreCase("info")) {
-                MessageManager.sendPrefixedMessage(p, "friends.list.title");
-                List<String> znajomi = ConfigManager.getDataFile().getStringList("players." + p.getName() + ".znajomi");
-                if (znajomi.size() == 0) {
-                    MessageManager.sendMessage(p, "friends.list.none");
-                } else {
-                    for (String s : znajomi) {
-                        String online = ConfigManager.getDataFile().getString("players." + s + ".online");
-                        String msg = MessageFormat.format(LanguageManager.getMessage("friends.list.player_format"), s, online);
-                        if (online == null) {
-                            msg = MessageFormat.format(LanguageManager.getMessage("friends.list.player_format"), s, LanguageManager.getMessage("friends.list.online"));
-                        }
-                        p.sendMessage(msg);
-                    }
-                }
-                return false;
-            }
-            if (args[0].equalsIgnoreCase("usun") || args[0].equalsIgnoreCase("remove") || args[0].equalsIgnoreCase("u") || args[0].equalsIgnoreCase("wyrzuc")) {
-                if (args.length == 1) {
-                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-                } else {
-                    List<String> znajomip = ConfigManager.getDataFile().getStringList("players." + sender.getName() + ".znajomi");
-                    List<String> znajomio = ConfigManager.getDataFile().getStringList("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi");
-                    if (!znajomip.contains(args[1])) {
-                        sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.remove.not_your_friend"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    } else {
-                        znajomip.remove(Bukkit.getOfflinePlayer(args[1]).getName());
-                        znajomio.remove(sender.getName());
-                        ConfigManager.getDataFile().set("players." + sender.getName() + ".znajomi", znajomip);
-                        ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi", znajomio);
-                        ConfigManager.saveData();
-                        sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.remove.removed"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    }
-                }
-                return false;
-            }
-            if (args[0].equalsIgnoreCase("dodaj") || args[0].equalsIgnoreCase("add") || args[0].equalsIgnoreCase("d")) {
-                if (args.length == 1 || Bukkit.getPlayer(args[1]) == null || !Bukkit.getPlayer(args[1]).isOnline()) {
-                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-                    return true;
-                }
-                else if (args[1].equalsIgnoreCase(sender.getName())) {
-                    MessageManager.sendPrefixedMessage(p, "friends.add.self");
-                    return true;
-                }
-                else if (plugin.getConfig().getStringList("staff").contains(Bukkit.getPlayer(args[1]).getName())) {
-                    MessageManager.sendPrefixedMessage(p, "friends.add.staff");
-                    return true;
-                } else {
-                    Player o = Bukkit.getPlayer(args[1]);
-                    List<String> znajomip = ConfigManager.getDataFile().getStringList("players." + sender.getName() + ".znajomi");
-                    if (znajomip.contains(o.getName())) {
-                        MessageManager.sendPrefixedMessage(p, "friends.add.already_friend");
-                        return true;
-                    }
-                    ConfigManager.getDataFile().set("players." + sender.getName() + ".znajprosba." + Bukkit.getOfflinePlayer(args[1]).getName(), true);
-                    ConfigManager.saveData();
-                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.title"), p.getName()));
-                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.accept"), p.getName()));
-                    o.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.notification.cancel"), p.getName()));
-                    sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.add.invited"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    return true;
-                }
-            }
-            if (args[0].equalsIgnoreCase("akceptuj") || args[0].equalsIgnoreCase("a")) {
-                if (args.length == 1) {
-                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-                    return false;
-                }
-                if (!ConfigManager.getDataFile().getBoolean("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName())) {
-                    MessageManager.sendPrefixedMessage(p, "friends.accept.invitation_not_send");
-                    return false;
-                } else {
-                    ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName(), null);
-                    List<String> znajomip = ConfigManager.getDataFile().getStringList("players." + sender.getName() + ".znajomi");
-                    List<String> znajomio = ConfigManager.getDataFile().getStringList("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi");
-                    znajomip.add(Bukkit.getOfflinePlayer(args[1]).getName());
-                    znajomio.add(sender.getName());
-                    ConfigManager.getDataFile().set("players." + sender.getName() + ".znajomi", znajomip);
-                    ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajomi", znajomio);
-                    ConfigManager.saveData();
-                    if (Bukkit.getPlayer(args[1]) != null && Bukkit.getPlayer(args[1]).isOnline()) {
-                        Bukkit.getPlayer(args[1]).sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.accept.accepted_self"), sender.getName()));
-                    }
-                    sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.accept.accepted_target"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    return false;
-                }
-            }
-            if (args[0].equalsIgnoreCase("odrzuc") || args[0].equalsIgnoreCase("o")) {
-                if (args.length == 1) {
-                    MessageManager.sendPrefixedMessage(p, "wrong_player_nickname");
-                    return false;
-                }
-                if (!ConfigManager.getDataFile().getBoolean("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName())) {
-                    MessageManager.sendPrefixedMessage(p, "friends.reject.invitation_not_send");
-                    return false;
-                } else {
-                    ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[1]).getName() + ".znajprosba." + sender.getName(), null);
-                    ConfigManager.saveData();
-                    if (Bukkit.getPlayer(args[1]) != null && Bukkit.getPlayer(args[1]).isOnline()) {
-                        Bukkit.getPlayer(args[1]).sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.reject.rejected_self"), sender.getName()));
-                    }
-                    sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("friends.reject.rejected_target"), Bukkit.getOfflinePlayer(args[1]).getName()));
-                    return false;
-                }
-            } else {
-                MessageManager.sendPrefixedMessage(p, "friends.help.title");
-                MessageManager.sendMessageList(p, "friends.help.contents");
-                return false;
-            }
-        }
-
-
         if (cmd.getName().equalsIgnoreCase("slub")) {
             Player p = (Player) sender;
             if (args.length == 0) {
@@ -270,6 +130,24 @@ public class CommandManager implements CommandExecutor {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+
+                    if(plugin.getConfig().getString("marry_warp") != null) {
+                        try {
+                            Location loc = es.getWarps().getWarp(plugin.getConfig().getString("marry_warp"));
+                            p.teleport(loc);
+                            if(Bukkit.getPlayer(args[0]).isOnline()) Bukkit.getPlayer(args[0]).teleport(loc);
+                            String x = String.valueOf(loc.getX());
+                            String y = String.valueOf(loc.getY() + 5);
+                            String z = String.valueOf(loc.getZ());
+                            Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                                    "summon firework_rocket " + x + " " + y + " " + z + " {LifeTime:30,FireworksItem:{id:firework_rocket,Count:1,tag:{Fireworks:{Flight:1,Explosions:[{Type:1,Flicker:1,Trail:1,Colors:[I;1973019,11743532,3887386,5320730,2437522,8073150,2651799,11250603,4408131,14188952,4312372,14602026,6719955,12801229,15435844,15790320],FadeColors:[I;1973019,11743532,3887386,5320730,2437522,8073150,2651799,11250603,4408131,14188952,4312372,14602026,6719955,12801229,15435844,15790320]}]}}}}");
+                            } catch (WarpNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (InvalidWorldException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
                     plugin.getServer().broadcastMessage(prefix + MessageFormat.format(LanguageManager.getMessage("marry.send.accept.broadcast"), p.getName(), Bukkit.getOfflinePlayer(args[0]).getName()));
                     return false;
                 }
@@ -692,31 +570,6 @@ public class CommandManager implements CommandExecutor {
                 }
                 ConfigManager.saveData();
             }
-        } else if (cmd.getName().equalsIgnoreCase("checkwarn")) {
-            if (!sender.hasPermission("panel.mod")) {
-                MessageManager.sendPrefixedMessage(sender, "notfound");
-                return false;
-            } else if (args.length == 0) {
-                MessageManager.sendPrefixedMessage(sender, "checkwarn.usage");
-            } else {
-                List<Punishment> pun = PunishmentManager.get().getPunishments(args[0], null, true);
-                sender.sendMessage(prefix + MessageFormat.format(LanguageManager.getMessage("checkwarn.title"), args[0]));
-                ArrayList<String> lista = new ArrayList<>();
-
-                for (Punishment punishment : pun) {
-                    if (punishment.getType().toString().equalsIgnoreCase("TEMP_WARNING")) {
-                        lista.add(MessageFormat.format(LanguageManager.getMessage("checkwarn.list"), punishment.getId(), punishment.getReason()));
-                    }
-                }
-                if (lista.isEmpty()) {
-                    MessageManager.sendMessage(sender, "checkwarn.none");
-
-                } else {
-                    for (Object s : lista) {
-                        sender.sendMessage(LanguageManager.getMessage("checkwarn.list_prefix") + s);
-                    }
-                }
-            }
         } else if (cmd.getName().equalsIgnoreCase("gracz")) {
             if (!(sender instanceof Player)) {
                 MessageManager.sendPrefixedMessage(sender, "console_error");
@@ -868,8 +721,11 @@ public class CommandManager implements CommandExecutor {
                 }
             }
             return true;
+        } else if (cmd.getName().equalsIgnoreCase("kit") || cmd.getName().equalsIgnoreCase("kits")) {
+            Player p = (Player) sender;
+            KitsManager.openGui(p);
         }
-        //TODO
+        //TODO VOTING TOPKAMC!!!!
         /*
         else if (cmd.getName().equalsIgnoreCase("vote")) {
             if (!(sender instanceof Player)) {

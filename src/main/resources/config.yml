@@ -11,6 +11,7 @@
 #Pomoc
 server:
   name: "s16"
+  type: survival
 redchat:
 - W?a?ciciel
 greenchat:
@@ -46,6 +47,11 @@ disabled_default_permission: "cb.adm"
 timedpermission: "essentials.kits.plus"
 death_head_chance: 0.25
 vote_ip: "dcrft.pl"
+kits:
+  example:
+    item: CHEST
+    name: "§6§nExampleKit"
+marry_warp: "slub"
 marry_item:
   material: DRAGON_EGG
   amount: 1

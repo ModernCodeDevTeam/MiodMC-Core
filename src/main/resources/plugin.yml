@@ -2,10 +2,11 @@ main: pl.dcrft.DragonCraftCore
 name: ${project.name}
 version: ${project.version}-b${buildNumber}
 author: NickNickerYT
-loadbefore: [AdvancedBan, Vault, PlaceholderAPI]
-depend: [AdvancedBan, Vault, PlaceholderAPI, SuperVanish, LuckPerms, PvPManager, PreciousStones]
+loadbefore: [Essentials, Vault, PlaceholderAPI]
+depend: [Vault, PlaceholderAPI, SuperVanish, LuckPerms, PvPManager, Essentials]
+softdepend: [PreciousStones]
 description: DragonCraftCore - the core which fits the DragonCraft needs. The core plugin created for DragonCraft Minecraft server that provides basic features for DragonCraft. Built on ${timestamp}
-api-version: 1.16
+api-version: 1.19
 commands:
   pomoc:
     description: Wyświetl pomoc.
@@ -68,12 +69,6 @@ commands:
     permission: panel.mod
   gracz:
     description: Wyświetl statystyki gracza.
-  warn:
-    description: Ostrzeż gracza.
-    permission: panel.mod
-  checkwarn:
-    description: Wyświetl ostrzeżenia gracza.
-    permission: panel.mod
   slub:
     description: slub
   sakceptuj:
@@ -82,14 +77,6 @@ commands:
     description: sodrzuc
   rozwod:
     description: no rozwod a co chciales
-  znajomi:
-    description: a po co komu to badziewie, no ale jest
-  z:
-    description: a po co komu to badziewie, no ale jest
-  f:
-    description: a po co komu to badziewie, no ale jest
-  nieafk:
-    description: aa
   alias:
     description: aliasy
     permission: dcc.adm
@@ -97,3 +84,7 @@ commands:
     description: dlugosc plusa
   vote:
     description: glosowanie na mcpc
+  kit:
+    description: kity
+  kits:
+    description: kity

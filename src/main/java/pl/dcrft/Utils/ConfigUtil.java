@@ -15,13 +15,12 @@ public class ConfigUtil {
         final File file = new File(plugin.getDataFolder() + File.separator + "config.yml");
         if (!file.exists()) {
             plugin.saveDefaultConfig();
+            plugin.getConfig().options().copyDefaults(true);
         } else {
             ConfigManager.CheckConfig();
             plugin.saveConfig();
             plugin.reloadConfig();
         }
-        plugin.getConfig().options().copyDefaults(true);
-        plugin.saveConfig();
 
         ConfigManager.createMessagesFile();
         ConfigManager.createCustomConfig();

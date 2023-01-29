@@ -28,7 +28,7 @@ public class DatabaseManager {
                         synchronized(plugin) {
                             if (connection == null || connection.isClosed()) {
                                 Class.forName("com.mysql.jdbc.Driver");
-                                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&socketTimeout=60&loginTimeout=120&threadUsed=true&verifyServerCertificate=false&useSSL=false&testOnBorrow=true&validationQuery='SELECT 1'&validationInterval=60&connect_timeout=60&interactive_timeout=60&wait_timeout=60&useUnicode=yes&character_set_server=utf8mb4&characterEncoding=UTF-8", username, password);
+                                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=false&testOnBorrow=true&validationQuery='SELECT 1'&validationInterval=60&useUnicode=yes&character_set_server=utf8mb4&characterEncoding=UTF-8&tcpKeepAlive=true&testWhileIdle=true&minEvictableIdleTimeMillis=1800000&timeBetweenEvictionRunsMillis=1800000", username, password);
                             }
                         }
                     }

@@ -43,6 +43,7 @@ friends:
     rejected_self: "§e{0} §codrzucił twoje zaproszenie do znajomych."
   leave: "&e{0} &copuścił serwer."
   join: "&e{0} &adołączył do serwera."
+kits-title: "§3§nZestawy"
 marry:
   already: "§cJuż jesteś w związku."
   target_already: "§cTen gracz już jest w związku."
@@ -68,8 +69,7 @@ advancedban_warn_usage: "§cUżycie: §e/warn <nick> <powód> [-s]§c."
 checkwarn:
   usage: "§cUżycie: §e/checkwarn <nick>§c."
   title: "§cOstrzeżenia §e{0}§e:"
-  list: "§6ID §e» {0} §e» §c{1}"
-  list_prefix: "§e» "
+  list_prefix: "§e» §c"
   none: "§e» §cbrak"
 statistics:
   title: "§6Profil §e» §3"
@@ -86,12 +86,11 @@ statistics:
   timeplayed: "§6Czas gry §e»"
   punishments:
     title: "§6Kary §e»"
-    none: "§abrak"
-    ban: "§6Ban §e» §c"
-    mute: "§6Wyciszenie §e» §c"
-    warning: "§6Ostrzeżenie §e» §c"
-    error: "§cbłąd"
-    expires: ", §6wygasa: §e"
+    title-none: "§6Kary §e» §abrak"
+    bans: "§6Bany §e»"
+    warns: "§6Ostrzeżenia §e»"
+    mutes: "§6Wyciszenia §e»"
+    color: "§c"
   kills: "§6Zabójstwa §e»"
   deaths: "§6Śmierci §e»"
   kdr: "§6Stosunek Z/ś §e»"
@@ -278,8 +277,6 @@ broadcast:
 afk:
   kick_msg: "§cZostałeś wyrzucony za bycie nieaktywnym dłużej niż 15 minut."
   kick_warn_msg: "§cHej! Za chwilę zostaniesz wyrzucony za zbyt długą nieaktywność."
-  kick_warn_msg_afk: "§e» §6Nie jestem AFK [kliknij]"
-  kick_not_afk_msg: "§aUff. Potwierdziłeś, że nie jesteś AFK."
 block:
   usage: "&cUżycie: &e/dcc block komenda [<wiadomość>]&c."
   already: "&cTa komenda jest już zablokowana."

@@ -8,8 +8,6 @@ public enum StatisticType {
     BLOCKS,
     TIMEPLAYED,
     MARRY,
-
     SINCE,
-    ONLINE,
-    SERVER_ONLINE
+    ONLINE
 }

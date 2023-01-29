@@ -18,7 +18,6 @@ public class DatabaseUtil {
                     "  `kille` int(11) NOT NULL,\n" +
                     "  `dedy` int(11) NOT NULL,\n" +
                     "  `kdr` float NOT NULL,\n" +
-                    "  `ranga` text COLLATE utf8mb4_polish_ci NOT NULL,\n" +
                     "  `bloki` int(11) NOT NULL,\n" +
                     "  `slub` text COLLATE utf8mb4_polish_ci,\n" +
                     "  `ID` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY\n" +
