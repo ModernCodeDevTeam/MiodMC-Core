@@ -1,13 +1,24 @@
 package pl.dcrft.Managers.Statistic;
 
 public enum StatisticType {
-    KILLS,
-    DEATHS,
-    KDR,
+    SURVIVAL_KILLS,
+    SURVIVAL_DEATHS,
+    SURVIVAL_KDR,
+    SURVIVAL_BLOCKS,
+    SKYBLOCK_LEVEL,
+    SKYBLOCK_MONEY,
+    SURVIVAL_TIMEPLAYED,
+    SURVIVAL_MARRY,
+
+
+    SKYBLOCK_KILLS,
+    SKYBLOCK_DEATHS,
+    SKYBLOCK_KDR,
+    SKYBLOCK_TIMEPLAYED,
+    SKYBLOCK_MARRY,
+
+
     RANK,
-    BLOCKS,
-    TIMEPLAYED,
-    MARRY,
     SINCE,
     ONLINE
 }

@@ -9,6 +9,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pl.dcrft.Managers.KitsManager;
 import pl.dcrft.Managers.LanguageManager;
+import pl.dcrft.Managers.Statistic.ServerType;
+import pl.dcrft.Managers.Statistic.StatisticGUIManager;
 
 public class InventoryClickListener implements Listener {
 
@@ -18,6 +20,15 @@ public class InventoryClickListener implements Listener {
         String title = e.getView().getTitle();
         if (title.contains(LanguageManager.getMessage("statistics.title"))) {
             e.setCancelled(true);
+            if (e.getCurrentItem() != null) {
+                switch (e.getCurrentItem().getType()) {
+                    case IRON_PICKAXE:
+                        StatisticGUIManager.showStatistics(ServerType.Survival, (Player) e.getWhoClicked(), e.getWhoClicked().getName());
+                        return;
+                    case GRASS_BLOCK:
+                        StatisticGUIManager.showStatistics(ServerType.SkyBlock, (Player) e.getWhoClicked(), e.getWhoClicked().getName());
+                }
+            }
         } else if (title.contains(LanguageManager.getMessage("kits-title"))) {
             e.setCancelled(true);
 

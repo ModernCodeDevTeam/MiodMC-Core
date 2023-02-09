@@ -19,8 +19,12 @@ public class DatabaseManager {
     public static final String username = ConfigManager.getDatabaseFile().getString("user");
     public static final String password = ConfigManager.getDatabaseFile().getString("password");
     public static final int port = ConfigManager.getDatabaseFile().getInt("port");
-    public static final String table = ConfigManager.getDatabaseFile().getString("table");
+    public static final String table_survival = ConfigManager.getDatabaseFile().getString("table_survival");
+    public static final String table_skyblock = ConfigManager.getDatabaseFile().getString("table_skyblock");
+
     public static final String table_bungee = ConfigManager.getDatabaseFile().getString("table_bungee");
+    public static String table = null;
+
 
     public static void openConnection() {
                 try {
@@ -29,6 +33,13 @@ public class DatabaseManager {
                             if (connection == null || connection.isClosed()) {
                                 Class.forName("com.mysql.jdbc.Driver");
                                 connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=false&testOnBorrow=true&validationQuery='SELECT 1'&validationInterval=60&useUnicode=yes&character_set_server=utf8mb4&characterEncoding=UTF-8&tcpKeepAlive=true&testWhileIdle=true&minEvictableIdleTimeMillis=1800000&timeBetweenEvictionRunsMillis=1800000", username, password);
+
+                                switch (plugin.getConfig().getString("server.type")){
+                                    case "survival":
+                                        table = table_survival;
+                                    case "skyblock":
+                                        table = table_skyblock;
+                                }
                             }
                         }
                     }

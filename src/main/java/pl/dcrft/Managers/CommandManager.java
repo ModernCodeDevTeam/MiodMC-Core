@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import pl.dcrft.DragonCraftCore;
 import pl.dcrft.Managers.Panel.PanelManager;
 import pl.dcrft.Managers.Panel.PanelType;
+import pl.dcrft.Managers.Statistic.ServerType;
 import pl.dcrft.Managers.Statistic.StatisticGUIManager;
 import pl.dcrft.Utils.ConfigUtil;
 import pl.dcrft.Utils.GroupUtil;
@@ -100,9 +101,15 @@ public class CommandManager implements CommandExecutor {
                 ItemStack item = new ItemStack(Material.getMaterial(plugin.getConfig().getString("marry_item.material")));
                 item.setAmount(plugin.getConfig().getInt("marry_item.amount"));
                 ItemMeta itemMeta = item.getItemMeta();
-                itemMeta.setDisplayName(plugin.getConfig().getString("marry_item.name"));
-                itemMeta.setLore(plugin.getConfig().getStringList("marry_item.lore"));
-                itemMeta.addEnchant(Enchantment.getByName(plugin.getConfig().getString("marry_item.enchantment.enchantment")), plugin.getConfig().getInt("marry_item.enchantment.level"), true);
+                if(plugin.getConfig().getString("marry_item.name") != null){
+                    itemMeta.setDisplayName(plugin.getConfig().getString("marry_item.name"));
+                }
+                if(plugin.getConfig().getString("marry_item.lore") != null){
+                    itemMeta.setDisplayName(plugin.getConfig().getString("marry_item.lore"));
+                }
+                if(plugin.getConfig().getString("marry_item.enchantment.enchantment") != null && plugin.getConfig().get("marry_item.enchantment.level") != null){
+                    itemMeta.addEnchant(Enchantment.getByName(plugin.getConfig().getString("marry_item.enchantment.enchantment")), plugin.getConfig().getInt("marry_item.enchantment.level"), true);
+                }
                 item.setItemMeta(itemMeta);
 
                 if (!p.getInventory().containsAtLeast(item, plugin.getConfig().getInt("marry_item.amount"))) {
@@ -579,8 +586,10 @@ public class CommandManager implements CommandExecutor {
                     p.chat("/gracz " + p.getName());
                 } else if (plugin.getConfig().getStringList("staff").contains(args[0])) {
                     MessageManager.sendPrefixedMessage(sender, "wrong_player_nickname");
-                } else {
-                    StatisticGUIManager.showStatistics(p, args[0]);
+                } else if(plugin.getConfig().getString("server.type").equalsIgnoreCase("survival")){
+                    StatisticGUIManager.showStatistics(ServerType.Survival, p, args[0]);
+                } else if(plugin.getConfig().getString("server.type").equalsIgnoreCase("skyblock")){
+                    StatisticGUIManager.showStatistics(ServerType.SkyBlock, p, args[0]);
                 }
             }
             return false;

@@ -83,6 +83,8 @@ statistics:
     title: "§6Ślub §e»§e"
     none: "§ebrak"
   blocks: "§6Wykopane bloki §e»§e"
+  level: "§6Poziom §e» §e"
+  money: "§6Smocze jaja §e» §e"
   timeplayed: "§6Czas gry §e»"
   punishments:
     title: "§6Kary §e»"
@@ -96,6 +98,9 @@ statistics:
   kdr: "§6Stosunek Z/ś §e»"
   since: "§6Gra od §e»"
   plugin_version: "§e§lDragon§6§lCraft§b§lCore&e"
+  server:
+    skyblock: "§6SkyBlock &eII"
+    survival: "§6Survival §eVII"
 staffchat:
   enabled: "§aWłączono czat."
   disabled: "§cWyłączono czat."

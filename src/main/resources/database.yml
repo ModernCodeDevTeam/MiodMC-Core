@@ -3,5 +3,6 @@ port: 3306
 database: none
 user: none
 password: none
-table: none
+table_survival: none
+table_skyblock: none
 table_bungee: none

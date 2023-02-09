@@ -25,22 +25,37 @@ import static pl.dcrft.Managers.MessageManager.sendPrefixedMessage;
 public class StatisticGUIManager {
     public static final DragonCraftCore plugin = DragonCraftCore.getInstance();
 
-    public static void showStatistics(Player sender, String p) {
+    public static void showStatistics(ServerType serverType, Player sender, String p) {
+
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             if (!StatisticManager.checkPlayer(p)) {
                 sendPrefixedMessage(sender, "wrong_player_nickname");
                 return;
             }
             HashMap<StatisticType, String> statistics = StatisticManager.getStatistics(p);
+            String kills,deaths,kdr,blocks,level,money,timeplayed,marry;
+            kills = deaths = kdr = blocks = level = money = timeplayed = marry = null;
+            switch (serverType){
+                case Survival:
+                    kills = statistics.get(StatisticType.SURVIVAL_KILLS);
+                    deaths = statistics.get(StatisticType.SURVIVAL_DEATHS);
+                    kdr = statistics.get(StatisticType.SURVIVAL_KDR);
+                    blocks = statistics.get(StatisticType.SURVIVAL_BLOCKS);
 
-            String kills = statistics.get(StatisticType.KILLS);
-            String deaths = statistics.get(StatisticType.DEATHS);
-            String kdr = statistics.get(StatisticType.KDR);
+                    timeplayed = statistics.get(StatisticType.SURVIVAL_TIMEPLAYED);
+                    marry = statistics.get(StatisticType.SURVIVAL_MARRY);
+                case SkyBlock:
+                    kills = statistics.get(StatisticType.SKYBLOCK_KILLS);
+                    deaths = statistics.get(StatisticType.SKYBLOCK_DEATHS);
+                    kdr = statistics.get(StatisticType.SKYBLOCK_KDR);
+                    level = statistics.get(StatisticType.SKYBLOCK_LEVEL);
+                    money = statistics.get(StatisticType.SKYBLOCK_MONEY);
+
+                    timeplayed = statistics.get(StatisticType.SKYBLOCK_TIMEPLAYED);
+                    marry = statistics.get(StatisticType.SKYBLOCK_MARRY);
+            }
+
             String rank = statistics.get(StatisticType.RANK);
-            String blocks = statistics.get(StatisticType.BLOCKS);
-            String timeplayed = statistics.get(StatisticType.TIMEPLAYED);
-            String marry = statistics.get(StatisticType.MARRY);
-
             String since = statistics.get(StatisticType.SINCE);
             String online = statistics.get(StatisticType.ONLINE);
 
@@ -125,6 +140,18 @@ public class StatisticGUIManager {
                 Inventory inv = Bukkit.createInventory(null, 54, LanguageManager.getMessage("statistics.title") + pName);
 
 
+                final ItemStack survi = new ItemStack(Material.IRON_PICKAXE);
+                final ItemMeta metaSurvi = survi.getItemMeta();
+                metaSurvi.displayName(Component.text(LanguageManager.getMessage("statistics.server.survival")));
+                survi.setItemMeta(metaSurvi);
+                inv.setItem(3, survi);
+
+                final ItemStack sky = new ItemStack(Material.GRASS_BLOCK);
+                final ItemMeta metaSky = sky.getItemMeta();
+                metaSky.displayName(Component.text(LanguageManager.getMessage("statistics.server.skyblock")));
+                sky.setItemMeta(metaSky);
+                inv.setItem(5, sky);
+
                 inv.setItem(25, siekiera);
 
                 final ItemStack blackGlass = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -167,11 +194,27 @@ public class StatisticGUIManager {
 
                 mapa.setItemMeta(meta4);
                 inv.setItem(23, mapa);
-                ItemStack kilof = new ItemStack(Material.DIAMOND_PICKAXE);
-                ItemMeta meta5 = kilof.getItemMeta();
-                meta5.setDisplayName(LanguageManager.getMessage("statistics.blocks") + " " + blocks);
-                kilof.setItemMeta(meta5);
-                inv.setItem(21, kilof);
+
+                if(serverType == ServerType.Survival) {
+                    ItemStack kilof = new ItemStack(Material.DIAMOND_PICKAXE);
+                    ItemMeta meta5 = kilof.getItemMeta();
+                    meta5.setDisplayName(LanguageManager.getMessage("statistics.blocks") + " " + blocks);
+                    kilof.setItemMeta(meta5);
+                    inv.setItem(21, kilof);
+                } else if (serverType == ServerType.SkyBlock) {
+                    ItemStack emerald = new ItemStack(Material.DIAMOND);
+                    ItemMeta meta5 = emerald.getItemMeta();
+                    meta5.displayName(Component.text((LanguageManager.getMessage("statistics.level") + level)));
+                    emerald.setItemMeta(meta5);
+                    inv.setItem(21, emerald);
+
+                    ItemStack kasa = new ItemStack(Material.DRAGON_EGG);
+                    ItemMeta metaKasa = kasa.getItemMeta();
+                    metaKasa.displayName(Component.text((LanguageManager.getMessage("statistics.money") + money)));
+                    kasa.setItemMeta(metaKasa);
+                    inv.setItem(32, kasa);
+
+                }
 
                 ItemStack miecz = new ItemStack(Material.IRON_SWORD);
                 ItemMeta meta7 = miecz.getItemMeta();

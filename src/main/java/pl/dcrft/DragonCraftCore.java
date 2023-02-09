@@ -87,7 +87,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
             getCommand(command.getName()).setExecutor(new CommandManager());
         }
         BroadcasterManager.startBroadcast();
-        DatabaseUtil.initializeTable(DatabaseManager.table);
+        DatabaseUtil.initializeTables();
         PanelManager.updatePanels();
 
         RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
