@@ -1,5 +1,6 @@
 package pl.dcrft.Managers.Statistic;
 
+import org.bukkit.Bukkit;
 import pl.dcrft.Managers.DatabaseManager;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
@@ -14,7 +15,10 @@ public class StatisticManager {
     public static boolean checkPlayer(String p) {
         boolean bungee = false, survi = false, sky = false;
                 try {
-                    DatabaseManager.openConnection();
+                    while(!DatabaseManager.openConnection()) {
+                        Bukkit.getLogger().info("waiting..");
+                    }
+
                     ResultSet ogol;
                     Statement o = DatabaseManager.connection.createStatement();
                     ogol = o.executeQuery("SELECT * FROM `" + DatabaseManager.table_bungee + "` WHERE nick = '" + p + "'");
@@ -36,6 +40,8 @@ public class StatisticManager {
                     o.close();
                     su.close();
                     sk.close();
+
+                    Bukkit.getLogger().info(bungee + " " + survi + " " + sky);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

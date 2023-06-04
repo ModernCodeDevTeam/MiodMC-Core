@@ -19,17 +19,23 @@ public class PanelManager {
 
     public static void sendPanel(Player p, PanelType type){
 
+        if (ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".stream")) {
+            return;
+        }
+
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard emptyBoard = manager.getNewScoreboard();
+        Scoreboard admpanel = manager.getNewScoreboard();
+
+
         if (type == PanelType.MOD) {
             title = LanguageManager.getMessage("prefix") + " " + LanguageManager.getMessage("staffpanel.modpanel.title");
         } else {
             title = LanguageManager.getMessage("prefix") + " " + LanguageManager.getMessage("staffpanel.adminpanel.title");
         }
         String prefix = LanguageManager.getMessage("staffpanel.prefix");
-        ScoreboardManager manager = Bukkit.getScoreboardManager();
-        Scoreboard admpanel = manager.getNewScoreboard();
         Objective objective = admpanel.registerNewObjective("test", "dummy", "cokolwiek");
 
-        Scoreboard emptyBoard = manager.getNewScoreboard();
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName(title);
         p.setScoreboard(emptyBoard);
@@ -135,12 +141,6 @@ public class PanelManager {
         }
         newest.setScore(6);
         p.setScoreboard(admpanel);
-        if (ConfigManager.getDataFile().getBoolean("players." + p.getName() + ".stream")) {
-            //do not set a new scoreboard if there is already the empty one
-            if (!p.getScoreboard().equals(emptyBoard)) {
-                p.setScoreboard(emptyBoard);
-            }
-        }
     }
 
     int taskID;

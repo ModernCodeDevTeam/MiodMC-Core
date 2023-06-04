@@ -554,6 +554,12 @@ public class CommandManager implements CommandExecutor {
                     MessageManager.sendPrefixedMessage(sender, "staffchat.stream.enabled");
                     PanelManager.hidePanel(p);
                     ConfigManager.saveData();
+
+                    if(plugin.getConfig().getString("server.type").equalsIgnoreCase("skyblock")){
+                        p.performCommand("sb toggle");
+                        p.performCommand("sb toggle");
+                    }
+
                     return true;
                 }
                 if (ConfigManager.getDataFile().getBoolean("players." + sender.getName() + ".stream")) {
@@ -573,6 +579,12 @@ public class CommandManager implements CommandExecutor {
                     MessageManager.sendPrefixedMessage(sender, "staffchat.stream.enabled");
                     PanelManager.hidePanel(p);
                     ConfigManager.saveData();
+
+                    if(plugin.getConfig().getString("server.type").equalsIgnoreCase("skyblock")){
+                        p.performCommand("sb toggle");
+                        p.performCommand("sb toggle");
+                    }
+
                     return true;
                 }
                 ConfigManager.saveData();

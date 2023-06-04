@@ -26,11 +26,10 @@ public class DatabaseManager {
     public static String table = null;
 
 
-    public static void openConnection() {
+    public static boolean openConnection() {
                 try {
                     if (connection == null || connection.isClosed()) {
                         synchronized(plugin) {
-                            if (connection == null || connection.isClosed()) {
                                 Class.forName("com.mysql.jdbc.Driver");
                                 connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true&verifyServerCertificate=false&useSSL=false&testOnBorrow=true&validationQuery='SELECT 1'&validationInterval=60&useUnicode=yes&character_set_server=utf8mb4&characterEncoding=UTF-8&tcpKeepAlive=true&testWhileIdle=true&minEvictableIdleTimeMillis=1800000&timeBetweenEvictionRunsMillis=1800000", username, password);
 
@@ -40,14 +39,15 @@ public class DatabaseManager {
                                     case "skyblock":
                                         table = table_skyblock;
                                 }
-                            }
+                        return true;
                         }
                     }
+                    return true;
                 } catch (SQLException | ClassNotFoundException e) {
                     ErrorUtil.logError(ErrorReason.DATABASE);
                     e.printStackTrace();
+                    return false;
                 }
-
             }
 
     public static void closeConnection() {
