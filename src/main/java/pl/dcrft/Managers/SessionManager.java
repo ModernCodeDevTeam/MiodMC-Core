@@ -16,6 +16,7 @@ public class SessionManager {
     public static SessionManager getInstance() {
         return instance;
     }
+
     private static DragonCraftCore plugin = DragonCraftCore.getInstance();
 
     public static final ArrayList<SessionManager> list = new ArrayList<>();
@@ -52,36 +53,38 @@ public class SessionManager {
             }
         };
     }
+
     public void initializeSessionManager() {
         int kick_warn_delay = plugin.getConfig().getInt("afk.kick_warn_delay");
         int kick_delay = plugin.getConfig().getInt("afk.kick_delay");
-        if (this.p != null && this.p.isOnline())
-            if (!this.p.hasPermission("afkkick.ignore"))
+        if (this.p != null && this.p.isOnline()) {
+            if (!this.p.hasPermission("afkkick.ignore")) {
                 if (this.lastLoc.getWorld() != this.p.getLocation().getWorld()) {
-                    return;
-                }
-        if (this.lastLoc.distanceSquared(this.p.getLocation()) < 4.0D) {
-            this.afkMinutes++;
-            this.lastLoc = this.p.getLocation();
-            if (this.afkMinutes == kick_warn_delay) {
-                boolean sound_on_get_warn = Boolean.parseBoolean(plugin.getConfig().getString("afk.sound_on_get_warn"));
+                    this.lastLoc = this.p.getLocation();
+                } else if (this.lastLoc.distanceSquared(this.p.getLocation()) < 4.0D) {
+                    this.afkMinutes++;
+                    this.lastLoc = this.p.getLocation();
+                    if (this.afkMinutes == kick_warn_delay) {
+                        boolean sound_on_get_warn = Boolean.parseBoolean(plugin.getConfig().getString("afk.sound_on_get_warn"));
 
-                if (sound_on_get_warn) {
-                    this.p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10,3);
+                        if (sound_on_get_warn) {
+                            this.p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 3);
+                        }
+                        MessageManager.sendPrefixedMessage(p, "afk.kick_warn_msg");
+                    } else if (this.afkMinutes >= kick_delay) {
+                        kickPlayer();
+                    }
+                } else {
+                    this.afkMinutes = 0;
+                    this.lastLoc = this.p.getLocation();
                 }
-                MessageManager.sendPrefixedMessage(p, "afk.kick_warn_msg");
-            } else if(this.afkMinutes >= kick_delay) {
-                kickPlayer();
             }
-        } else {
-            this.afkMinutes = 0;
-            this.lastLoc = this.p.getLocation();
         }
     }
 
     private void kickPlayer() {
         if (!this.p.hasPermission("afkkick.ignore"))
-            Bukkit.getScheduler().scheduleSyncDelayedTask(DragonCraftCore.getInstance(), () -> SessionManager.this.p.kickPlayer(prefix + LanguageManager.getMessage("afk.kick_msg")),  20L);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(DragonCraftCore.getInstance(), () -> SessionManager.this.p.kickPlayer(prefix + LanguageManager.getMessage("afk.kick_msg")), 20L);
     }
 
 

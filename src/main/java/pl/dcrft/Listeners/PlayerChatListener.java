@@ -99,7 +99,7 @@ public class PlayerChatListener implements Listener {
                                 sender.getDisplayName() +
                                 LanguageManager.getMessage("staffchat.adminchat.spacer") +
                                 wiad);
-                Bukkit.getServer().getLogger().info(msg);
+                Bukkit.getServer().getLogger().info("AdminChat: " + sender.getName() + ": " + wiad);
                 for(Player o : Bukkit.getOnlinePlayers()){
                     if(o.hasPermission("admin.see") && !ConfigManager.getDataFile().getBoolean("players." + o.getName() + ".stream")) {
                         o.sendMessage(msg);

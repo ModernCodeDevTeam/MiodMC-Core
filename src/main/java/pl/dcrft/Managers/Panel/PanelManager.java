@@ -147,7 +147,7 @@ public class PanelManager {
     public void showRepeatingPanel(Player p, PanelType panelType) {
         taskID = Bukkit.getServer().getScheduler().runTaskTimer(plugin, () -> {
             if(p == null || !p.isOnline()) {
-                plugin.getLogger().warning("is not online!");
+                //player is not online
                 Bukkit.getScheduler().cancelTask(taskID);
             } else {
                 sendPanel(p, panelType);

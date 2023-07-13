@@ -1,6 +1,5 @@
 package pl.dcrft.Managers.Statistic;
 
-import org.bukkit.Bukkit;
 import pl.dcrft.Managers.DatabaseManager;
 import pl.dcrft.Utils.ErrorUtils.ErrorReason;
 import pl.dcrft.Utils.ErrorUtils.ErrorUtil;
@@ -16,7 +15,7 @@ public class StatisticManager {
         boolean bungee = false, survi = false, sky = false;
                 try {
                     while(!DatabaseManager.openConnection()) {
-                        Bukkit.getLogger().info("waiting..");
+                        //Bukkit.getLogger().info("waiting..");
                     }
 
                     ResultSet ogol;
@@ -41,7 +40,7 @@ public class StatisticManager {
                     su.close();
                     sk.close();
 
-                    Bukkit.getLogger().info(bungee + " " + survi + " " + sky);
+                    //Bukkit.getLogger().info(bungee + " " + survi + " " + sky);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -132,6 +131,12 @@ public class StatisticManager {
                     result.put(StatisticType.SKYBLOCK_MONEY, skyblock_money);
                     result.put(StatisticType.SKYBLOCK_TIMEPLAYED, skyblock_timeplayed);
                     result.put(StatisticType.SKYBLOCK_MARRY, skyblock_marry);
+
+                    //DEBUG
+                    //Bukkit.getLogger().warning("result" + result.toString());
+                    //Bukkit.getLogger().info(result.toString());
+                    //Bukkit.getLogger().info(survival_deaths);
+                    //Bukkit.getLogger().info(survival_marry);
 
 
                     return result;

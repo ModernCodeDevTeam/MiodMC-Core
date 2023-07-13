@@ -6,3 +6,4 @@ password: none
 table_survival: none
 table_skyblock: none
 table_bungee: none
+properties: "?autoReconnect=true&verifyServerCertificate=false&useSSL=false&testOnBorrow=true&validationQuery='SELECT 1'&validationInterval=60&useUnicode=yes&character_set_server=utf8mb4&characterEncoding=UTF-8&tcpKeepAlive=true&testWhileIdle=true&minEvictableIdleTimeMillis=1800000&timeBetweenEvictionRunsMillis=1800000&cmaxReconnets=5"

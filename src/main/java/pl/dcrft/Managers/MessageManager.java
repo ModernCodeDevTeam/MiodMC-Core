@@ -36,9 +36,13 @@ public class MessageManager {
         }
     }
     public static void broadcast(String message){
-        Bukkit.getServer().broadcastMessage(ColorUtil.colorize(message));
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage(ColorUtil.colorize(message));
+        }
     }
     public static void broadcastPrefixed(String message){
-        Bukkit.getServer().broadcastMessage(ColorUtil.colorize(prefix + message));
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage(ColorUtil.colorize(prefix + message));
+        }
     }
 }

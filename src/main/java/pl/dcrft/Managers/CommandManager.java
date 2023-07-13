@@ -105,7 +105,7 @@ public class CommandManager implements CommandExecutor {
                     itemMeta.setDisplayName(plugin.getConfig().getString("marry_item.name"));
                 }
                 if(plugin.getConfig().getString("marry_item.lore") != null){
-                    itemMeta.setDisplayName(plugin.getConfig().getString("marry_item.lore"));
+                    itemMeta.setLore(plugin.getConfig().getStringList("marry_item.lore"));
                 }
                 if(plugin.getConfig().getString("marry_item.enchantment.enchantment") != null && plugin.getConfig().get("marry_item.enchantment.level") != null){
                     itemMeta.addEnchant(Enchantment.getByName(plugin.getConfig().getString("marry_item.enchantment.enchantment")), plugin.getConfig().getInt("marry_item.enchantment.level"), true);
@@ -117,7 +117,7 @@ public class CommandManager implements CommandExecutor {
                     return false;
                 } else {
                     p.getInventory().removeItem(item);
-                    if (Bukkit.getPlayer(args[0]).isOnline()) {
+                    if (Bukkit.getPlayer(args[0]) != null && Bukkit.getPlayer(args[0]).isOnline()) {
                         MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.send.accept.accepted");
                     }
                     MessageManager.sendPrefixedMessage(p, "marry.send.accept.accepted");
@@ -142,7 +142,7 @@ public class CommandManager implements CommandExecutor {
                         try {
                             Location loc = es.getWarps().getWarp(plugin.getConfig().getString("marry_warp"));
                             p.teleport(loc);
-                            if(Bukkit.getPlayer(args[0]).isOnline()) Bukkit.getPlayer(args[0]).teleport(loc);
+                            if(Bukkit.getPlayer(args[0]) != null && Bukkit.getPlayer(args[0]).isOnline()) Bukkit.getPlayer(args[0]).teleport(loc);
                             String x = String.valueOf(loc.getX());
                             String y = String.valueOf(loc.getY() + 5);
                             String z = String.valueOf(loc.getZ());
@@ -168,7 +168,7 @@ public class CommandManager implements CommandExecutor {
                 MessageManager.sendPrefixedMessage(p, "marry.no_ivite_send");
             } else {
                 MessageManager.sendPrefixedMessage(p, "marry.send.reject.rejected");
-                if (Bukkit.getPlayer(args[0]).isOnline()) {
+                if (Bukkit.getPlayer(args[0]) != null && Bukkit.getPlayer(args[0]).isOnline()) {
                     MessageManager.sendPrefixedMessage(Bukkit.getPlayer(args[0]), "marry.send.reject.rejected");
                 }
                 ConfigManager.getDataFile().set("players." + Bukkit.getOfflinePlayer(args[0]).getName() + ".slubprosba", null);

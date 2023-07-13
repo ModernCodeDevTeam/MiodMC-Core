@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class URLUtil {
@@ -25,5 +27,16 @@ public class URLUtil {
         }
 
         return new JsonObject().getAsJsonObject(jsonResults.toString());
+    }
+
+    public static boolean isValidURL(String url) throws MalformedURLException, URISyntaxException {
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        } catch (URISyntaxException e) {
+            return false;
+        }
     }
 }

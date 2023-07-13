@@ -35,24 +35,24 @@ public class StatisticGUIManager {
             HashMap<StatisticType, String> statistics = StatisticManager.getStatistics(p);
             String kills,deaths,kdr,blocks,level,money,timeplayed,marry;
             kills = deaths = kdr = blocks = level = money = timeplayed = marry = null;
-            switch (serverType){
-                case Survival:
+            switch (serverType) {
+                case Survival -> {
                     kills = statistics.get(StatisticType.SURVIVAL_KILLS);
                     deaths = statistics.get(StatisticType.SURVIVAL_DEATHS);
                     kdr = statistics.get(StatisticType.SURVIVAL_KDR);
                     blocks = statistics.get(StatisticType.SURVIVAL_BLOCKS);
-
                     timeplayed = statistics.get(StatisticType.SURVIVAL_TIMEPLAYED);
                     marry = statistics.get(StatisticType.SURVIVAL_MARRY);
-                case SkyBlock:
+                }
+                case SkyBlock -> {
                     kills = statistics.get(StatisticType.SKYBLOCK_KILLS);
                     deaths = statistics.get(StatisticType.SKYBLOCK_DEATHS);
                     kdr = statistics.get(StatisticType.SKYBLOCK_KDR);
                     level = statistics.get(StatisticType.SKYBLOCK_LEVEL);
                     money = statistics.get(StatisticType.SKYBLOCK_MONEY);
-
                     timeplayed = statistics.get(StatisticType.SKYBLOCK_TIMEPLAYED);
                     marry = statistics.get(StatisticType.SKYBLOCK_MARRY);
+                }
             }
 
             String rank = statistics.get(StatisticType.RANK);
