@@ -71,7 +71,7 @@ public class CommandPreprocessListener implements Listener {
                 }
             }
             else if (command.equalsIgnoreCase("stop")) {
-                if (p.hasPermission("r.adm")) {
+                if (p.hasPermission("stop.adm")) {
                     if (args.length == 0) {
                         MaintenanceManager.stopServer();
                     } else {

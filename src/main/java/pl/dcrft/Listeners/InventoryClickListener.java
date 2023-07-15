@@ -21,12 +21,13 @@ public class InventoryClickListener implements Listener {
         if (title.contains(LanguageManager.getMessage("statistics.title"))) {
             e.setCancelled(true);
             if (e.getCurrentItem() != null) {
+                String target = title.replaceAll(LanguageManager.getMessage("statistics.title"), "");
                 switch (e.getCurrentItem().getType()) {
                     case IRON_PICKAXE:
-                        StatisticGUIManager.showStatistics(ServerType.Survival, (Player) e.getWhoClicked(), e.getWhoClicked().getName());
+                        StatisticGUIManager.showStatistics(ServerType.Survival, (Player) e.getWhoClicked(), target);
                         return;
                     case GRASS_BLOCK:
-                        StatisticGUIManager.showStatistics(ServerType.SkyBlock, (Player) e.getWhoClicked(), e.getWhoClicked().getName());
+                        StatisticGUIManager.showStatistics(ServerType.SkyBlock, (Player) e.getWhoClicked(), target);
                 }
             }
         } else if (title.contains(LanguageManager.getMessage("kits-title"))) {

@@ -391,3 +391,14 @@ plugin:
   footer: "§e--------------------------------------------"
   enabled: "§aWłączono wersję §2"
   disabled: "§cWyłączono wersję §2"
+hologram:
+  title: "&e&lDragon&6&lCraft &e» &cNajlepsi gracze &e» "
+  kills: "&czabójstwa"
+  deaths: "&cśmierci"
+  kdr: "&cstosunek Z/Ś"
+  blocks: "&cwykopane bloki"
+  islandlevel: "&cpoziom wyspy"
+  money: "Smocze jaja"
+  colors:
+    nick: "&e"
+    value: "&c"

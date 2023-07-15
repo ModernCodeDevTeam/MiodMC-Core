@@ -31,6 +31,11 @@ shop_purchase:
   sound: "ENTITY_PLAYER_LEVELUP"
 broadcast:
   cooldown: 90
+hologram:
+  cooldown: 5
+  x: 0
+  y: 0
+  z: 0
 staff:
   - NickNickerYT
   - JaneQ

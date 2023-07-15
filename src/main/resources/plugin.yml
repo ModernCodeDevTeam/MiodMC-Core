@@ -2,7 +2,7 @@ main: pl.dcrft.DragonCraftCore
 name: ${project.name}
 version: ${project.version}-b${buildNumber}
 author: NickNickerYT
-depend: [Vault, PlaceholderAPI, SuperVanish, LuckPerms, PvPManager, Essentials]
+depend: [Vault, PlaceholderAPI, SuperVanish, LuckPerms, PvPManager, Essentials, HolographicDisplays]
 softdepend: [PreciousStones]
 description: DragonCraftCore - the core which fits the DragonCraft needs. The core plugin created for DragonCraft Minecraft server that provides basic features for DragonCraft. Built on ${timestamp}
 api-version: 1.20

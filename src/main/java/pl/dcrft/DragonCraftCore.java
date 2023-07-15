@@ -87,6 +87,7 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
             getCommand(command.getName()).setExecutor(new CommandManager());
         }
         BroadcasterManager.startBroadcast();
+        TopHologramManager.startBroadcast();
         DatabaseUtil.initializeTables();
         PanelManager.updatePanels();
 
@@ -114,6 +115,6 @@ public class DragonCraftCore extends JavaPlugin implements Listener, CommandExec
         getLogger().info("§e§lDragon§6§lCraft§a§lCore");
         getLogger().info(LanguageManager.getMessage("plugin.disabled") + getDescription().getVersion());
         getLogger().info(LanguageManager.getMessage("plugin.footer"));
-
+        TopHologramManager.hologram.delete();
     }
 }
