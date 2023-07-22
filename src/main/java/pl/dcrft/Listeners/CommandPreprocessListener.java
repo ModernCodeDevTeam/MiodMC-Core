@@ -31,7 +31,7 @@ public class CommandPreprocessListener implements Listener {
             command = command.split(" ")[0].replace(":", "%colon%");
 
             if (disabledConfig.getKeys(false) != null) {
-                if (disabledConfig.getKeys(false).contains(command)) {
+                if (disabledConfig.getKeys(false).stream().anyMatch(command::equalsIgnoreCase)) {
                     for (String cmd : disabledConfig.getKeys(false)) {
                         String permission = disabledConfig.getString(cmd + ".Permission");
                         if (command.equalsIgnoreCase(cmd)) {
